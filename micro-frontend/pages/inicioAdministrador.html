@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/inicioAdmin.css">
+    <title>Panel de Administrador - VoluntariApp</title>
+</head>
+<body>
+    <div class="header">
+        <span>🎯</span>
+        <h1>VoluntariApp - Panel de Administrador</h1>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2 class="menu-title">MENÚ ADMINISTRADOR</h2>
+            <button class="menu-item active" onclick="showSection('reportes')">
+                <span class="menu-icon">📈</span>
+                <span>Reportes Globales</span>
+            </button>
+            <button class="menu-item" onclick="showSection('usuarios')">
+                <span class="menu-icon">👥</span>
+                <span>Gestión de Usuarios</span>
+            </button>
+            <button class="menu-item" onclick="showSection('proyectos')">
+                <span class="menu-icon">📋</span>
+                <span>Gestión de Proyectos</span>
+            </button>
+            <button class="menu-item" onclick="showSection('roles')">
+                <span class="menu-icon">🔐</span>
+                <span>Roles y Permisos</span>
+            </button>
+            <button class="menu-item" onclick="showSection('categorias')">
+                <span class="menu-icon">🏷️</span>
+                <span>Categorías y Etiquetas</span>
+            </button>
+        </aside>
+
+        <main class="main-content">
+            <!-- Reportes Section -->
+            <section id="reportes" class="section active">
+                <div class="welcome-card">
+                    <h2>Bienvenid@ Administrador 👋</h2>
+                    <p>Panel de control y monitoreo de la plataforma VoluntariApp. Aquí podrás gestionar usuarios, visualizar estadísticas y generar reportes.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">👥</div>
+                        </div>
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-label">Voluntarios Registrados</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">🏢</div>
+                        </div>
+                        <div class="stat-value">86</div>
+                        <div class="stat-label">Organizaciones Activas</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">📋</div>
+                        </div>
+                        <div class="stat-value">324</div>
+                        <div class="stat-label">Proyectos Publicados</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon">🎓</div>
+                        </div>
+                        <div class="stat-value">892</div>
+                        <div class="stat-label">Certificaciones Emitidas</div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>📈 Crecimiento Mensual de Usuarios y Proyectos</h3>
+                    <div class="chart-placeholder">Gráfico de crecimiento mensual (voluntarios, organizaciones y proyectos)</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="chart-card">
+                        <h3>🎯 Proyectos por Categoría</h3>
+                        <div class="chart-placeholder">
+                            Educación: 98<br>
+                            Limpieza: 76<br>
+                            Ambiental: 89<br>
+                            Social: 61
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>📊 Participación por Proyecto</h3>
+                        <div class="chart-placeholder">Reporte de voluntarios inscritos y asistentes por proyecto</div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>🎓 Certificaciones Emitidas por Mes</h3>
+                    <div class="chart-placeholder">Gráfico de certificaciones emitidas por mes</div>
+                </div>
+            </section>
+
+            <!-- Usuarios Section -->
+            <section id="usuarios" class="section">
+                <div class="welcome-card">
+                    <h2>👥 Gestión de Usuarios</h2>
+                    <p>Administra las cuentas de voluntarios y organizaciones: aprobar, suspender o eliminar usuarios.</p>
+                </div>
+
+                <div class="table-card">
+                    <h3>Voluntarios Registrados</h3>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Buscar voluntario por nombre o email...">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Estado</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1234</td>
+                                <td>María González</td>
+                                <td>maria.g@email.com</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                                <td>15/10/2025</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-warning btn-small">Suspender</button>
+                                    <button class="btn btn-danger btn-small">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1235</td>
+                                <td>Carlos Ruiz</td>
+                                <td>carlos.r@email.com</td>
+                                <td><span class="badge badge-pending">Pendiente</span></td>
+                                <td>20/10/2025</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-primary btn-small">Aprobar</button>
+                                    <button class="btn btn-danger btn-small">Rechazar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#1236</td>
+                                <td>Ana Martínez</td>
+                                <td>ana.m@email.com</td>
+                                <td><span class="badge badge-suspended">Suspendido</span></td>
+                                <td>10/10/2025</td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-primary btn-small">Activar</button>
+                                    <button class="btn btn-danger btn-small">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-card">
+                    <h3>Organizaciones Registradas</h3>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Buscar organización...">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Responsable</th>
+                                <th>Proyectos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORG001</td>
+                                <td>Fundación Verde</td>
+                                <td>Juan Pérez</td>
+                                <td>12</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-warning btn-small">Suspender</button>
+                                    <button class="btn btn-danger btn-small">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORG002</td>
+                                <td>ONG Educación Para Todos</td>
+                                <td>Laura Sánchez</td>
+                                <td>8</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-warning btn-small">Suspender</button>
+                                    <button class="btn btn-danger btn-small">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#ORG003</td>
+                                <td>Voluntarios por el Ambiente</td>
+                                <td>Pedro López</td>
+                                <td>15</td>
+                                <td><span class="badge badge-pending">Pendiente</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn btn-primary btn-small">Aprobar</button>
+                                    <button class="btn btn-danger btn-small">Rechazar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Proyectos Section -->
+            <section id="proyectos" class="section">
+                <div class="welcome-card">
+                    <h2>📋 Gestión de Proyectos</h2>
+                    <p>Supervisa todos los proyectos publicados en la plataforma.</p>
+                </div>
+
+                <div class="table-card">
+                    <h3>Proyectos Publicados</h3>
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Buscar proyecto...">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Organización</th>
+                                <th>Categoría</th>
+                                <th>Inscritos</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#P101</td>
+                                <td>Limpieza de Playa</td>
+                                <td>Fundación Verde</td>
+                                <td>Ambiental</td>
+                                <td>45/50</td>
+                                <td>05/11/2025</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>#P102</td>
+                                <td>Refuerzo Escolar</td>
+                                <td>ONG Educación</td>
+                                <td>Educación</td>
+                                <td>20/30</td>
+                                <td>10/11/2025</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>#P103</td>
+                                <td>Reforestación Urbana</td>
+                                <td>Voluntarios por el Ambiente</td>
+                                <td>Ambiental</td>
+                                <td>30/40</td>
+                                <td>12/11/2025</td>
+                                <td><span class="badge badge-active">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>#P104</td>
+                                <td>Apoyo a Comedores</td>
+                                <td>Fundación Solidaria</td>
+                                <td>Social</td>
+                                <td>25/25</td>
+                                <td>08/11/2025</td>
+                                <td><span class="badge badge-active">Completo</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Roles Section -->
+            <section id="roles" class="section">
+                <div class="welcome-card">
+                    <h2>🔐 Roles y Permisos</h2>
+                    <p>Gestiona roles y asigna permisos a los usuarios de la plataforma.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="table-card">
+                        <h3>Roles Disponibles</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rol</th>
+                                    <th>Usuarios</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Administrador</td>
+                                    <td>3</td>
+                                    <td><button class="btn btn-primary btn-small">Editar Permisos</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Organización</td>
+                                    <td>86</td>
+                                    <td><button class="btn btn-primary btn-small">Editar Permisos</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Voluntario</td>
+                                    <td>1247</td>
+                                    <td><button class="btn btn-primary btn-small">Editar Permisos</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-card">
+                        <h3>Asignar Rol a Usuario</h3>
+                        <div class="search-bar">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" placeholder="Buscar usuario...">
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <div class="form-group">
+                                <label>Usuario seleccionado:</label>
+                                <input type="text" value="María González" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Asignar rol:</label>
+                                <select>
+                                    <option>Voluntario</option>
+                                    <option>Organización</option>
+                                    <option>Administrador</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary" style="width: 100%;">Asignar Rol</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <h3>Permisos Detallados por Rol</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Administrador</th>
+                                <th>Organización</th>
+                                <th>Voluntario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gestionar usuarios</td>
+                                <td><span class="badge badge-active">✓</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Crear proyectos</td>
+                                <td><span class="badge badge-active">✓</span></td>
+                                <td><span class="badge badge-active">✓</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                            </tr>
+                            <tr>
+                                <td>Inscribirse a proyectos</td>
+                                <td><span class="badge badge-active">✓</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                                <td><span class="badge badge-active">✓</span></td>
+                            </tr>
+                            <tr>
+                                <td>Ver reportes globales</td>
+                                <td><span class="badge badge-active">✓</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                                <td><span class="badge badge-suspended">✗</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Categorías Section -->
+            <section id="categorias" class="section">
+                <div class="welcome-card">
+                    <h2>🏷️ Gestión de Categorías y Etiquetas</h2>
+                    <p>Crea, edita y elimina categorías y etiquetas para clasificar los proyectos de la plataforma.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="table-card">
+                        <h3>Crear Nueva Categoría</h3>
+                        <div class="form-group">
+                            <label>Nombre de la categoría:</label>
+                            <input type="text" placeholder="Ej: Educación, Ambiental, Social...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <textarea placeholder="Describe el tipo de proyectos que pertenecen a esta categoría..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Color identificativo:</label>
+                            <div class="color-picker">
+                                <input type="color" value="#22c55e">
+                                <span style="color: #6b7280; font-size: 0.875rem;">Selecciona un color para la categoría</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Icono (emoji):</label>
+                            <input type="text" placeholder="📚" maxlength=

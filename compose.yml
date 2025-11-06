@@ -1,0 +1,23 @@
+services:
+  datos_usuarios:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: alfonso
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: bd_usuarios
+    volumes:
+      - ./micro-usuarios/micro-usuarios-bd.sql:/docker-entrypoint-initdb.d/micro-usuarios-bd.sql
+      - volumen_usuarios:/var/lib/postgresql/18/docker
+  usuarios:
+    build: ./micro-usuarios
+    environment:
+      DB_HOST: datos_usuarios
+      DB_NAME: bd_usuarios
+      DB_USER: alfonso
+      DB_PASSWORD: 1234
+
+    ports:
+      - "8080:8080"
+
+volumes:
+  volumen_usuarios:

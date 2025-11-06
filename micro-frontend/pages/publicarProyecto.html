@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Proyecto - VoluntariApp</title>
+    <link rel="stylesheet" href="../css/publicarProyecto.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <button class="btn-back" onclick="volver()">←</button>
+        <h1 class="page-title">Publicar Proyecto</h1>
+    </div>
+
+    <div class="form-container">
+        <div class="success-message" id="successMessage">
+            ✓ Proyecto publicado exitosamente
+        </div>
+
+        <form id="proyectoForm" onsubmit="publicarProyecto(event)">
+
+            
+            <input type="hidden" name="action" value="save">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombre" class="required">Nombre del Proyecto</label>
+                    <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Ej: Reforestación comunitaria"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="ubicacion" class="required">Ubicación</label>
+                    <input
+                            type="text"
+                            id="ubicacion"
+                            name="ubicacion"
+                            placeholder="Ciudad, país"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="voluntarios" class="required">N° Voluntarios</label>
+                    <input
+                            type="number"
+                            id="voluntarios"
+                            name="voluntariosRequeridos"
+                            placeholder="Cantidad requerida"
+                            min="1"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria" class="required">Categoría</label>
+
+
+                    <select id="categoria" name="idCategoria" required>
+                        <option value="">Seleccionar categoría</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group form-group-full">
+                <label for="descripcion" class="required">Descripción del Proyecto</label>
+                <textarea
+                        id="descripcion"
+                        name="descripcion"
+                        placeholder="Describe el proyecto, sus objetivos y el impacto que generará..."
+                        required
+                ></textarea>
+                <span class="helper-text">Mínimo 50 caracteres</span>
+            </div>
+
+            <div class="form-group form-group-full">
+                <label for="requisitos" class="required">Requisitos para Voluntarios</label>
+                <textarea
+                        id="requisitos"
+                        name="requisitos"
+                        placeholder="Especifica las habilidades, experiencia o requisitos necesarios..."
+                        required
+                ></textarea>
+                <span class="helper-text">Describe qué se espera de los voluntarios</span>
+            </div>
+
+            <div class="date-row">
+                <div class="form-group">
+                    <label for="fechaInicio" class="required">Fecha de Inicio</label>
+                    <input
+                            type="date"
+                            id="fechaInicio"
+                            name="fechaInicio"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaFin" class="required">Fecha de Fin</label>
+                    <input
+                            type="date"
+                            id="fechaFin"
+                            name="fechaFin"
+                            required
+                    >
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Publicar Proyecto</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/publicarProyecto.js"></script>
+</body>
+</html>

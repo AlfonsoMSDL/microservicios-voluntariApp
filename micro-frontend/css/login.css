@@ -1,0 +1,201 @@
+:root {
+    --primary-color: #27ae60;
+    --primary-dark: #229954;
+    --secondary-color: #2ecc71;
+    --accent-color: #16a085;
+    --dark-color: #2c3e50;
+    --light-gray: #f8f9fa;
+    --text-gray: #555;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+.form-section {
+    flex: 1;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.seccion-imagen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+    border-radius: 15px;
+    margin-left: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.image-placeholder {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+    z-index: 2;
+    position: relative;
+}
+
+h1 {
+    color: black;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    color: black;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid black;
+    border-radius: 50px;
+    color: black;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+input::placeholder {
+    color: #808080;
+    opacity: 1;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: #56ab2f;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgba(86, 171, 47, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(86, 171, 47, 0.4);
+    background: #4a9928;
+}
+
+.login-btn:active {
+    transform: translateY(-1px);
+}
+
+.link-registro {
+    text-align: center;
+    margin-top: 20px;
+    color: black;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.link-registro a {
+    color: #56ab2f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* En esta parte aplicamos la esponsividad */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .form-section {
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+
+    .image-section {
+        margin-left: 0;
+        height: 200px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px 18px;
+    }
+}

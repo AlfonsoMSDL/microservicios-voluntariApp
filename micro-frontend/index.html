@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoluntariApp - Sistema de Gestión de Voluntariado Comunitario</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.png" sizes="64x64">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                <span class="sr-only<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#inicio">
+                <img src="assets/images/Logo.png" alt="VoluntariApp Logo" />
+                <span>VoluntariApp</span>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#voluntarios">Voluntarios</a></li>
+                <li><a href="#organizaciones">Organizaciones</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section" id="inicio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Sistema de Gestión de Voluntariado Comunitario
+                    </h1>
+                    <p class="hero-subtitle">
+                        Conectando Corazones • Transformando Comunidades • Construyendo Futuro
+                    </p>
+                    <p class="hero-description">
+                        Plataforma integral para la gestión eficiente de voluntarios, organizaciones y proyectos
+                        comunitarios en áreas de educación, limpieza, siembra y acompañamiento social.
+                        Facilitamos la conexión entre quienes quieren ayudar y quienes necesitan apoyo.
+                    </p>
+                    <div class="text-center">
+                        <a href="pages/registrar.html" class="btn btn-hero btn-hero-primary btn-lg">Registrate Ahora</a>
+                        <a href="pages/login.html" class="btn btn-hero btn-hero-primary btn-lg">Iniciar sesion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">¿Por qué elegir VoluntariApp?</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="custom-card fade-in-element">
+                    <div class="feature-icon">
+                        <i class="fa fa-handshake-o"></i>
+                    </div>
+                    <h3>Gestión Integral</h3>
+                    <p>Sistema completo para administrar voluntarios, organizaciones y proyectos desde una sola plataforma.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="custom-card fade-in-element">
+                    <div class="feature-icon">
+                        <i class="fa fa-bullseye"></i>
+                    </div>
+                    <h3>Matching Inteligente</h3>
+                    <p>Conectamos automáticamente voluntarios con proyectos según sus habilidades e intereses.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="custom-card fade-in-element">
+                    <div class="feature-icon">
+                        <i class="fa fa-bar-chart"></i>
+                    </div>
+                    <h3>Seguimiento y Métricas</h3>
+                    <p>Herramientas de análisis para medir el impacto y progreso de los proyectos comunitarios.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="custom-card fade-in-element">
+                    <div class="feature-icon">
+                        <i class="fa fa-leaf"></i>
+                    </div>
+                    <h3>Impacto Social</h3>
+                    <p>Contribuye al desarrollo sostenible de tu comunidad a través de acciones coordinadas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Volunteers Section -->
+<section class="section-padding bg-light-section" id="voluntarios">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">Para Voluntarios</h2>
+                <p class="section-description col-lg-8 col-lg-offset-2">
+                    Únete a nuestra comunidad de voluntarios y encuentra oportunidades perfectas para compartir tus talentos
+                    y hacer la diferencia en tu entorno.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="volunteer-card fade-in-element">
+                    <h4><i class="fa fa-graduation-cap"></i> Educación</h4>
+                    <p>Participa en programas de tutorías, alfabetización, capacitación tecnológica y apoyo académico para niños y adultos.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="volunteer-card fade-in-element">
+                    <h4><i class="fa fa-trash"></i> Limpieza</h4>
+                    <p>Contribuye con jornadas de limpieza urbana, reciclaje, y mantenimiento de espacios públicos y comunitarios.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="volunteer-card fade-in-element">
+                    <h4><i class="fa fa-tree"></i> Siembra</h4>
+                    <p>Participa en proyectos de reforestación, huertos comunitarios y programas de agricultura sostenible.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="volunteer-card fade-in-element">
+                    <h4><i class="fa fa-heart"></i> Acompañamiento Social</h4>
+                    <p>Brinda apoyo emocional y social a adultos mayores, personas en situación vulnerable y familias necesitadas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Organizations Section -->
+<section class="section-padding" id="organizaciones">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">Para Organizaciones</h2>
+                <p class="section-description col-lg-8 col-lg-offset-2">
+                    Potencia el impacto de tu organización con herramientas profesionales para la gestión
+                    de voluntarios y proyectos comunitarios.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="benefit-item fade-in-element">
+                    <div class="benefit-icon">
+                        <i class="fa fa-clipboard"></i>
+                    </div>
+                    <div>
+                        <h4>Gestión de Proyectos</h4>
+                        <p>Crea, organiza y administra múltiples proyectos comunitarios desde un panel centralizado.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="benefit-item fade-in-element">
+                    <div class="benefit-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div>
+                        <h4>Reclutamiento Eficiente</h4>
+                        <p>Encuentra y conecta con voluntarios calificados que se alineen con tu misión organizacional.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="benefit-item fade-in-element">
+                    <div class="benefit-icon">
+                        <i class="fa fa-line-chart"></i>
+                    </div>
+                    <div>
+                        <h4>Reportes y Analytics</h4>
+                        <p>Accede a métricas detalladas sobre el progreso, impacto y efectividad de tus iniciativas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="benefit-item fade-in-element">
+                    <div class="benefit-icon">
+                        <i class="fa fa-shield"></i>
+                    </div>
+                    <div>
+                        <h4>Seguridad y Confiabilidad</h4>
+                        <p>Sistema seguro con verificación de voluntarios y herramientas de comunicación integradas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section class="section-padding bg-light-section" id="proyectos">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">Tipos de Proyectos</h2>
+                <p class="section-description col-lg-8 col-lg-offset-2">
+                    Explora las diferentes categorías de proyectos comunitarios donde puedes participar
+                    y generar un impacto positivo significativo.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="project-card fade-in-element">
+                    <h4><i class="fa fa-book"></i> Proyectos Educativos</h4>
+                    <p>Iniciativas enfocadas en mejorar el acceso y calidad educativa: clases de refuerzo, bibliotecas comunitarias, talleres de habilidades digitales y programas de becas.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="project-card fade-in-element">
+                    <h4><i class="fa fa-globe"></i> Proyectos Ambientales</h4>
+                    <p>Acciones para el cuidado del medio ambiente: campañas de limpieza, programas de reciclaje, reforestación urbana y educación ambiental.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="project-card fade-in-element">
+                    <h4><i class="fa fa-envira"></i> Proyectos de Agricultura</h4>
+                    <p>Iniciativas de seguridad alimentaria: huertos escolares, agricultura urbana, capacitación en técnicas sostenibles y mercados locales.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="project-card fade-in-element">
+                    <h4><i class="fa fa-group"></i> Proyectos Sociales</h4>
+                    <p>Programas de apoyo comunitario: centros de día para adultos mayores, apoyo a familias vulnerables, actividades recreativas y talleres de desarrollo personal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section-padding" id="contacto">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">Contacto</h2>
+                <p class="section-description col-lg-6 col-lg-offset-3">
+                    ¿Tienes preguntas o quieres conocer más sobre VoluntariApp? Estamos aquí para ayudarte a comenzar
+                    tu experiencia de voluntariado.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="contact-card fade-in-element">
+                    <div class="contact-icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <h4>Email</h4>
+                    <p>info@VoluntariApp.org</p>
+                    <p>soporte@VoluntariApp.org</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="contact-card fade-in-element">
+                    <div class="contact-icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <h4>Teléfono</h4>
+                    <p>+57 (5) 123-4567</p>
+                    <p>Lun - Vie: 8:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="contact-card fade-in-element">
+                    <div class="contact-icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <h4>Ubicación</h4>
+                    <p>Santa Marta, Magdalena</p>
+                    <p>Colombia</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="contact-card fade-in-element">
+                    <div class="contact-icon">
+                        <i class="fa fa-share-alt"></i>
+                    </div>
+                    <h4>Redes Sociales</h4>
+                    <p>@VoluntariApp</p>
+                    <p>VoluntariApp Voluntarios</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <p>&copy; VoluntariApp 2025 Sistema de Gestión de Voluntariado Comunitario.</p>
+                <p>Construyendo comunidades más fuertes, un voluntario a la vez.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/script-hero.js"></script>
+</body>
+</html>
