@@ -17,7 +17,7 @@ services:
       DB_PASSWORD: 1234
 
     ports:
-      - "8080:8080"
+      - "8081:8080"
 
 volumes:
   volumen_usuarios:
