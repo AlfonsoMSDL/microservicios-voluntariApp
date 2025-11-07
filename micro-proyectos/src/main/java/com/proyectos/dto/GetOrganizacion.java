@@ -12,7 +12,6 @@ public record GetOrganizacion(
         @JsonAlias String correo,
         @JsonAlias String clave,
         @JsonAlias String telefono,
-        @JsonAlias String descripcion,
-        @JsonAlias GetTipoOrganizacion tipoOrganizacion
+        @JsonAlias String descripcion
 ) {
 }

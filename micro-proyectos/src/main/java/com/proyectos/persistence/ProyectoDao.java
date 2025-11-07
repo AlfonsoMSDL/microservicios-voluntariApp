@@ -49,7 +49,7 @@ public class ProyectoDao {
     }
 
     public List<Proyecto> findAllProyectosByOrganizacion(Long idOrganizacion){
-        Connection connection ;
+        Connection connection;
         PreparedStatement preparedStatement;
         ResultSet resultSet;
 
@@ -76,9 +76,9 @@ public class ProyectoDao {
 
                 Categoria categoria = (new CategoriaDao()).findById(resultSet.getLong("id_categoria")).get();
 
-                Long idOrganizacion = resultSet.getLong("organizacion_id");
+                Long idOrganizacionBd = resultSet.getLong("organizacion_id");
 
-                proyecto = new Proyecto(id,nombre,descripcion,ubicacion,requisitos,fechaInicio,fechaFin,voluntariosRequeridos,categoria,idOrganizacion);
+                proyecto = new Proyecto(id,nombre,descripcion,ubicacion,requisitos,fechaInicio,fechaFin,voluntariosRequeridos,categoria,idOrganizacionBd);
 
                 proyectos.add(proyecto);
 

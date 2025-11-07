@@ -90,7 +90,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void actualizarVoluntario(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Long id = Long.parseLong( req.getParameter("idVoluntario"));
+        Long id = Long.parseLong( req.getParameter("id"));
         String nombre = req.getParameter("nombre");
         String apellido = req.getParameter("apellido");
         String correo = req.getParameter("correo");
@@ -129,7 +129,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void obtenerVoluntarioPorId(HttpServletRequest req, HttpServletResponse resp) {
-        Long idOrganizacion = Long.parseLong(req.getParameter("idVoluntario"));
+        Long idOrganizacion = Long.parseLong(req.getParameter("id"));
         GetVoluntario voluntarioDto = voluntarioService.findById(idOrganizacion);
 
         String voluntarioJson = jsonMapperGetVol.toJson(voluntarioDto);
