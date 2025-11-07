@@ -1,6 +1,7 @@
 package com.proyectos.model;
 
-import com.proyectos.model.Categoria;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.proyectos.dto.GetOrganizacion;
 
 import java.sql.Date;
 

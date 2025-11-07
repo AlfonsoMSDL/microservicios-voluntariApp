@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record GetTipoOrganizacion(
-        @JsonAlias Long id,
-        @JsonAlias String nombre,
-        @JsonAlias String descripcion
+public record GetCategoria(
+        @JsonAlias String id,
+        @JsonAlias String nombre
 ) {
 }

@@ -102,7 +102,7 @@ public class OrganizacionController extends HttpServlet {
         String clave = req.getParameter("clave");
         String telefono = req.getParameter("telefono");
         Long id_tipo = Long.parseLong( req.getParameter("tipo"));
-        Long idOrganizacion = Long.parseLong(req.getParameter("idOrganizacion"));
+        Long idOrganizacion = Long.parseLong(req.getParameter("id"));
         String descripcion = req.getParameter("descripcion");
 
         Organizacion actualizado = organizacionService.update(idOrganizacion,nombre,correo,telefono,clave, id_tipo,descripcion,nombreUsuario);
@@ -128,7 +128,7 @@ public class OrganizacionController extends HttpServlet {
     }
 
     private void obtenerOrganizacionPorId(HttpServletRequest req, HttpServletResponse resp) {
-        Long idOrganizacion = Long.parseLong(req.getParameter("idOrganizacion"));
+        Long idOrganizacion = Long.parseLong(req.getParameter("id"));
         GetOrganizacion organizacionDto = organizacionService.findById(idOrganizacion);
 
         String organizacionJson = jsonMapperGetOrg.toJson(organizacionDto);

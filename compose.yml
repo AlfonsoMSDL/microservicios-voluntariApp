@@ -15,9 +15,34 @@ services:
       DB_NAME: bd_usuarios
       DB_USER: alfonso
       DB_PASSWORD: 1234
+    depends_on:
+      - datos_usuarios
+    expose:
+      - "8080"
 
     ports:
       - "8081:8080"
 
+  datos_proyectos:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: alfonso
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: bd_proyectos
+    volumes:
+      - ./micro-proyectos/micro-proyectos-bd.sql:/docker-entrypoint-initdb.d/micro-proyectos-bd.sql
+      - volumen_proyectos:/var/lib/postgresql/18/docker
+  proyectos:
+    build: ./micro-proyectos
+    environment:
+      DB_HOST: datos_proyectos
+      DB_NAME: bd_proyectos
+      DB_USER: alfonso
+      DB_PASSWORD: 1234
+    depends_on:
+      - datos_proyectos
+    ports:
+      - "8082:8080"
 volumes:
   volumen_usuarios:
+  volumen_proyectos:
