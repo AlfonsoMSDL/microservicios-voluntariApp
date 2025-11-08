@@ -7,12 +7,14 @@ import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProyectoDao {
 
     private static final String SELECT_BY_ORGANIZACION = "SELECT * FROM proyectos WHERE organizacion_id = ?";
     private static final String INSERT = "INSERT INTO proyectos (nombre, descripcion, ubicacion, requisitos, fecha_inicio, fecha_fin, voluntarios_requeridos, id_categoria, organizacion_id) VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String UPDATE = "UPDATE proyectos SET nombre = ?, descripcion = ?, ubicacion = ?, requisitos = ?, fecha_inicio = ?, fecha_fin = ?, voluntarios_requeridos = ?, id_categoria = ? WHERE id = ?";
+    private static final String SELECT_BY_ID = "SELECT * FROM proyectos WHERE id = ?";
 
     public Proyecto save(Proyecto proyecto) {
         Connection conn = null;
@@ -124,4 +126,60 @@ public class ProyectoDao {
             throw new RuntimeException(e);
         }
     }
+
+    public Optional<Proyecto> findById(Long idProyecto) {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    Proyecto proyecto = null;
+
+    final String SELECT_BY_ID = "SELECT * FROM proyectos WHERE id = ?";
+
+    try {
+        connection = Conexion.getConnection();
+        preparedStatement = connection.prepareStatement(SELECT_BY_ID);
+        preparedStatement.setLong(1, idProyecto);
+        resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            Long id = resultSet.getLong("id");
+            String nombre = resultSet.getString("nombre");
+            String descripcion = resultSet.getString("descripcion");
+            String ubicacion = resultSet.getString("ubicacion");
+            String requisitos = resultSet.getString("requisitos");
+            Date fechaInicio = resultSet.getDate("fecha_inicio");
+            Date fechaFin = resultSet.getDate("fecha_fin");
+            int voluntariosRequeridos = resultSet.getInt("voluntarios_requeridos");
+
+            Long idCategoria = resultSet.getLong("id_categoria");
+            Categoria categoria = (new CategoriaDao()).findById(idCategoria).orElse(null);
+
+            Long idOrganizacion = resultSet.getLong("organizacion_id");
+
+            proyecto = new Proyecto(
+                    id,
+                    nombre,
+                    descripcion,
+                    ubicacion,
+                    requisitos,
+                    fechaInicio,
+                    fechaFin,
+                    voluntariosRequeridos,
+                    categoria,
+                    idOrganizacion
+            );
+        }
+
+        Conexion.close(resultSet);
+        Conexion.close(preparedStatement);
+        Conexion.close(connection);
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Error al obtener proyecto por ID: " + e.getMessage(), e);
+    }
+
+    return Optional.ofNullable(proyecto);
+}
+
+
 }

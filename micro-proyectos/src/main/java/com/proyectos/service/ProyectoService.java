@@ -12,13 +12,13 @@ import com.proyectos.persistence.ProyectoDao;
 import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.logging.Logger;
 
 public class ProyectoService {
     private final ProyectoDao proyectoDao= new ProyectoDao();
     private final CategoriaDao categoriaDao = new CategoriaDao();
     private final GenericMapper<GetProyecto,Proyecto> genericMapper = new GenericMapper<>();
     private final Cliente<GetOrganizacion> cliente = new Cliente<>();
+    private final Logger logger = Logger.getLogger(ProyectoService.class.getName());
     
 
     public Proyecto save(String nombre, String descripcion, String ubicacion, String requisitos, Date fechaInicio, Date fechaFin, Integer voluntarios_requeridos, Long idCategoria, Long idOrganizacion){
@@ -50,6 +50,16 @@ public class ProyectoService {
         Categoria categoria = (new CategoriaDao()).findById(idCategoria).get();
         Proyecto proyectoUpdate = new Proyecto(id,nombre,descripcion,ubicacion,requisitos,fechaInicio,fechaFin,voluntarios_requeridos,categoria);
         return proyectoDao.update(proyectoUpdate);
+    }
+
+    public GetProyecto findById(Long id) {
+        Proyecto proyecto = proyectoDao.findById(id).get();
+        GetOrganizacion organizacion = cliente.getById(proyecto.getIdOrganizacion(), "http://usuarios:8080/organizaciones", GetOrganizacion.class);
+
+        logger.info("Organizacion:\n"+organizacion);
+
+        proyecto.setOrganizacion(organizacion);
+        return genericMapper.toDto(proyecto, GetProyecto.class);
     }
 }
 

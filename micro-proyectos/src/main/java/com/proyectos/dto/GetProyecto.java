@@ -12,8 +12,7 @@ public record GetProyecto(
         @JsonAlias String fecha_fin,
         @JsonAlias String voluntarios_requeridos,
         @JsonAlias GetCategoria categoria,
-        @JsonAlias GetOrganizacion organizacion,
-        @JsonAlias Long idOrganizacion
+        @JsonAlias GetOrganizacion organizacion
         
 ) {
 }
