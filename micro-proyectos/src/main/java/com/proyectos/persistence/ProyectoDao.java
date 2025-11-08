@@ -133,7 +133,6 @@ public class ProyectoDao {
     ResultSet resultSet = null;
     Proyecto proyecto = null;
 
-    final String SELECT_BY_ID = "SELECT * FROM proyectos WHERE id = ?";
 
     try {
         connection = Conexion.getConnection();

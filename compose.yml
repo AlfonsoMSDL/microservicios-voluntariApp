@@ -9,7 +9,9 @@ services:
       - ./micro-usuarios/micro-usuarios-bd.sql:/docker-entrypoint-initdb.d/micro-usuarios-bd.sql
       - volumen_usuarios:/var/lib/postgresql/18/docker
   usuarios:
-    build: ./micro-usuarios
+    build:
+      context: ./micro-usuarios
+      dockerfile: Dockerfile
     environment:
       DB_HOST: datos_usuarios
       DB_NAME: bd_usuarios
@@ -33,7 +35,9 @@ services:
       - ./micro-proyectos/micro-proyectos-bd.sql:/docker-entrypoint-initdb.d/micro-proyectos-bd.sql
       - volumen_proyectos:/var/lib/postgresql/18/docker
   proyectos:
-    build: ./micro-proyectos
+    build: 
+      context: ./micro-proyectos
+      dockerfile: Dockerfile
     environment:
       DB_HOST: datos_proyectos
       DB_NAME: bd_proyectos

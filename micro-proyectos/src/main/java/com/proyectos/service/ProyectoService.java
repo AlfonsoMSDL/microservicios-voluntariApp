@@ -47,6 +47,7 @@ public class ProyectoService {
     }
 
     public Proyecto update(Long id, String nombre, String descripcion, String ubicacion, String requisitos, Date fechaInicio, Date fechaFin, Integer voluntarios_requeridos, Long idCategoria){
+        
         Categoria categoria = (new CategoriaDao()).findById(idCategoria).get();
         Proyecto proyectoUpdate = new Proyecto(id,nombre,descripcion,ubicacion,requisitos,fechaInicio,fechaFin,voluntarios_requeridos,categoria);
         return proyectoDao.update(proyectoUpdate);
