@@ -13,9 +13,7 @@ public class GenericMapper<Dto, Entity> {
     para estos mapeos
     */
     public Dto toDto(Entity objEntidad, Class<Dto> dtoClass) {
-        logger.info("Antes de convertir a Json\n"+objEntidad.toString());
         String json = entityMapper.toJson(objEntidad);
-        logger.info("Antes de convertir a Dto\n"+json);
         return dtoMapper.fromJson(json, dtoClass);
     }
 
