@@ -1,7 +1,8 @@
-package com.proyectos.persistence;
+package com.proyectos.persistence.dao;
 
 import com.proyectos.model.Categoria;
 import com.proyectos.model.Proyecto;
+import com.proyectos.persistence.ConexionPostgres;
 
 import java.sql.*;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProyectoDao {
+public class ProyectoDaoPostgres {
 
     private static final String SELECT_BY_ORGANIZACION = "SELECT * FROM proyectos WHERE organizacion_id = ?";
     private static final String INSERT = "INSERT INTO proyectos (nombre, descripcion, ubicacion, requisitos, fecha_inicio, fecha_fin, voluntarios_requeridos, id_categoria, organizacion_id) VALUES (?,?,?,?,?,?,?,?,?)";
@@ -21,7 +22,7 @@ public class ProyectoDao {
         PreparedStatement ps = null;
 
         try {
-            conn = Conexion.getConnection();
+            conn = ConexionPostgres.getConnection();
             ps = conn.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, proyecto.getNombre());
@@ -40,9 +41,9 @@ public class ProyectoDao {
             if(rs.next()){
                 proyecto.setId(rs.getLong(1));
             }
-            Conexion.close(rs);
-            Conexion.close(ps);
-            Conexion.close(conn);
+            ConexionPostgres.close(rs);
+            ConexionPostgres.close(ps);
+            ConexionPostgres.close(conn);
             return registrosAfectados !=0 ? proyecto : null;
 
         } catch (SQLException e) {
@@ -59,7 +60,7 @@ public class ProyectoDao {
         Proyecto proyecto;
 
         try {
-            connection = Conexion.getConnection();
+            connection = ConexionPostgres.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_BY_ORGANIZACION);
             preparedStatement.setLong(1, idOrganizacion);
             resultSet = preparedStatement.executeQuery();
@@ -76,7 +77,7 @@ public class ProyectoDao {
                 int voluntariosRequeridos = resultSet.getInt("voluntarios_requeridos");
 
 
-                Categoria categoria = (new CategoriaDao()).findById(resultSet.getLong("id_categoria")).get();
+                Categoria categoria = (new CategoriaDaoPostgres()).findById(resultSet.getLong("id_categoria")).get();
 
                 Long idOrganizacionBd = resultSet.getLong("organizacion_id");
 
@@ -101,7 +102,7 @@ public class ProyectoDao {
         PreparedStatement stmt;
 
         try{
-            conn = Conexion.getConnection();
+            conn = ConexionPostgres.getConnection();
             stmt = conn.prepareStatement(UPDATE);
 
             stmt.setString(1, proyecto.getNombre());
@@ -117,8 +118,8 @@ public class ProyectoDao {
 
             int registrosAfectados = stmt.executeUpdate();
 
-            Conexion.close(conn);
-            Conexion.close(stmt);
+            ConexionPostgres.close(conn);
+            ConexionPostgres.close(stmt);
 
             return registrosAfectados > 0 ? proyecto : null;
 
@@ -135,7 +136,7 @@ public class ProyectoDao {
 
 
     try {
-        connection = Conexion.getConnection();
+        connection = ConexionPostgres.getConnection();
         preparedStatement = connection.prepareStatement(SELECT_BY_ID);
         preparedStatement.setLong(1, idProyecto);
         resultSet = preparedStatement.executeQuery();
@@ -151,7 +152,7 @@ public class ProyectoDao {
             int voluntariosRequeridos = resultSet.getInt("voluntarios_requeridos");
 
             Long idCategoria = resultSet.getLong("id_categoria");
-            Categoria categoria = (new CategoriaDao()).findById(idCategoria).orElse(null);
+            Categoria categoria = (new CategoriaDaoPostgres()).findById(idCategoria).orElse(null);
 
             Long idOrganizacion = resultSet.getLong("organizacion_id");
 
@@ -169,9 +170,9 @@ public class ProyectoDao {
             );
         }
 
-        Conexion.close(resultSet);
-        Conexion.close(preparedStatement);
-        Conexion.close(connection);
+        ConexionPostgres.close(resultSet);
+        ConexionPostgres.close(preparedStatement);
+        ConexionPostgres.close(connection);
 
     } catch (SQLException e) {
         throw new RuntimeException("Error al obtener proyecto por ID: " + e.getMessage(), e);
