@@ -8,6 +8,7 @@ services:
     volumes:
       - ./micro-usuarios/micro-usuarios-bd.sql:/docker-entrypoint-initdb.d/micro-usuarios-bd.sql
       - volumen_usuarios:/var/lib/postgresql/18/docker
+
   usuarios:
     build:
       context: ./micro-usuarios
@@ -19,9 +20,6 @@ services:
       DB_PASSWORD: 1234
     depends_on:
       - datos_usuarios
-    expose:
-      - "8080"
-
     ports:
       - "8081:8080"
 
@@ -34,19 +32,49 @@ services:
     volumes:
       - ./micro-proyectos/micro-proyectos-bd.sql:/docker-entrypoint-initdb.d/micro-proyectos-bd.sql
       - volumen_proyectos:/var/lib/postgresql/18/docker
+
   proyectos:
-    build: 
+    build:
       context: ./micro-proyectos
       dockerfile: Dockerfile
     environment:
+      #DB_TYPE: MONGO
+      DB_TYPE: POSTGRES
       DB_HOST: datos_proyectos
       DB_NAME: bd_proyectos
       DB_USER: alfonso
       DB_PASSWORD: 1234
+      # Variables para Mongo
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DB: proyectos_logs
     depends_on:
       - datos_proyectos
+      - mongo
     ports:
       - "8082:8080"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_DATABASE: proyectos_logs
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8083:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+    depends_on:
+      - mongo
+
 volumes:
   volumen_usuarios:
   volumen_proyectos:
+  mongo_data:
