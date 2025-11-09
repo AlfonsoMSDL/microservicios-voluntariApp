@@ -58,6 +58,14 @@
       <version>6.1.0</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Driver oficial de MongoDB -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>5.1.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
