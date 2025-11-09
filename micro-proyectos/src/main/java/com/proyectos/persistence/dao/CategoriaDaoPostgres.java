@@ -1,13 +1,14 @@
-package com.proyectos.persistence;
+package com.proyectos.persistence.dao;
 
 import com.proyectos.model.Categoria;
+import com.proyectos.persistence.ConexionPostgres;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CategoriaDao {
+public class CategoriaDaoPostgres implements CategoriaDao  {
 
     private final String INSERT = "INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)";
     private final String SELECT_ALL = "SELECT * FROM categorias";
@@ -18,7 +19,7 @@ public class CategoriaDao {
 
     // CREATE
     public Categoria save(Categoria categoria) {
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, categoria.getNombre());
@@ -31,7 +32,7 @@ public class CategoriaDao {
                 categoria.setId(rs.getLong(1));
             }
 
-            Conexion.close(rs);
+            ConexionPostgres.close(rs);
             return registrosAfectados != 0 ? categoria : null;
 
         } catch (SQLException e) {
@@ -43,7 +44,7 @@ public class CategoriaDao {
     public List<Categoria> findAll() {
         List<Categoria> categorias = new ArrayList<>();
 
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_ALL);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -67,7 +68,7 @@ public class CategoriaDao {
     public Optional<Categoria> findById(Long id) {
         Categoria categoria = null;
 
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)) {
 
             stmt.setLong(1, id);
@@ -81,7 +82,7 @@ public class CategoriaDao {
                 );
             }
 
-            Conexion.close(rs);
+            ConexionPostgres.close(rs);
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al buscar la categoría por ID", e);
@@ -94,7 +95,7 @@ public class CategoriaDao {
     public Optional<Categoria> findByNombre(String nombre) {
         Categoria categoria = null;
 
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_BY_NOMBRE)) {
 
             stmt.setString(1, nombre);
@@ -108,7 +109,7 @@ public class CategoriaDao {
                 );
             }
 
-            Conexion.close(rs);
+            ConexionPostgres.close(rs);
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al buscar la categoría por nombre", e);
@@ -119,7 +120,7 @@ public class CategoriaDao {
 
     // UPDATE
     public Categoria update(Categoria categoria) {
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE)) {
 
             stmt.setString(1, categoria.getNombre());
@@ -135,7 +136,7 @@ public class CategoriaDao {
 
     // DELETE
     public boolean delete(Long id) {
-        try (Connection conn = Conexion.getConnection();
+        try (Connection conn = ConexionPostgres.getConnection();
              PreparedStatement stmt = conn.prepareStatement(DELETE)) {
 
             stmt.setLong(1, id);
