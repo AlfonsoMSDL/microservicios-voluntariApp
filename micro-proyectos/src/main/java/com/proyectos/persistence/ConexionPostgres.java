@@ -2,7 +2,7 @@ package com.proyectos.persistence;
 
 import java.sql.*;
 
-public class Conexion {
+public class ConexionPostgres {
     private static final String url= "jdbc:postgresql://"+System.getenv("DB_HOST")+":5432/"+System.getenv("DB_NAME");
     private static final String user= System.getenv("DB_USER");
     private static final String password = System.getenv("DB_PASSWORD");
