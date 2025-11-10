@@ -90,7 +90,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void actualizarVoluntario(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Long id = Long.parseLong( req.getParameter("id"));
+        Long id = Long.valueOf( req.getParameter("id"));
         String nombre = req.getParameter("nombre");
         String apellido = req.getParameter("apellido");
         String correo = req.getParameter("correo");
