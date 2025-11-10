@@ -90,7 +90,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void actualizarVoluntario(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        log.info(req.getParameter("id"));
+        req.getParameterMap();
         Long id = Long.valueOf( req.getParameter("id"));
         String nombre = req.getParameter("nombre");
         String apellido = req.getParameter("apellido");
@@ -130,6 +130,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void obtenerVoluntarioPorId(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
         Long id = Long.valueOf(req.getParameter("id"));
         GetVoluntario voluntarioDto = voluntarioService.findById(id);
 

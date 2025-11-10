@@ -96,6 +96,7 @@ public class OrganizacionController extends HttpServlet {
     }
 
     private void actualizarOrganizacion(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.getParameterMap();
         String nombre = req.getParameter("nombreOrganizacion");
         String nombreUsuario = req.getParameter("nombreUsuario");
         String correo = req.getParameter("correo");
@@ -128,6 +129,7 @@ public class OrganizacionController extends HttpServlet {
     }
 
     private void obtenerOrganizacionPorId(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
         Long idOrganizacion = Long.parseLong(req.getParameter("id"));
         GetOrganizacion organizacionDto = organizacionService.findById(idOrganizacion);
 
