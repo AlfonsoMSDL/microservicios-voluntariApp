@@ -34,7 +34,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
     try {
         // Enviar los datos al backend
-        const response = await fetch("http://localhost:8181/voluntariApp/organizaciones", {
+        const response = await fetch("/usuarios-service/organizaciones", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -67,7 +67,7 @@ function cancelar() {
 
 document.addEventListener("DOMContentLoaded",() => {
     //Mostrar los tipos de organizacion al iniciar la pagina
-    fetch('http://localhost:8181/voluntariApp/organizaciones?action=getTipos')
+    fetch('/usuarios-service/organizaciones?action=getTipos')
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded",() => {
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
-    fetch('http://localhost:8181/voluntariApp/organizaciones?action=getById&idOrganizacion=' + usuarioLogin.id)
+    fetch('/usuarios-service/organizaciones?action=getById&idOrganizacion=' + usuarioLogin.id)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');

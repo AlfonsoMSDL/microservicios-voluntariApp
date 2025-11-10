@@ -40,7 +40,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
     try {
         // Enviar los datos al backend
-        const response = await fetch("http://localhost:8181/voluntariApp/voluntarios", {
+        const response = await fetch("/usuarios-service/voluntarios", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded",() => {
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
-    fetch('http://localhost:8181/voluntariApp/voluntarios?action=getById&idVoluntario=' + usuarioLogin.id)
+    fetch('/usuarios-service/voluntarios?action=getById&idVoluntario=' + usuarioLogin.id)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');

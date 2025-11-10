@@ -15,7 +15,7 @@ function procesarLogin(event) {
 
 
     // Enviar datos al backend como application/x-www-form-urlencoded
-    fetch('http://localhost:8181/voluntariApp/auth', {
+    fetch('/usuarios-service/auth', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

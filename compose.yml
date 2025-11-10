@@ -45,8 +45,14 @@ services:
       DB_PASSWORD: 1234
     depends_on:
       - datos_proyectos
+    expose:
+      - "8080"
     ports:
       - "8082:8080"
+  frontend:
+    build: ./micro-frontend
+    ports:
+      - "8080:8080"
 volumes:
   volumen_usuarios:
   volumen_proyectos:
