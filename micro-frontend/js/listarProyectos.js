@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded',() =>{
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
-    fetch('http://localhost:8181/voluntariApp/proyectos?action=getProyectos&idOrganizacion=' + usuarioLogin.id)
+    fetch('/proyectos-service/proyectos?action=getProyectos&idOrganizacion=' + usuarioLogin.id)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');

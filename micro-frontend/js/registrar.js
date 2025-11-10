@@ -68,7 +68,7 @@ btnLogin.addEventListener("click", async (event) => {
         params.append("clave", claveValue);
 
         try {
-            const response = await fetch("http://localhost:8181/voluntariApp/voluntarios", {
+            const response = await fetch("/usuarios-service/voluntarios", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: params.toString()
@@ -111,7 +111,7 @@ btnLogin.addEventListener("click", async (event) => {
         params.append("clave", claveValue);
 
         try {
-            const response = await fetch("http://localhost:8181/voluntariApp/organizaciones", {
+            const response = await fetch("/usuarios-service/organizaciones", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: params.toString()
@@ -134,7 +134,7 @@ btnLogin.addEventListener("click", async (event) => {
 
 //Mostrar los tipos de organizacion al iniciar la pagina
 document.addEventListener("DOMContentLoaded",() => {
-    fetch('http://localhost:8181/voluntariApp/organizaciones?action=getTipos')
+    fetch('/usuarios-service/organizaciones?action=getTipos')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor');

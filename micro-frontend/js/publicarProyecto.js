@@ -54,7 +54,7 @@ function publicarProyecto(event) {
     console.log('Datos del formulario:', urlEncodedData);
 
     // Enviar datos al backend como application/x-www-form-urlencoded
-    fetch('http://localhost:8181/voluntariApp/proyectos', { // Cambia la URL a tu endpoint
+    fetch('/proyectos-service/proyectos', { // Cambia la URL a tu endpoint
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded",() => {
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
     //Mostrar los tipos de organizacion al iniciar la pagina
-    fetch('http://localhost:8181/voluntariApp/proyectos?action=getCategorias')
+    fetch('/proyectos-service/proyectos?action=getCategorias')
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
