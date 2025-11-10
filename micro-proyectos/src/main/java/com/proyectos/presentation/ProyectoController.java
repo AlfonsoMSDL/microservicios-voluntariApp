@@ -60,6 +60,7 @@ public class ProyectoController extends HttpServlet {
                 obtenerProyectosByOrganizacion(req,resp);
                 break;
             case "getById":
+                obtenerProyectoById(req,resp);
                 break;
             case "getCategorias":
                 obtenerCategoriasDeProyectos(req,resp);
@@ -70,8 +71,6 @@ public class ProyectoController extends HttpServlet {
                 break;
         }
     }
-
-
 
 
     private void guardarProyecto(HttpServletRequest req, HttpServletResponse resp) throws IOException{
@@ -132,6 +131,19 @@ public class ProyectoController extends HttpServlet {
 
         String json = jsonMapperCategoria.toJson(categorias);
 
+        try {
+            resp.getWriter().println(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void obtenerProyectoById(HttpServletRequest req, HttpServletResponse resp) {
+        
+        Long id = Long.parseLong(req.getParameter("idProyecto"));
+        GetProyecto proyecto = proyectoService.findById(id);
+        log.info("Get Proyectos: " + proyecto);
+        String json = jsonMapperProyecto.toJson(proyecto);
         try {
             resp.getWriter().println(json);
         } catch (IOException e) {
