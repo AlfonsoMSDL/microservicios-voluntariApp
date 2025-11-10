@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded",() => {
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
-    fetch('/usuarios-service/organizaciones?action=getById&idOrganizacion=' + usuarioLogin.id)
+    fetch('/usuarios-service/organizaciones?action=getById&id=' + usuarioLogin.id)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
