@@ -75,6 +75,20 @@ services:
       - "8080"
     ports:
       - "8083:8080"
+
+  reportes:
+    build:
+      context: ./micro-reportes
+      dockerfile: Dockerfile
+    depends_on:
+      - usuarios
+      - proyectos
+      - inscripciones
+    expose:
+      - "8080"
+    ports:
+      - "8084:8080"
+
   frontend:
     build: ./micro-frontend
     ports:
