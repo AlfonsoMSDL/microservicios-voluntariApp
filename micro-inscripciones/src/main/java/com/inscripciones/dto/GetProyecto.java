@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record GetProyecto() {
+public record GetProyecto(
     @JsonAlias Long id,
     @JsonAlias String nombre,
     @JsonAlias String descripcion,
@@ -13,4 +13,6 @@ public record GetProyecto() {
     @JsonAlias String fecha_fin,
     @JsonAlias String voluntarios_requeridos,
     @JsonAlias String idOrganizacion
+) {
+
 }

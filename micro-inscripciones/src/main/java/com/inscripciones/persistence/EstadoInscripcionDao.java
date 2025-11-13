@@ -26,7 +26,7 @@ public class EstadoInscripcionDao {
     //CREATE
     public EstadoInscripcion save(EstadoInscripcion estadoInscripcion){
         try(Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
+            PreparedStatement stmt = conn.prepareStatement(INSERT,java.sql.Statement.RETURN_GENERATED_KEYS)){
             
             stmt.setString(1, estadoInscripcion.getNombre());
             stmt.setString(2, estadoInscripcion.getDescripcion());
@@ -81,7 +81,7 @@ public class EstadoInscripcionDao {
 
         EstadoInscripcion estadoInscripcion = null;
 
-        try(Conecction conn = Conexion.getConnection();
+        try(Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)){
             
             stmt.setLong(1, id);
@@ -100,7 +100,7 @@ public class EstadoInscripcionDao {
 
             
         }catch(SQLException e){
-            throw new RuntimeErrorException("Error al buscar estado de inscripcion por id",e);
+            throw new RuntimeException("Error al buscar estado de inscripcion por id",e);
         }
 
         return Optional.ofNullable(estadoInscripcion);
@@ -111,7 +111,7 @@ public class EstadoInscripcionDao {
 
         EstadoInscripcion estadoInscripcion = null;
 
-        try (Connection conn = Connection.getConnection();
+        try (Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_NOMBRE)) {
             
             stmt.setString(1, nombre);
@@ -137,7 +137,7 @@ public class EstadoInscripcionDao {
 
     //UPDATE
     public EstadoInscripcion update(EstadoInscripcion estadoInscripcion){
-        try (Connection conn = Connection.getConnection();
+        try (Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(UPDATE)) {
 
             stmt.setString(1, estadoInscripcion.getNombre());
@@ -153,7 +153,7 @@ public class EstadoInscripcionDao {
 
     //DELETE
     public boolean delete(Long id){
-        try (Connection conn = Connection.getConnection();
+        try (Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(DELETE)){
             
             stmt.setLong(1, id);

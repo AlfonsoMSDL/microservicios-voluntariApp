@@ -1,8 +1,12 @@
 package com.inscripciones.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.inscripciones.dto.GetInscripcion;
+import com.inscripciones.dto.GetProyecto;
+import com.inscripciones.dto.GetVoluntario;
 import com.inscripciones.mapper.GenericMapper;
 import com.inscripciones.model.EstadoInscripcion;
 import com.inscripciones.model.Inscripcion;
@@ -28,7 +32,7 @@ public class InscripcionService {
     public List<GetInscripcion> findAllInscripcionesByVoluntario(Long idVoluntario){
         List<Inscripcion> inscripciones = inscripcionDao.findAllInscripcionesByIdVoluntario(idVoluntario);
 
-        GetVoluntario voluntario = cliente.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
+        GetVoluntario voluntario = clienteVoluntario.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
 
         return inscripciones.stream()
                                 .map(p -> {
@@ -42,7 +46,7 @@ public class InscripcionService {
     public List<GetInscripcion> findAllInscripcionesByProyecto(Long idProyecto){
         List<Inscripcion> inscripciones = inscripcionDao.findAllInscripcionesByIdProyecto(idProyecto);
 
-        GetProyecto proyecto = cliente.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
+        GetProyecto proyecto = clienteProyecto.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
 
         return inscripciones.stream()
                                 .map(p -> {
@@ -62,8 +66,8 @@ public class InscripcionService {
 
     public GetInscripcion findById(Long id){
         Inscripcion inscripcion = inscripcionDao.findById(id).get();
-        GetVoluntario voluntario = cliente.getById(inscripcion.getIdVoluntario(), "http://usuarios:8080/voluntarios", GetVoluntario.class);
-        GetProyecto proyecto = cliente.getById(inscripcion.getIdProyecto(), "http://proyectos:8080/proyectos", GetProyecto.class);
+        GetVoluntario voluntario = clienteVoluntario.getById(inscripcion.getIdVoluntario(), "http://usuarios:8080/voluntarios", GetVoluntario.class);
+        GetProyecto proyecto = clienteProyecto.getById(inscripcion.getIdProyecto(), "http://proyectos:8080/proyectos", GetProyecto.class);
 
         logger.info("Voluntario: \n"+voluntario);
         logger.info("Proyecto: \n"+proyecto);

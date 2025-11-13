@@ -1,5 +1,10 @@
 package com.inscripciones.model;
 
+import java.sql.Date;
+
+import com.inscripciones.dto.GetProyecto;
+import com.inscripciones.dto.GetVoluntario;
+
 public class Inscripcion {
     private Long id;
     private Long idProyecto;

@@ -1,7 +1,8 @@
 package com.inscripciones.persistence;
 
-import java.beans.Statement;
+import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.inscripciones.model.EstadoInscripcion;
 import com.inscripciones.model.Inscripcion;
 
 public class InscripcionDao {
@@ -21,8 +23,8 @@ public class InscripcionDao {
 
     //CREAR
     public Inscripcion save(Inscripcion inscripcion){
-        try (Connec conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(INSERT, Statement.getGeneratedKeys)){
+        try (Connection conn = Conexion.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
             
             stmt.setLong(1, inscripcion.getIdProyecto());
             stmt.setLong(2, inscripcion.getIdVoluntario());
@@ -70,8 +72,8 @@ public class InscripcionDao {
     }
 
     //BUSCAR POR ID PROYECTO
-    public List<inscripcion> findAllInscripcionesByIdProyecto(Long id){
-        List <inscripcion> inscripciones = new ArrayList<>();
+    public List<Inscripcion> findAllInscripcionesByIdProyecto(Long id){
+        List <Inscripcion> inscripciones = new ArrayList<>();
 
         try(Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_PROYECTO)){
@@ -80,14 +82,14 @@ public class InscripcionDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()){
-                Long id = rs.getLong("id");
+                Long idInscripcion = rs.getLong("id");
                 Long idProyecto = rs.getLong("proyecto_id");
                 Long idVoluntario = rs.getLong("voluntario_id");
                 String motivacion = rs. getString("motivacion");
                 Date fechaInscripcion = rs.getDate("fecha_inscripcion");
                 EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(rs.getLong("id_estado")).get();
 
-                Inscripcion inscripcion = new Inscripcion(id, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
+                Inscripcion inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
                 inscripciones.add(inscripcion);
             }
 
@@ -101,8 +103,8 @@ public class InscripcionDao {
     }
 
     //BUSCAR POR ID VOLUNTARIO
-    public List<inscripcion> findAllInscripcionesByIdVoluntario(Long id){
-        List<inscripcion> inscripciones = new ArrayList<>();
+    public List<Inscripcion> findAllInscripcionesByIdVoluntario(Long id){
+        List<Inscripcion> inscripciones = new ArrayList<>();
 
         try (Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VOLUNTARIO)){
@@ -111,14 +113,14 @@ public class InscripcionDao {
             ResultSet rs = stmt.executeQuery();
 
             while(rs.next()){
-                Long id = rs.getLong("id");
+                Long idInscripcion = rs.getLong("id");
                 Long idProyecto = rs.getLong("proyecto_id");
                 Long idVoluntario = rs.getLong("voluntario_id");
                 String motivacion = rs. getString("motivacion");
                 Date fechaInscripcion = rs.getDate("fecha_inscripcion");
                 EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(rs.getLong("id_estado")).get();
 
-                Inscripcion inscripcion = new Inscripcion(id, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
+                Inscripcion inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
                 inscripciones.add(inscripcion);
             }
             Conexion.close(conn);
@@ -140,14 +142,14 @@ public class InscripcionDao {
             ResultSet rs = stmt.executeQuery();
 
             if(rs.next()){
-                Long id = rs.getLong("id");
+                Long idInscripcion = rs.getLong("id");
                 Long idProyecto = rs.getLong("proyecto_id");
                 Long idVoluntario = rs.getLong("voluntario_id");
                 String motivacion = rs. getString("motivacion");
                 Date fechaInscripcion = rs.getDate("fecha_inscripcion");
                 EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(rs.getLong("id_estado")).get();
 
-                inscripcion = new Inscripcion(id, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
+                inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
             }
 
             Conexion.close(conn);
@@ -162,8 +164,9 @@ public class InscripcionDao {
 
     //ELIMINAR
     public boolean delete(Long id){
-        try (Connection conn = Conexion.getConnection(;
-            PreparedStatement stmt = conn.prepareStatement(DELETE))){
+        try (Connection conn = Conexion.getConnection();){
+
+                PreparedStatement stmt = conn.prepareStatement(DELETE);
             
             stmt.setLong(1, id);
             return stmt.executeUpdate() > 0;

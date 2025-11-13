@@ -1,6 +1,6 @@
 package com.inscripciones.mapper;
 
-public class GenericMapper {
+public class GenericMapper<Dto, Entity> {
     private final JsonMapper<Entity> entityMapper = new JsonMapper<>();
     private final JsonMapper<Dto> dtoMapper = new JsonMapper<>();
 

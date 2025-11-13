@@ -2,11 +2,15 @@ package com.inscripciones.presentation;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.management.RuntimeErrorException;
 
+import com.inscripciones.dto.GetEstadoInscripcion;
+import com.inscripciones.dto.GetInscripcion;
 import com.inscripciones.mapper.JsonMapper;
+import com.inscripciones.model.Inscripcion;
 import com.inscripciones.service.Cliente;
 import com.inscripciones.service.EstadoInscripcionService;
 import com.inscripciones.service.InscripcionService;
@@ -90,6 +94,7 @@ public class InscripcionController extends HttpServlet {
     }
 
     private void actualizarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.getParameterMap();
         String motivacion = req.getParameter("nombre");
         Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
         Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
@@ -105,6 +110,7 @@ public class InscripcionController extends HttpServlet {
     }
 
     private void obtenerInscripcionesByVoluntario(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idVoluntario"));
         List<GetInscripcion> inscripciones = inscripcionService.findAllInscripcionesByVoluntario(id);
 
@@ -113,12 +119,13 @@ public class InscripcionController extends HttpServlet {
         try{
             resp.getWriter().println(json);
         }catch(IOException e){
-            throw new RuntimeErrorException(e);
+            throw new RuntimeException(e);
         }
 
     }
 
     private void obtenerInscripcionesByProyecto(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idProyecto"));
         List<GetInscripcion> inscripciones = inscripcionService.findAllInscripcionesByProyecto(id);
 
@@ -138,11 +145,12 @@ public class InscripcionController extends HttpServlet {
         try{
             resp.getWriter().println(json);
         }catch(IOException e){
-            throw new RuntimeException(e)
+            throw new RuntimeException(e);
         }
     }
 
     private void obtenerInscripcionById(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idInscripcion"));
         GetInscripcion inscripcion = inscripcionService.findById(id);
         String json = jsonMapperInscripcion.toJson(inscripcion);

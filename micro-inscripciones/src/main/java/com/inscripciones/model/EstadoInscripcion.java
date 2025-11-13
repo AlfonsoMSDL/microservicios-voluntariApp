@@ -5,16 +5,16 @@ public class EstadoInscripcion {
     private String nombre;
     private String descripcion;
 
-    public EstadoInscripcion(int id, String nombre, String descripcion){
+    public EstadoInscripcion(Long id, String nombre, String descripcion){
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getNombre() {
