@@ -34,8 +34,11 @@ public class VoluntarioService {
     }
 
 
-    public List<Voluntario> findAllVoluntarios(){
-        return voluntarioDao.findAll();
+    public List<GetVoluntario> findAllVoluntarios(){
+
+        List<GetVoluntario> voluntarios = voluntarioDao.findAll().stream().map(p -> genericMapper.toDto(p,GetVoluntario.class)).toList();
+
+        return voluntarios;
     }
 
     public Optional<Voluntario> findByCorreo(String correo){

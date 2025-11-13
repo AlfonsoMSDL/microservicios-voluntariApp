@@ -58,12 +58,17 @@ public class VoluntarioController extends HttpServlet {
             case "getById":
                 obtenerVoluntarioPorId(req,resp);
                 break;
+            case "getAllVoluntarios":
+                obtenerVoluntarios(req,resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
 
         }
     }
+
+    
 
     private void guardarVoluntario(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String nombre = req.getParameter("nombre");
@@ -142,6 +147,16 @@ public class VoluntarioController extends HttpServlet {
 
 
 
+    }
+
+    private void obtenerVoluntarios(HttpServletRequest req, HttpServletResponse resp) {
+
+        String voluntariosJson = jsonMapperGetVol.toJson(voluntarioService.findAllVoluntarios());
+        try {
+            resp.getWriter().println(voluntariosJson);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
