@@ -49,6 +49,32 @@ services:
       - "8080"
     ports:
       - "8082:8080"
+
+  datos_inscripciones:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: alfonso
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: bd_proyectos
+    volumes:
+      - ./micro-inscripciones/micro-inscripciones-bd.sql:/docker-entrypoint-initdb.d/micro-inscripciones-bd.sql
+      - volumen_inscripciones:/var/lib/postgresql/18/docker
+
+  inscripciones:
+    build:
+      context: ./micro-inscripciones
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: datos_inscripciones
+      DB_NAME: bd_inscripciones
+      DB_USER: alfonso
+      DB_PASSWORD: 1234
+    depends_on:
+      - datos_inscripciones
+    expose:
+      - "8080"
+    ports:
+      - "8083:8080"
   frontend:
     build: ./micro-frontend
     ports:
@@ -56,3 +82,4 @@ services:
 volumes:
   volumen_usuarios:
   volumen_proyectos:
+  volumen_inscripciones:

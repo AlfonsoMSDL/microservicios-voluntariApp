@@ -129,6 +129,7 @@ public class VoluntarioController extends HttpServlet {
     }
 
     private void obtenerVoluntarioPorId(HttpServletRequest req, HttpServletResponse resp) {
+        log.info(req.getParameter("id"));
         Long id = Long.valueOf(req.getParameter("id"));
         GetVoluntario voluntarioDto = voluntarioService.findById(id);
 

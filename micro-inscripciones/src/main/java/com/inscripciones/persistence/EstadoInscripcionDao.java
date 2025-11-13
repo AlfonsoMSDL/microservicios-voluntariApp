@@ -16,11 +16,11 @@ import javax.management.RuntimeErrorException;
 import com.inscripciones.model.EstadoInscripcion;
 
 public class EstadoInscripcionDao {
-    private final String INSERT = "INSERT INTO estadosInscripcion (nombre, descripcion) VALEUS (?,?)";
-    private final String SELECT_ALL = "SELECT * FROM estatadosInscripcion";
-    private final String SELECT_BY_ID = "SELECT * FROM estadosInscripcion WHERE id = ?";
-    private final String SELECT_BY_NOMBRE = "SELECT * FROM estadosInscripcion WHERE nombre = ?";
-    private final String UPDATE = "UPDATE estadosInscripcion SET nombre = ?, descripcion = ? WHERE id = ?";
+    private final String INSERT = "INSERT INTO estados_inscripcion (nombre, descripcion) VALEUS (?,?)";
+    private final String SELECT_ALL = "SELECT * FROM estatados_inscripcion";
+    private final String SELECT_BY_ID = "SELECT * FROM estados_inscripcion WHERE id = ?";
+    private final String SELECT_BY_NOMBRE = "SELECT * FROM estados_inscripcion WHERE nombre = ?";
+    private final String UPDATE = "UPDATE estados_inscripcion SET nombre = ?, descripcion = ? WHERE id = ?";
     private final String DELETE = "DELETE FROM estadosInscripcion WHERE id = ?";
 
     //CREATE

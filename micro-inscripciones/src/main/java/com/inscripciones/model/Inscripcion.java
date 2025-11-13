@@ -19,6 +19,21 @@ public class Inscripcion {
         this.estadoInscripcion = estadoInscripcion;
     }
 
+    public Inscripcion(Long idProyecto, Long idVoluntario, String motivacion, Date fechaInscripcion, EstadoInscripcion estadoInscripcion){
+        this.idProyecto = idProyecto;
+        this.idVoluntario = idVoluntario;
+        this.motivacion = motivacion;
+        this.fechaInscripcion = fechaInscripcion;
+        this.estadoInscripcion = estadoInscripcion;
+    }
+
+    public Inscripcion(Long id, String motivacion, Date fechaInscripcion, EstadoInscripcion estadoInscripcion){
+        this.id = id;
+        this.motivacion = motivacion;
+        this.fechaInscripcion = fechaInscripcion;
+        this.estadoInscripcion = estadoInscripcion;
+    }
+
     public Long getId() {
         return id;
     }
@@ -55,6 +70,24 @@ public class Inscripcion {
     public void setEstadoInscripcion(EstadoInscripcion estadoInscripcion) {
         this.estadoInscripcion = estadoInscripcion;
     }
+
+    public GetProyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(GetProyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public GetVoluntario getVoluntario() {
+        return voluntario;
+    }
+
+    public void setVoluntario(GetVoluntario voluntario) {
+        this.voluntario = voluntario;
+    }
+
+    
     
     
 }

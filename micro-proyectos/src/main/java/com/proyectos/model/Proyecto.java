@@ -10,7 +10,7 @@ public class Proyecto {
     private String nombre;
     private String descripcion;
     private String ubicacion;
-    private String requisitlos;
+    private String requisitos;
     private Date fecha_inicio;
     private Date fecha_fin;
     private Integer voluntarios_requeridos;
