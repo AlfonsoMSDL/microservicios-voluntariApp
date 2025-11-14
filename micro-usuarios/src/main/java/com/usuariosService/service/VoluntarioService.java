@@ -63,4 +63,13 @@ public class VoluntarioService {
         return genericMapper.toDto(voluntarioActual,GetVoluntario.class);
     }
 
+    public boolean delete(Long id){
+        boolean eliminando = voluntarioDao.delete(id);
+        if(eliminando){ // Si se elimino el voluntario, borro su usuario
+            boolean usuarioEliminado =  usuarioDao.delete(id);
+            return usuarioEliminado;
+        }
+        return false;
+    }
+
 }
