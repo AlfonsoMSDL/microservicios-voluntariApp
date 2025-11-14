@@ -140,7 +140,7 @@ public class ProyectoController extends HttpServlet {
 
     private void obtenerProyectoById(HttpServletRequest req, HttpServletResponse resp) {
         
-        Long id = Long.parseLong(req.getParameter("idProyecto"));
+        Long id = Long.parseLong(req.getParameter("id"));
         GetProyecto proyecto = proyectoService.findById(id);
         log.info("Get Proyectos: " + proyecto);
         String json = jsonMapperProyecto.toJson(proyecto);
