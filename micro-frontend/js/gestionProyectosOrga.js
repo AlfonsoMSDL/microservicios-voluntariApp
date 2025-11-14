@@ -159,7 +159,7 @@ function verVoluntario(id, tipo) {
     <p><strong>👤 Nombre:</strong> ${v.nombre}</p>
     <p><strong>📧 Correo:</strong> ${v.email}</p>
     <p><strong>📱 Teléfono:</strong> ${v.telefono}</p>
-    <p><strong>📍 Ciudad:</strong> ${v.ciudad}</p>
+    <p><strong>📍 Ubicación:</strong> ${v.ciudad}</p>
   `;
 
   modal.style.display = "flex";
