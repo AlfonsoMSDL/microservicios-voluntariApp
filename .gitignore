@@ -1,0 +1,72 @@
+# =======================
+#   SISTEMA OPERATIVO
+# =======================
+# Archivos comunes del sistema operativo
+.DS_Store
+Thumbs.db
+
+# =======================
+#        MAVEN
+# =======================
+/target/
+/out/
+/build/
+
+# Evitar archivos de bloqueo
+**/*.lock
+
+# =======================
+#         JAVA
+# =======================
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+
+# =======================
+#     INTELLIJ IDEA
+# =======================
+.idea/
+*.ipr
+*.iws
+
+# =======================
+#        VSCODE
+# =======================
+.vscode/
+
+# =======================
+#         LOGS
+# =======================
+*.log
+logs/
+
+# =======================
+#      CONFIGURACIONES
+# =======================
+# Archivos de configuración sensibles
+*.env
+.env.local
+.env.dev
+.env.prod
+secrets.properties
+application.properties
+application.yml
+
+# =======================
+#        TOMCAT
+# =======================
+/tomcat/
+/work/
+/temp/
+
+# =======================
+#        DOCKER
+# =======================
+# Archivos de salida
+*.pid
+
+# Imágenes y contenedores generados
+docker-data/
+

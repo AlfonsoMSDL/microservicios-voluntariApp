@@ -38,6 +38,9 @@ public class VoluntarioController extends HttpServlet {
             case "update":
                 actualizarVoluntario(req,resp);
                 break;
+            case "delete":
+                eliminarVoluntario(req,resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -46,6 +49,8 @@ public class VoluntarioController extends HttpServlet {
 
 
     }
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -155,6 +160,24 @@ public class VoluntarioController extends HttpServlet {
         try {
             resp.getWriter().println(voluntariosJson);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void eliminarVoluntario(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idVoluntario = Long.parseLong(req.getParameter("id"));
+        boolean eliminado = voluntarioService.delete(idVoluntario);
+
+        try {
+            if(eliminado){
+                resp.getWriter().println("{\"mensaje\":\"Eliminado correctamente\"}");
+                log.info("Eliminado correctamente");
+            }else{
+                resp.getWriter().println("{\"mensaje\":\"Hubo un error eliminando\"}");
+                log.info("Hubo un error eliminando");
+            }
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

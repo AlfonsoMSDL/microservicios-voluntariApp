@@ -72,5 +72,15 @@ public class OrganizacionService {
         return organizacionDao.update(organizacionUpdate);
     }
 
+    public boolean delete(Long id){
+        boolean eliminando = organizacionDao.deleteById(id);
+        if(eliminando){ // Si se elimino la organizacion, borro su usuario
+            boolean usuarioEliminado =  usuarioDao.delete(id);
+            return usuarioEliminado;
+        }
+        return false;
+        
+    }
+
 
 }

@@ -1,140 +1,163 @@
-/* === Layout principal === */
-.panel-admin {
-  display: flex;
-  min-height: calc(100vh - 70px);
+.contenedor-inscripciones {
+  padding: 100px 40px;
   background: var(--light-gray);
+  min-height: 100vh;
 }
 
-/* === Menú lateral === */
-.menu-lateral {
-  width: 250px;
-  background: white;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.08);
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.titulo-menu {
+.contenedor-inscripciones h2 {
   text-align: center;
+  color: var(--dark-color);
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.lista-inscritos {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.lista-inscritos h3 {
   color: var(--primary-color);
-  font-size: 1.3rem;
+  text-align: center;
   margin-bottom: 25px;
 }
 
-.lista-opciones {
+#lista-voluntarios {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.lista-opciones li a {
-  text-decoration: none;
+.item-voluntario {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 20px;
-  background: var(--primary-color);
-  color: white;
-  border-radius: 25px;
-  font-weight: 500;
+  background: var(--light-gray);
+  padding: 15px 20px;
+  border-radius: 10px;
   transition: all 0.3s ease;
 }
 
-.lista-opciones li a:hover {
-  background: var(--primary-dark);
-  transform: translateX(5px);
+.item-voluntario:hover {
+  background: #ecf0f1;
+  transform: translateY(-2px);
 }
 
-/* === Contenido principal === */
-.contenido-panel {
+.info-voluntario {
   flex: 1;
-  padding: 40px;
+  color: var(--dark-color);
+  font-weight: 500;
+}
+
+.botones-acciones {
   display: flex;
-  flex-direction: column;
-  gap: 30px;
+  gap: 10px;
 }
 
-.bienvenida-admin {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 500;
+  cursor: pointer;
   color: white;
-  padding: 25px 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
-.bienvenida-admin h2 {
-  margin: 0 0 10px;
+.btn-ver {
+  background: var(--accent-color);
 }
 
-.tabla-contenido {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-  overflow-x: auto;
+.btn-ver:hover {
+  background: var(--primary-color);
 }
 
-/* === Tablas === */
-.tabla-admin {
+.btn-cancelar {
+  background: #e74c3c;
+}
+
+.btn-cancelar:hover {
+  background: #c0392b;
+}
+
+.btn-aceptar {
+  background: var(--primary-color);
+}
+
+.btn-aceptar:hover {
+  background: var(--primary-dark);
+}
+
+/* Scroll estilizado */
+.lista-inscritos::-webkit-scrollbar {
+  width: 10px;
+}
+
+.lista-inscritos::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 5px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
   width: 100%;
-  border-collapse: collapse;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-contenido {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-contenido h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+#detalle-voluntario {
+  color: var(--dark-color);
+  margin-bottom: 20px;
   font-size: 0.95rem;
 }
 
-.tabla-admin th, .tabla-admin td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #e9ecef;
-  text-align: left;
-}
-
-.tabla-admin th {
-  background: var(--primary-color);
-  color: white;
-  font-weight: 600;
-}
-
-.tabla-admin tr:hover {
-  background-color: #f8f9fa;
-}
-
-/* === Botones === */
-.boton-accion {
-  background: var(--accent-color);
-  border: none;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
+.cerrar {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 1.5rem;
   cursor: pointer;
-  transition: background 0.3s ease;
-  margin-right: 5px;
+  color: var(--dark-color);
+  transition: color 0.3s;
 }
 
-.boton-accion:hover {
-  background: var(--primary-dark);
+.cerrar:hover {
+  color: var(--primary-color);
 }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .panel-admin {
-    flex-direction: column;
-  }
-
-  .menu-lateral {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-
-  .lista-opciones {
-    flex-direction: row;
-  }
-}
-
 
 :root {
     --primary-color: #27ae60;
@@ -514,3 +537,148 @@ body {
         text-align: center;
     }
 }
+
+/* ============================================
+   ESTILOS FALTANTES PARA TABS Y GESTIÓN
+   ============================================ */
+
+/* Contenedor de tabs */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.tab-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: white;
+  color: var(--text-gray);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn:hover {
+  background: var(--light-gray);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* Vistas (secciones) */
+.vista {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.vista.visible {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vista h2 {
+  color: var(--dark-color);
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.vista h3 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Lista de voluntarios */
+.vista ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header mejorado */
+.navbar-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.navbar-custom .navbar-brand {
+  padding: 10px 0;
+}
+
+/* Ajustar contenedor principal para header fijo */
+.contenedor-inscripciones {
+  padding-top: 120px;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-gray);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* Responsive para tabs */
+@media (max-width: 768px) {
+  .tabs-container {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .tab-btn {
+    width: 100%;
+  }
+
+  .contenedor-inscripciones {
+    padding: 120px 15px 40px;
+  }
+
+  .item-voluntario {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .botones-acciones {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+

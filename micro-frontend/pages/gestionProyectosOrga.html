@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Proyecto</title>
+  <link rel="stylesheet" href="../css/gestionProyectosOrga.css">
+</head>
+<body>
+  <header class="navbar-custom">
+    <div class="navbar-brand">
+      <img src="../assets/images/Logo.png" alt="Logo">
+      <span>Gestión de Proyecto</span>
+    </div>
+  </header>
+
+  <main class="contenedor-inscripciones fade-in-element visible">
+    <!-- 🔹 Selector de vista -->
+    <div class="tabs-container">
+      <button class="tab-btn active" id="btn-inscripciones">Gestión de inscripciones</button>
+      <button class="tab-btn" id="btn-participantes">Gestión de participantes</button>
+    </div>
+
+    <!-- 🔹 Sección 1: Inscripciones -->
+    <section class="vista visible" id="vista-inscripciones">
+      <h2>Gestión de inscripciones</h2>
+      <h3>Lista de inscritos</h3>
+      <ul id="lista-inscritos"></ul>
+    </section>
+
+    <!-- 🔹 Sección 2: Participantes -->
+    <section class="vista" id="vista-participantes">
+      <h2>Gestión de participantes</h2>
+      <h3>Lista de participantes aceptados</h3>
+      <ul id="lista-participantes"></ul>
+    </section>
+  </main>
+
+  <!-- 🪟 Modal Detalles Voluntario -->
+  <div id="modal-detalles" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" id="cerrarModal">&times;</span>
+      <h3>Detalles del voluntario</h3>
+      <div id="detalle-voluntario"></div>
+      <button id="cerrarBtn" class="btn btn-aceptar">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="../js/gestionProyectosOrga.js"></script>
+</body>
+</html>

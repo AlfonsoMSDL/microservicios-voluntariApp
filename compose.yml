@@ -75,11 +75,39 @@ services:
       - "8080"
     ports:
       - "8083:8080"
+
+  datos_participaciones:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: alfonso
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: bd_participaciones
+    volumes:
+      - ./micro-participaciones/micro-participaciones-bd.sql:/docker-entrypoint-initdb.d/micro-participaciones-bd.sql
+      - volumen_participaciones:/var/lib/postgresql/18/docker
+      
+  participaciones:
+    build: ./micro-participaciones
+    environment:
+      DB_HOST: datos_participaciones
+      DB_NAME: bd_participaciones
+      DB_USER: alfonso
+      DB_PASSWORD: 1234
+    depends_on:
+      - datos_participaciones
+    expose:
+      - "8080"
+    ports:
+      - "8084:8080"
+
   frontend:
     build: ./micro-frontend
     ports:
       - "8080:8080"
+
+
 volumes:
   volumen_usuarios:
   volumen_proyectos:
   volumen_inscripciones:
+  volumen_participaciones:

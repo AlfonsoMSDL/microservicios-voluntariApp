@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded',() =>{
         }
 
         lista.innerHTML = data.map(proyecto => `
-            <div class="project-item" onclick="irAProyecto('${proyecto.url}')">
+            <div class="project-item" onclick="irAProyecto('${proyecto.id}')">
                 <a href="${proyecto.url}" class="project-link" onclick="event.preventDefault()">
                     ${proyecto.nombre}
                 </a>
@@ -37,3 +37,11 @@ document.addEventListener('DOMContentLoaded',() =>{
         alert('Error al conectar con el servidor: ' + error.message);
     })
 })
+
+
+
+function irAProyecto(idProyecto) {
+    window.location.href = "../pages/gestionProyectosOrga.html";
+    localStorage.setItem('idProyectoTemp', idProyecto);
+
+}
