@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cargar participantes reales desde el backend
   cargarParticipantes(idProyecto);
 
-  // Mantener los datos locales de inscritos (si luego tienes API, lo integramos)
-  renderLista(inscritos, "lista-inscritos", "inscrito");
+  // Cargar inscripciones reales desde el backend
+  cargarInscritos(idProyecto);
 
   // Event listeners para tabs
   document.getElementById("btn-inscripciones").addEventListener("click", () => {
@@ -82,6 +82,44 @@ function cargarParticipantes(idProyecto) {
 }
 
 
+// ================================================
+// 🔵 FUNCIÓN PARA TRAER INSCRITOS DEL BACKEND
+// ================================================
+function cargarInscritos(idProyecto) {
+  const url = `/inscripciones-service/inscripciones?action=getInscripcionesByProyecto&idProyecto=${idProyecto}`;
+
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Error cargando inscripciones");
+      }
+      return response.json();
+    })
+    .then(data => {
+      inscritos.length = 0;
+  data.forEach(item => {
+    inscritos.push({
+      id: item.id,
+      idVoluntario: item.voluntario?.id,
+      idProyecto: item.proyecto?.id,
+      nombre: `${item.voluntario?.nombre || ''} ${item.voluntario?.apellido || ''}`.trim() || 'Voluntario',
+      email: item.voluntario?.correo || '',
+      telefono: item.voluntario?.telefono || '',
+      ciudad: item.proyecto?.ubicacion || ''
+    });
+  });
+
+      renderLista(inscritos, "lista-inscritos", "inscrito");
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("lista-inscritos").innerHTML = `
+        <p style="color:red;">Error al cargar inscripciones</p>
+      `;
+    });
+}
+
+
 
 // ====================
 //  RESTO DE TU CÓDIGO
@@ -129,6 +167,7 @@ function renderLista(lista, contenedorId, tipo) {
       botones += `
         <button class="btn btn-cancelar" onclick="cancelarInscripcion(${v.id})">❌ Rechazar</button>
         <button class="btn btn-aceptar" onclick="aceptarVoluntario(${v.id})">✅ Aceptar</button>
+        <button class="btn btn-ver" onclick="verDetalle(${v.id})">📄 Ver detalle</button>
       `;
     }
 
@@ -172,29 +211,94 @@ function cerrarModal() {
 
 // Acciones inscripciones
 function cancelarInscripcion(id) {
-  if (confirm(`¿Estás seguro de cancelar la inscripción del voluntario ${id}?`)) {
-    const index = inscritos.findIndex(v => v.id === id);
-    if (index !== -1) {
-      inscritos.splice(index, 1);
-      renderLista(inscritos, "lista-inscritos", "inscrito");
-      alert("Inscripción cancelada exitosamente");
-    }
-  }
+  if (!confirm(`¿Estás seguro de rechazar la inscripción ${id}?`)) return;
+
+  const inscripcion = inscritos.find(v => v.id === id);
+  const idProyecto = localStorage.getItem('idProyectoTemp');
+  if (!inscripcion) return;
+
+  fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
+    .then(r => r.json())
+    .then(estados => {
+      const rechazada = estados.find(e => e.nombre === 'Rechazada');
+      if (!rechazada) throw new Error('Estado Rechazada no encontrado');
+
+      const params = new URLSearchParams();
+      params.append('action', 'update');
+      params.append('idInscripcion', String(id));
+      params.append('motivacion', '');
+      params.append('fechaInscripcion', new Date().toISOString().slice(0,10));
+      params.append('idEstadoInscripcion', String(rechazada.id));
+
+      return fetch('/inscripciones-service/inscripciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+    })
+    .then(resp => {
+      if (!resp.ok) throw new Error('Error actualizando inscripción');
+      cargarInscritos(idProyecto);
+      alert('Inscripción rechazada');
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error al rechazar la inscripción');
+    });
 }
 
 function aceptarVoluntario(id) {
-  if (confirm(`¿Aceptar al voluntario ${id} en el proyecto?`)) {
-    const index = inscritos.findIndex(v => v.id === id);
-    if (index !== -1) {
-      const voluntario = inscritos.splice(index, 1)[0];
-      participantes.push(voluntario);
-      
-      renderLista(inscritos, "lista-inscritos", "inscrito");
-      renderLista(participantes, "lista-participantes", "participante");
-      
-      alert(`¡Voluntario ${voluntario.nombre} aceptado exitosamente!`);
-    }
-  }
+  if (!confirm(`¿Aceptar al voluntario ${id} en el proyecto?`)) return;
+
+  const idProyecto = localStorage.getItem("idProyectoTemp");
+  const inscripcion = inscritos.find(v => v.id === id);
+  if (!idProyecto || !inscripcion) return;
+
+  fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
+    .then(r => r.json())
+    .then(estados => {
+      const aprobada = estados.find(e => e.nombre === 'Aprobada');
+      if (!aprobada) throw new Error('Estado Aprobada no encontrado');
+
+      const params = new URLSearchParams();
+      params.append('action', 'update');
+      params.append('idInscripcion', String(id));
+      params.append('motivacion', '');
+      params.append('fechaInscripcion', new Date().toISOString().slice(0,10));
+      params.append('idEstadoInscripcion', String(aprobada.id));
+
+      return fetch('/inscripciones-service/inscripciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+    })
+    .then(resp => {
+      if (!resp.ok) throw new Error('Error actualizando inscripción');
+      const params = new URLSearchParams();
+      params.append('action', 'save');
+      params.append('idVoluntario', String(inscripcion.idVoluntario || ''));
+      params.append('idProyecto', String(inscripcion.idProyecto || idProyecto));
+      return fetch('/participaciones-service/participaciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+    })
+    .then(() => {
+      cargarParticipantes(idProyecto);
+      cargarInscritos(idProyecto);
+      alert('¡Inscripción aceptada y participación creada!');
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error al aceptar la inscripción');
+    });
+}
+
+function verDetalle(idInscripcion) {
+  localStorage.setItem('idInscripcionTemp', String(idInscripcion));
+  window.location.href = '../pages/detalleInscripcion.html';
 }
 
 

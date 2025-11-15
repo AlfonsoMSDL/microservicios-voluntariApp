@@ -6,6 +6,7 @@
     <title>VoluntariApp - Panel de Control</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/inicioVolunt.css">
+    <link rel="stylesheet" href="../css/listarProyectos.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -32,22 +33,21 @@
     <!-- Contenido principal -->
     <main class="contenido-principal">
         <div class="caja-bienvenida">
-
             <h2 id="nombreUsuario"></h2>
             <p>Gracias por hacer parte de esta comunidad. Aquí podrás gestionar tus proyectos, revisar notificaciones y explorar nuevas oportunidades.</p>
         </div>
 
         <div class="caja-contenido">
-            <p>Área de contenido principal (gráficos, tarjetas, proyectos recientes, etc.).</p>
+            <h3 class="section-title">Mis Proyectos</h3>
+            <div class="projects-list" id="voluntarioProjects"></div>
         </div>
     </main>
 </div>
 <script>
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
-
     document.getElementById('nombreUsuario').textContent = `Bienvenid@ ${usuarioLogin.nombreUsuario}`;
-
-</script>
+  </script>
+  <script src="../js/inicioVoluntario.js"></script>
 </body>
 </html>
