@@ -1,11 +1,6 @@
 package com.inscripciones.persistence;
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +9,7 @@ import com.inscripciones.model.EstadoInscripcion;
 import com.inscripciones.model.Inscripcion;
 
 public class InscripcionDao {
-    private final String INSERT = "INSERT INTO inscripciones (proyecto_id, voluntario_id, motivacion, fecha_inscripcion, id_estado) VALUE (?,?,?,?,?)";
+    private final String INSERT = "INSERT INTO inscripciones (voluntario_id, proyecto_id, motivacion, fecha_inscripcion, id_estado) VALUES (?,?,?,?,?)";
     private final String UPDATE = "UPDATE inscripciones SET motivacion = ?, fecha_inscripcion = ?, id_estado = ? WHERE id = ?";
     private final String DELETE = "DELETE FROM inscripciones WHERE id = ?";
     private final String SELECT_BY_PROYECTO = "SELECT * FROM inscripciones WHERE proyecto_id = ?";
@@ -23,24 +18,29 @@ public class InscripcionDao {
 
     //CREAR
     public Inscripcion save(Inscripcion inscripcion){
-        try (Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)){
+        Connection conn=null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             
-            stmt.setLong(1, inscripcion.getIdProyecto());
-            stmt.setLong(2, inscripcion.getIdVoluntario());
+            stmt.setLong(1, inscripcion.getIdVoluntario());
+            stmt.setLong(2, inscripcion.getIdProyecto());
             stmt.setString(3, inscripcion.getMotivacion());
             stmt.setDate(4, inscripcion.getFechaInscripcion());
             stmt.setLong(5, inscripcion.getEstadoInscripcion().getId());
 
             int registrosAfectados = stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             if(rs.next()){
                 inscripcion.setId(rs.getLong(1));
             }
 
-            Conexion.close(conn);
             Conexion.close(rs);
             Conexion.close(stmt);
+            Conexion.close(conn);
 
             return registrosAfectados != 0 ? inscripcion : null;
         }catch (SQLException e){
@@ -50,8 +50,11 @@ public class InscripcionDao {
 
     //ACTUALIZAR
     public Inscripcion update(Inscripcion inscripcion){
-        try (Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(UPDATE)){
+        Connection conn=null;
+        PreparedStatement stmt = null;
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(UPDATE);
             
             stmt.setString(1, inscripcion.getMotivacion());
             stmt.setDate(2, inscripcion.getFechaInscripcion());
@@ -61,8 +64,8 @@ public class InscripcionDao {
 
             int registrosAfectados = stmt.executeUpdate();
              
-            Conexion.close(conn);
             Conexion.close(stmt);
+            Conexion.close(conn);
 
             return registrosAfectados > 0 ? inscripcion : null;
 
@@ -73,13 +76,18 @@ public class InscripcionDao {
 
     //BUSCAR POR ID PROYECTO
     public List<Inscripcion> findAllInscripcionesByIdProyecto(Long id){
+        Connection conn=null;
+        PreparedStatement stmt=null;
+        ResultSet rs = null;
         List <Inscripcion> inscripciones = new ArrayList<>();
+        Inscripcion inscripcion = null;
 
-        try(Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_BY_PROYECTO)){
+        try{
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SELECT_BY_PROYECTO);
         
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             while (rs.next()){
                 Long idInscripcion = rs.getLong("id");
@@ -89,13 +97,13 @@ public class InscripcionDao {
                 Date fechaInscripcion = rs.getDate("fecha_inscripcion");
                 EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(rs.getLong("id_estado")).get();
 
-                Inscripcion inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
+                inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
                 inscripciones.add(inscripcion);
             }
 
-            Conexion.close(conn);
-            Conexion.close(stmt);
             Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
         }catch (SQLException e){
             throw new RuntimeException("Error al listar inscripciones por idProyecto",e);
         }
@@ -104,13 +112,18 @@ public class InscripcionDao {
 
     //BUSCAR POR ID VOLUNTARIO
     public List<Inscripcion> findAllInscripcionesByIdVoluntario(Long id){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         List<Inscripcion> inscripciones = new ArrayList<>();
+        Inscripcion inscripcion = null;
 
-        try (Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_BY_VOLUNTARIO)){
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SELECT_BY_VOLUNTARIO);
 
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             while(rs.next()){
                 Long idInscripcion = rs.getLong("id");
@@ -120,12 +133,12 @@ public class InscripcionDao {
                 Date fechaInscripcion = rs.getDate("fecha_inscripcion");
                 EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(rs.getLong("id_estado")).get();
 
-                Inscripcion inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
+                inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
                 inscripciones.add(inscripcion);
             }
-            Conexion.close(conn);
-            Conexion.close(stmt);
             Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
         }catch(SQLException e){
             throw new RuntimeException("Error al listar inscripciones por idVoluntario",e);
         }
@@ -134,12 +147,17 @@ public class InscripcionDao {
 
     //BUSCAR POR ID
     public Optional<Inscripcion> findById(Long id){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         Inscripcion inscripcion = null;
-        try (Connection conn = Conexion.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID)){
+
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SELECT_BY_ID);
             
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
 
             if(rs.next()){
                 Long idInscripcion = rs.getLong("id");
@@ -152,9 +170,9 @@ public class InscripcionDao {
                 inscripcion = new Inscripcion(idInscripcion, idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion);
             }
 
-            Conexion.close(conn);
-            Conexion.close(stmt);
             Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
         }catch(SQLException e){
             throw new RuntimeException("Error al buscar inscripcion por id",e);
         }
@@ -164,12 +182,19 @@ public class InscripcionDao {
 
     //ELIMINAR
     public boolean delete(Long id){
-        try (Connection conn = Conexion.getConnection();){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = Conexion.getConnection();
 
-                PreparedStatement stmt = conn.prepareStatement(DELETE);
+            stmt = conn.prepareStatement(DELETE);
             
             stmt.setLong(1, id);
-            return stmt.executeUpdate() > 0;
+            int registrosAfectados = stmt.executeUpdate();
+
+            Conexion.close(stmt);
+            Conexion.close(conn);
+            return registrosAfectados > 0;
 
         }catch (SQLException e){
             throw new RuntimeException("Error al eliminar inscripción",e);

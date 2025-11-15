@@ -55,7 +55,7 @@ services:
     environment:
       POSTGRES_USER: alfonso
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: bd_proyectos
+      POSTGRES_DB: bd_inscripciones
     volumes:
       - ./micro-inscripciones/micro-inscripciones-bd.sql:/docker-entrypoint-initdb.d/micro-inscripciones-bd.sql
       - volumen_inscripciones:/var/lib/postgresql/18/docker

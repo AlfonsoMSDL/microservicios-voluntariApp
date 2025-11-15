@@ -56,30 +56,30 @@ public class InscripcionController extends HttpServlet {
 
         String accion = req.getParameter("action");
 
-        if(accion == null){
-            switch (accion) {
-                case "getInscripcionesByProyecto":
-                    obtenerInscripcionesByProyecto(req, resp);
-                    break;
-                case "getInscripcionesByVoluntario":
-                    obtenerInscripcionesByVoluntario(req, resp);
-                    break;
-                case "getById":
-                    obtenerInscripcionById(req, resp);
-                    break;
-                case "getEstadosInscripcion":
-                    obtenerEstadosInscripcionDeInscripciones(req, resp);
-                    break;
+        if(accion == null) accion = "default";
 
-                default:
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                    break;
+        switch (accion) {
+            case "getInscripcionesByProyecto":
+                obtenerInscripcionesByProyecto(req, resp);
+                break;
+            case "getInscripcionesByVoluntario":
+                obtenerInscripcionesByVoluntario(req, resp);
+               break;
+            case "getById":
+                obtenerInscripcionById(req, resp);
+                break;
+            case "getEstadosInscripcion":
+                obtenerEstadosInscripcionDeInscripciones(req, resp);
+                break;
+
+            default:
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                break;
             }
-        }
     }
 
     private void guardarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        String motivacion = req.getParameter("nombre");
+        String motivacion = req.getParameter("motivacion");
         Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
         Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
         Long idProyecto = Long.parseLong(req.getParameter("idProyecto"));
@@ -87,7 +87,7 @@ public class InscripcionController extends HttpServlet {
 
         Inscripcion resultado = inscripcionService.save(motivacion, fechaInscripcion, idEstadoInscripcion, idProyecto, idvoluntario);
         if(resultado != null){
-            resp.getWriter().println("{\"status\": \"succes\"}");
+            resp.getWriter().println("{\"status\": \"success\"}");
         }else{
             resp.getWriter().println("{\"status\": \"error\"}");
         }
@@ -95,7 +95,7 @@ public class InscripcionController extends HttpServlet {
 
     private void actualizarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.getParameterMap();
-        String motivacion = req.getParameter("nombre");
+        String motivacion = req.getParameter("motivacion");
         Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
         Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
         Long idInscripcion = Long.parseLong(req.getParameter("idInscripcion"));
