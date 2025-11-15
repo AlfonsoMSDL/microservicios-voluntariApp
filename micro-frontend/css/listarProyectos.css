@@ -72,6 +72,7 @@
         .projects-list {
             display: grid;
             gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         }
 
         .project-item {
