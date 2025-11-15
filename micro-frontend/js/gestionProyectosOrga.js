@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  cargarDetalleProyecto(idProyecto);
+  mostrarVista("detalle");
+
+
   // Cargar participantes reales desde el backend
   cargarParticipantes(idProyecto);
 
@@ -27,6 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-participantes").addEventListener("click", () => {
     mostrarVista("participantes");
   });
+
+  document.getElementById("btn-detalle").addEventListener("click", () => {
+    mostrarVista("detalle");
+  });
+
 
   // Modal
   document.getElementById("cerrarModal").onclick = cerrarModal;
@@ -119,6 +128,38 @@ function cargarInscritos(idProyecto) {
     });
 }
 
+
+// ================================================
+// 🔵 FUNCIÓN PARA TRAER EL PROYECTO DEL BACKEND
+// ================================================
+async function cargarDetalleProyecto(idProyecto) {
+
+  if (!idProyecto) {
+    console.error("No hay idProyectoTem en localStorage");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/proyectos-service/proyectos?action=getById&id=${idProyecto}`);
+    const proyecto = await response.json();
+
+    const cont = document.getElementById("detalle-proyecto");
+
+    cont.innerHTML = `
+      <p><strong>📌 Nombre:</strong> ${proyecto.nombre}</p>
+      <p><strong>📝 Descripción:</strong> ${proyecto.descripcion}</p>
+      <p><strong>📍 Ubicación:</strong> ${proyecto.ubicacion}</p>
+      <p><strong>📋 Requisitos:</strong> ${proyecto.requisitos}</p>
+      <p><strong>📅 Fecha inicio:</strong> ${proyecto.fecha_inicio}</p>
+      <p><strong>📅 Fecha fin:</strong> ${proyecto.fecha_fin}</p>
+      <p><strong>👥 Voluntarios requeridos:</strong> ${proyecto.voluntarios_requeridos}</p>
+      <p><strong>🏷️ Categoría:</strong> ${proyecto.categoria.nombre}</p>
+    `;
+
+  } catch (err) {
+    console.error("Error cargando proyecto:", err);
+  }
+}
 
 
 // ====================
@@ -310,3 +351,4 @@ function mostrarVista(tipo) {
   document.getElementById(`vista-${tipo}`).classList.add('visible');
   document.getElementById(`btn-${tipo}`).classList.add('active');
 }
+
