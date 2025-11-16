@@ -21,6 +21,7 @@ public class ParticipacionService {
 
     public List<GetParticipacion> findAllParticipacionesByIdProyecto(Long id) {
         List<Participacion> participaciones =  participacionDao.findAllParticipacionesByIdProyecto(id);
+        GetProyecto proyecto = proyectoClient.getById(id, "http://proyectos:8080/proyectos", GetProyecto.class);
 
         for (Participacion p : participaciones) {
             //Traigo al voluntario
@@ -28,9 +29,6 @@ public class ParticipacionService {
             GetVoluntario voluntario = voluntarioClient.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
             p.setVoluntario(voluntario);
 
-            //Traigo al proyecto
-            Long idProyecto = p.getIdProyecto();
-            GetProyecto proyecto = proyectoClient.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
             p.setProyecto(proyecto);
         }
 
@@ -39,8 +37,24 @@ public class ParticipacionService {
                                     .toList();
     }
 
-    public GetParticipacion save(Long idVoluntario, Long idProyecto, Date fechaInicio, int horasRealizadas) {
-        Participacion p = new Participacion(idVoluntario, idProyecto, fechaInicio, horasRealizadas);
+    public List<GetParticipacion> findAllParticipacionesByIdVoluntario(Long id){
+        List<Participacion> participaciones = participacionDao.findAllParticipacionesByIdVoluntario(id);
+        GetVoluntario voluntario = voluntarioClient.getById(id, "http://usuarios:8080/voluntarios", GetVoluntario.class);
+
+        for (Participacion p : participaciones){
+            Long idProyecto = p.getIdProyecto();
+            GetProyecto proyecto = proyectoClient.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
+            p.setProyecto(proyecto);
+
+            p.setVoluntario(voluntario);
+        }
+        return participaciones.stream().
+                                    map(p -> mapperParticipacion.toDto(p, GetParticipacion.class))
+                                    .toList();
+    }
+
+    public GetParticipacion save(Long idVoluntario, Long idProyecto, Date fecha_inicio, int horas_realizadas) {
+        Participacion p = new Participacion(idVoluntario, idProyecto, fecha_inicio, horas_realizadas);
         Participacion pGuardada = participacionDao.save(p);
 
         //Traigo al voluntario
@@ -56,8 +70,8 @@ public class ParticipacionService {
         return mapperParticipacion.toDto(pGuardada, GetParticipacion.class);
     }
 
-    public Participacion update(Long idParticipacion,Long idVoluntario, Long idProyecto, Date fechaInicio, Date fechaFin, int horasRealizadas) {
-        Participacion p = new Participacion(idParticipacion, idVoluntario, idProyecto, fechaInicio, fechaFin, horasRealizadas);
+    public Participacion update(Long idParticipacion, Date fechaFin, int horasRealizadas) {
+        Participacion p = new Participacion(idParticipacion, fechaFin, horasRealizadas);
         return participacionDao.update(p);
     }
 

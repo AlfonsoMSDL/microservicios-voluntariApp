@@ -2,7 +2,7 @@ package com.inscripciones.service;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Optional;
 
 import com.inscripciones.dto.GetInscripcion;
 import com.inscripciones.dto.GetProyecto;
@@ -19,62 +19,78 @@ public class InscripcionService {
     private final GenericMapper<GetInscripcion, Inscripcion> genericMapper = new GenericMapper();
     private final Cliente<GetProyecto> clienteProyecto = new Cliente<>();
     private final Cliente<GetVoluntario> clienteVoluntario = new Cliente<>();
-    private final Logger logger = Logger.getLogger(InscripcionService.class.getName());
 
-    public Inscripcion save(String motivacion, Date fechaInscripcion, Long idEstadoInscripcion, Long idProyecto, Long idVoluntario){
-
+    public Inscripcion save(String motivacion, Long idProyecto, Long idVoluntario, Date fechaInscripcion, Long idEstadoInscripcion){
         EstadoInscripcion estadoInscripcion = estadoInscripcionDao.findByID(idEstadoInscripcion).get();
-        Inscripcion nuevaInscripcion = inscripcionDao.save(new Inscripcion(idProyecto, idVoluntario, motivacion, fechaInscripcion, estadoInscripcion));
+        Inscripcion inscripcion = new Inscripcion(idProyecto,idVoluntario,motivacion,fechaInscripcion,estadoInscripcion);
+        Inscripcion nuevaInscripcion = inscripcionDao.save(inscripcion);
 
         return nuevaInscripcion;
     }
 
     public List<GetInscripcion> findAllInscripcionesByVoluntario(Long idVoluntario){
         List<Inscripcion> inscripciones = inscripcionDao.findAllInscripcionesByIdVoluntario(idVoluntario);
-
         GetVoluntario voluntario = clienteVoluntario.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
 
+        for(Inscripcion i : inscripciones){
+            Long idProyecto = i.getIdProyecto();
+            GetProyecto proyecto = clienteProyecto.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
+            i.setProyecto(proyecto);
+
+            i.setVoluntario(voluntario);
+        }
         return inscripciones.stream()
-                                .map(p -> {
-                                    p.setVoluntario(voluntario);
-                                    return p;
-                                })
-                                .map(p -> genericMapper.toDto(p, GetInscripcion.class))
+                                .map(i -> genericMapper.toDto(i, GetInscripcion.class))
                                 .toList();
     }
 
     public List<GetInscripcion> findAllInscripcionesByProyecto(Long idProyecto){
         List<Inscripcion> inscripciones = inscripcionDao.findAllInscripcionesByIdProyecto(idProyecto);
-
         GetProyecto proyecto = clienteProyecto.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
 
+        for (Inscripcion i : inscripciones){
+            Long idVoluntario = i.getIdVoluntario();
+            GetVoluntario voluntario = clienteVoluntario.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
+            i.setVoluntario(voluntario);
+
+            i.setProyecto(proyecto);
+        }
+        
+
         return inscripciones.stream()
-                                .map(p -> {
-                                    p.setProyecto(proyecto);
-                                    return p;
-                                })
-                                .map(p -> genericMapper.toDto(p, GetInscripcion.class))
+                                .map(i -> genericMapper.toDto(i, GetInscripcion.class))
                                 .toList();
     }
 
-    public Inscripcion update(Long id, String motivacion, Date fechaInscripcion, Long idEstadoInscripcion){
-        EstadoInscripcion estadoInscripcion = (new EstadoInscripcionDao()).findByID(idEstadoInscripcion).get();
-        Inscripcion inscripcionUpdate = new Inscripcion(id, motivacion, fechaInscripcion, estadoInscripcion);
+    public Inscripcion update(Long id, String motivacion){
+        Inscripcion inscripcionUpdate = new Inscripcion(id, motivacion);
         return inscripcionDao.update(inscripcionUpdate);
 
     }
 
+    public Inscripcion updateEstado(Long id, Long idEstadoInscripcion){
+        EstadoInscripcion estadoInscripcion = estadoInscripcionDao.findByID(idEstadoInscripcion).get();
+        Inscripcion inscripcionUpdate = new Inscripcion(id, estadoInscripcion);
+
+        return inscripcionDao.updateEstado(inscripcionUpdate);
+    }
+
     public GetInscripcion findById(Long id){
-        Inscripcion inscripcion = inscripcionDao.findById(id).get();
-        GetVoluntario voluntario = clienteVoluntario.getById(inscripcion.getIdVoluntario(), "http://usuarios:8080/voluntarios", GetVoluntario.class);
-        GetProyecto proyecto = clienteProyecto.getById(inscripcion.getIdProyecto(), "http://proyectos:8080/proyectos", GetProyecto.class);
+        Optional<Inscripcion> inscripcion = inscripcionDao.findById(id);
 
-        logger.info("Voluntario: \n"+voluntario);
-        logger.info("Proyecto: \n"+proyecto);
+        if(inscripcion.isPresent()){
+            Inscripcion i = inscripcion.get();
 
-        inscripcion.setVoluntario(voluntario);
-        inscripcion.setProyecto(proyecto);
+            Long idVoluntario = i.getIdVoluntario();
+            GetVoluntario voluntario = clienteVoluntario.getById(idVoluntario, "http://usuarios:8080/voluntarios", GetVoluntario.class);
+            i.setVoluntario(voluntario);
 
-        return genericMapper.toDto(inscripcion, GetInscripcion.class);
+            Long idProyecto = i.getIdProyecto();
+            GetProyecto proyecto = clienteProyecto.getById(idProyecto, "http://proyectos:8080/proyectos", GetProyecto.class);
+            i.setProyecto(proyecto);
+
+            return genericMapper.toDto(i, GetInscripcion.class);
+        }
+        return null;
     }
 }

@@ -10,9 +10,10 @@ import com.inscripciones.model.Inscripcion;
 
 public class InscripcionDao {
     private final String INSERT = "INSERT INTO inscripciones (voluntario_id, proyecto_id, motivacion, fecha_inscripcion, id_estado) VALUES (?,?,?,?,?)";
-    private final String UPDATE = "UPDATE inscripciones SET motivacion = ?, fecha_inscripcion = ?, id_estado = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE inscripciones SET motivacion = ? WHERE id = ?";
+    private final String UPDATE_ESTADO = "UPDATE inscripciones SET id_estado = ? WHERE id = ?";
     private final String DELETE = "DELETE FROM inscripciones WHERE id = ?";
-    private final String SELECT_BY_PROYECTO = "SELECT * FROM inscripciones WHERE proyecto_id = ?";
+    private final String SELECT_BY_PROYECTO = "SELECT * FROM inscripciones WHERE proyecto_id = ? AND id_estado = 1";
     private final String SELECT_BY_VOLUNTARIO = "SELECT * FROM inscripciones WHERE voluntario_id = ?";
     private final String SELECT_BY_ID = "SELECT * FROM inscripciones WHERE id = ?";
 
@@ -48,7 +49,7 @@ public class InscripcionDao {
         }
     }
 
-    //ACTUALIZAR
+    //ACTUALIZAR INSCRIPCION
     public Inscripcion update(Inscripcion inscripcion){
         Connection conn=null;
         PreparedStatement stmt = null;
@@ -57,10 +58,7 @@ public class InscripcionDao {
             stmt = conn.prepareStatement(UPDATE);
             
             stmt.setString(1, inscripcion.getMotivacion());
-            stmt.setDate(2, inscripcion.getFechaInscripcion());
-            stmt.setLong(3, inscripcion.getEstadoInscripcion().getId());
-
-            stmt.setLong(4, inscripcion.getId());
+            stmt.setLong(2, inscripcion.getId());
 
             int registrosAfectados = stmt.executeUpdate();
              
@@ -73,6 +71,29 @@ public class InscripcionDao {
             throw new RuntimeException("Error al actualizar la inscripción",e);
         }
     }
+
+    //ACTUALIZAR ESTADO
+    public Inscripcion updateEstado(Inscripcion inscripcion){
+        Connection conn=null;
+        PreparedStatement stmt = null;
+        try{
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(UPDATE_ESTADO);
+
+            stmt.setLong(1, inscripcion.getEstadoInscripcion().getId());
+            stmt.setLong(2, inscripcion.getId());
+
+            int registrosAfectados = stmt.executeUpdate();
+
+            Conexion.close(stmt);
+            Conexion.close(conn);
+
+            return registrosAfectados > 0 ? inscripcion : null;
+        }catch(SQLException e){
+            throw new RuntimeException("Error al actualizar estado inscripcion" + e.getMessage(), e);
+        }
+    }
+
 
     //BUSCAR POR ID PROYECTO
     public List<Inscripcion> findAllInscripcionesByIdProyecto(Long id){

@@ -2,6 +2,7 @@ package com.inscripciones.presentation;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,6 +45,9 @@ public class InscripcionController extends HttpServlet {
             case "update":
                 actualizarInscripcion(req, resp);
                 break;
+            case "updateEstado":
+                actualizarEstadoInscripcion(req, resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -80,12 +84,12 @@ public class InscripcionController extends HttpServlet {
 
     private void guardarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         String motivacion = req.getParameter("motivacion");
-        Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
-        Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
         Long idProyecto = Long.parseLong(req.getParameter("idProyecto"));
         Long idvoluntario = Long.parseLong(req.getParameter("idVoluntario"));
+        Date fechaInscripcion = Date.valueOf(LocalDate.now());
+        Long idEstadoInscripcion = 1L;
 
-        Inscripcion resultado = inscripcionService.save(motivacion, fechaInscripcion, idEstadoInscripcion, idProyecto, idvoluntario);
+        Inscripcion resultado = inscripcionService.save(motivacion, idProyecto, idvoluntario, fechaInscripcion,idEstadoInscripcion);
         if(resultado != null){
             resp.getWriter().println("{\"status\": \"success\"}");
         }else{
@@ -94,13 +98,23 @@ public class InscripcionController extends HttpServlet {
     }
 
     private void actualizarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        req.getParameterMap();
         String motivacion = req.getParameter("motivacion");
-        Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
-        Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
         Long idInscripcion = Long.parseLong(req.getParameter("idInscripcion"));
 
-        Inscripcion actualizado = inscripcionService.update(idInscripcion, motivacion, fechaInscripcion, idEstadoInscripcion);
+        Inscripcion actualizado = inscripcionService.update(idInscripcion, motivacion);
+
+        if(actualizado != null){
+            resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");
+        }else {
+            resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");
+        }
+    }
+
+    private void actualizarEstadoInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        Long idInscripcion = Long.parseLong(req.getParameter("idInscripcion"));
+        Long idEstadoNuevo = Long.parseLong(req.getParameter("idEstado"));
+
+        Inscripcion actualizado = inscripcionService.updateEstado(idInscripcion, idEstadoNuevo);
 
         if(actualizado != null){
             resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");

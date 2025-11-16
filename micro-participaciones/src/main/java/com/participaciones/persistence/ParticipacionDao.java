@@ -16,11 +16,14 @@ public class ParticipacionDao {
     private static final String SELECT_BY_PROYECTO = 
         "SELECT * FROM participaciones WHERE proyecto_id = ?";
 
+    private static final String SELECT_BY_VOLUNTARIO =
+        "SELECT * FROM participaciones WHERE voluntario_id = ?";
+
     private static final String SELECT_BY_ID =
         "SELECT * FROM participaciones WHERE id = ?";
 
     private static final String UPDATE =
-        "UPDATE participaciones SET voluntario_id = ?, proyecto_id = ?, fecha_inicio = ?, fecha_fin = ?, horas_realizadas = ? WHERE id = ?";
+        "UPDATE participaciones SET fecha_fin = ?, horas_realizadas = ? WHERE id = ?";
 
     private static final String DELETE =
         "DELETE FROM participaciones WHERE id = ?";
@@ -88,7 +91,7 @@ public class ParticipacionDao {
                 Date fechaFin = rs.getDate("fecha_fin");
                 int horas = rs.getInt("horas_realizadas");
 
-                p = new Participacion(id,idVoluntario, idProyecto, fechaInicio, fechaFin, horas);
+                p = new Participacion(id, idVoluntario, idProyecto, fechaInicio, fechaFin, horas);
 
                 lista.add(p);
             }
@@ -102,6 +105,43 @@ public class ParticipacionDao {
         }
 
         return lista;
+    }
+
+    //Listar todas las participaciones de un voluntario
+    public List<Participacion> findAllParticipacionesByIdVoluntario(Long idVoluntarioBuscar){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        List<Participacion> participaciones = new ArrayList<>();
+        Participacion p=null;
+
+        try{
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SELECT_BY_VOLUNTARIO);
+            stmt.setLong(1, idVoluntarioBuscar);
+            rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Long id = rs.getLong("id");
+                Long idVoluntario = rs.getLong("voluntario_id");
+                Long idProyecto = rs.getLong("proyecto_id");
+                Date fechaInicio = rs.getDate("fecha_inicio");
+                Date fechaFin = rs.getDate("fecha_fin");
+                int horas = rs.getInt("horas_realizadas");
+
+                p = new Participacion(id, idVoluntario, idProyecto, fechaInicio, fechaFin, horas);
+                participaciones.add(p);
+            }
+
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+
+        }catch(SQLException e){
+            throw new RuntimeException("Error obteniendo participaciones"+e.getMessage(), e);
+        }
+        return participaciones;
     }
 
 
@@ -156,12 +196,9 @@ public class ParticipacionDao {
             conn = Conexion.getConnection();
             ps = conn.prepareStatement(UPDATE);
 
-            ps.setLong(1, p.getIdVoluntario());
-            ps.setLong(2, p.getIdProyecto());
-            ps.setDate(3, p.getFechaInicio());
-            ps.setDate(4, p.getFechaFin());
-            ps.setInt(5, p.getHorasRealizadas());
-            ps.setLong(6, p.getId());
+            ps.setDate(1, p.getFechaFin());
+            ps.setInt(2, p.getHorasRealizadas());
+            ps.setLong(3, p.getId());
 
             int rows = ps.executeUpdate();
 

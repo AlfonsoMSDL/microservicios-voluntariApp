@@ -81,6 +81,10 @@ function cargarParticipantes(idProyecto) {
     });
 }
 
+function cargarInscritos(idProyecto){
+  const url = `/inscripciones-service/inscripciones?action=getInscripcionesByProyecto&idProyecto=${idProyecto}`;
+  
+}
 
 
 // ====================
@@ -88,11 +92,7 @@ function cargarParticipantes(idProyecto) {
 // ====================
 
 // Datos locales de ejemplo (inscritos)
-const inscritos = [
-  { id: 1, nombre: "Ana Torres", email: "ana.torres@example.com", telefono: "3001234561", ciudad: "Santa Marta" },
-  { id: 2, nombre: "Luis Pérez", email: "luis.perez@example.com", telefono: "3001234562", ciudad: "Bogotá" },
-  { id: 3, nombre: "María López", email: "maria.lopez@example.com", telefono: "3001234563", ciudad: "Medellín" }
-];
+const inscritos = [];
 
 // Participantes ahora serán llenados desde la API
 const participantes = [];

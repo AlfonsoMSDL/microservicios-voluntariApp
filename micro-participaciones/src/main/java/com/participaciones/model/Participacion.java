@@ -27,10 +27,17 @@ public class Participacion {
         this.horasRealizadas = horasRealizadas;
     }
 
+    public Participacion(Long id, Long idVoluntario, Long idProyecto, Date fechaInicio, Date fechaFin, int horasRealizadas){
+        this.id = id;
+        this.idVoluntario = idVoluntario;
+        this.idProyecto = idProyecto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.horasRealizadas = horasRealizadas;
+    }
 
     //Para insertar
-    public Participacion(Long idVoluntario, Long idProyecto, Date fechaInicio,
-            int horasRealizadas) {
+    public Participacion(Long idVoluntario, Long idProyecto, Date fechaInicio, int horasRealizadas) {
         this.idVoluntario = idVoluntario;
         this.idProyecto = idProyecto;
         this.fechaInicio = fechaInicio;
@@ -40,12 +47,8 @@ public class Participacion {
     
 
     //Para actualizar
-    public Participacion(Long id, Long idVoluntario, Long idProyecto, Date fechaInicio, Date fechaFin,
-            int horasRealizadas) {
+    public Participacion(Long id, Date fechaFin, int horasRealizadas) {
         this.id = id;
-        this.idVoluntario = idVoluntario;
-        this.idProyecto = idProyecto;
-        this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.horasRealizadas = horasRealizadas;
     }
