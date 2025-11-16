@@ -4,7 +4,10 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/micro-reportes/pom.xml" />
+        <option value="$PROJECT_DIR$/micro-usuarios/pom.xml" />
+        <option value="$PROJECT_DIR$/micro-proyectos/pom.xml" />
+        <option value="$PROJECT_DIR$/micro-inscripciones/pom.xml" />
       </list>
     </option>
   </component>
