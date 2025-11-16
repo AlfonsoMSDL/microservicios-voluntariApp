@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b05221a-d0c1-40ef-894b-c9bdd49811ac" name="Changes" comment="Estructura base del proyecto">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ErrorResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/DashboardServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteCategoriasServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteOrganizacionesServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/util/DatabaseShutdownListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/util/LocalDateAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/config/DatabaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/config/DatabaseConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dao/ReporteDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dao/ReporteDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteInscripcionesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteInscripcionesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteProyectosDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteProyectosDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteVoluntariosDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/dto/ReporteVoluntariosDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteInscripcionesServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteInscripcionesServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteProyectosServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteProyectosServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteVoluntariosServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/servlet/ReporteVoluntariosServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/util/CORSFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jbyanx/microreportes/microreportes/util/CORSFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Jbyanx"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:AlfonsoMSDL/microservicios-voluntariApp.git",
+    "accountId": "232cc346-141b-4c90-bf96-c72b91d29735"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="35QhOxcyj1qUetZMmlgaCw7qIUZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/jbyanx/Escritorio/Microservicios-VoluntariApp/microservicios-voluntariApp",
+    "settings.editor.selected.configurable": "vcs.Git"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b05221a-d0c1-40ef-894b-c9bdd49811ac" name="Changes" comment="" />
+      <created>1746300956757</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746300956757</updated>
+      <workItem from="1746300959034" duration="171000" />
+      <workItem from="1763048177108" duration="2079000" />
+    </task>
+    <task id="LOCAL-00001" summary="Commit inicial">
+      <option name="closed" value="true" />
+      <created>1763048571834</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763048571834</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Estructura base del proyecto">
+      <option name="closed" value="true" />
+      <created>1763048586712</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763048586712</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Commit inicial" />
+    <MESSAGE value="Estructura base del proyecto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Estructura base del proyecto" />
+  </component>
+</project>
