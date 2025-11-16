@@ -1,4 +1,4 @@
-package com.jbyanx.microreportes.microreportes.util;
+package com.jbyanx.microreportes.util;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
