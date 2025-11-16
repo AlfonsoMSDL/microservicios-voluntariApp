@@ -110,13 +110,129 @@ body {
 
 .caja-contenido {
   flex: 1;
-  background: white;
-  border: 2px solid var(--light-gray);
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.1rem;
-  color: var(--text-gray);
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  padding: 24px;
+  color: #333;
 }
 
+.caja-contenido .section-title {
+  color: var(--primary-color);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.vol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.vol-card {
+  background: linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%);
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  cursor: default;
+}
+
+.vol-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.vol-card-title {
+  color: var(--dark-color);
+  font-weight: 600;
+}
+
+.vol-card-category {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.caja-contenido .project-item::before,
+.caja-contenido .project-item:hover::before {
+  width: 0;
+}
+
+.caja-contenido .project-item:hover {
+  transform: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+}
+
+.project-card-title,
+.project-card-category { display: none; }
+
+.caja-contenido .project-link::before,
+.caja-contenido .project-link::after { content: none; }
+
+.vol-btn {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.vol-btn:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  transform: translateY(-1px);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: min(720px, 92%);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  padding: 20px 22px;
+}
+
+#modalProyectoBody {
+  display: grid;
+  gap: 10px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.modal-title {
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  color: #2c3e50;
+  font-size: 1.4rem;
+  cursor: pointer;
+}

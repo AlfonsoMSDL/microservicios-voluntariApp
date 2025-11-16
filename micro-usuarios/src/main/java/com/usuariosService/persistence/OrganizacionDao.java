@@ -204,7 +204,7 @@ public class OrganizacionDao {
         }
     }
 
-    /*
+    
     // 🔹 Eliminar por ID
     public boolean deleteById(Long id){
         Connection conn;
@@ -226,6 +226,6 @@ public class OrganizacionDao {
         }
     }
 
-     */
+     
 
 }

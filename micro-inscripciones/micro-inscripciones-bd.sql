@@ -9,12 +9,10 @@ CREATE TABLE estados_inscripcion (
 CREATE TABLE inscripciones (
                                id SERIAL PRIMARY KEY,
                                voluntario_id BIGINT NOT NULL,
-                               proyecto_id INT NOT NULL,
+                               proyecto_id BIGINT NOT NULL,
                                motivacion TEXT,
                                fecha_inscripcion DATE,
                                id_estado INT NOT NULL,
-                               FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
-                               FOREIGN KEY (voluntario_id) REFERENCES voluntarios(id),
                                FOREIGN KEY (id_estado) REFERENCES estados_inscripcion(id)
 );
 

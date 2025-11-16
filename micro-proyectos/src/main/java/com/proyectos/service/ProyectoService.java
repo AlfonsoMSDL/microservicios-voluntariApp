@@ -46,6 +46,20 @@ public class ProyectoService {
                                 .toList();
     }
 
+    public List<GetProyecto> findAllProyectos(){
+        List<Proyecto> proyectos = proyectoDao.findAllProyectos();
+
+
+        return proyectos.stream()
+                                .map(p -> {
+                                    GetOrganizacion organizacion = cliente.getById(p.getIdOrganizacion(),"http://usuarios:8080/organizaciones", GetOrganizacion.class);
+                                    p.setOrganizacion(organizacion);
+                                    return p; // importante devolver el mismo objeto
+                                })
+                                .map(p -> genericMapper.toDto(p, GetProyecto.class))
+                                .toList();
+    }
+
     public Proyecto update(Long id, String nombre, String descripcion, String ubicacion, String requisitos, Date fechaInicio, Date fechaFin, Integer voluntarios_requeridos, Long idCategoria){
         
         Categoria categoria = (new CategoriaDao()).findById(idCategoria).get();

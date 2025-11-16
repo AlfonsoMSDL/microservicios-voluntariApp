@@ -34,8 +34,11 @@ public class VoluntarioService {
     }
 
 
-    public List<Voluntario> findAllVoluntarios(){
-        return voluntarioDao.findAll();
+    public List<GetVoluntario> findAllVoluntarios(){
+
+        List<GetVoluntario> voluntarios = voluntarioDao.findAll().stream().map(p -> genericMapper.toDto(p,GetVoluntario.class)).toList();
+
+        return voluntarios;
     }
 
     public Optional<Voluntario> findByCorreo(String correo){
@@ -58,6 +61,15 @@ public class VoluntarioService {
     public GetVoluntario findById(Long id){
         Voluntario voluntarioActual = voluntarioDao.findById(id).get();
         return genericMapper.toDto(voluntarioActual,GetVoluntario.class);
+    }
+
+    public boolean delete(Long id){
+        boolean eliminando = voluntarioDao.delete(id);
+        if(eliminando){ // Si se elimino el voluntario, borro su usuario
+            boolean usuarioEliminado =  usuarioDao.delete(id);
+            return usuarioEliminado;
+        }
+        return false;
     }
 
 }

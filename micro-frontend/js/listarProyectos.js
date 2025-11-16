@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded',() =>{
     const usuarioLoginJson = localStorage.getItem('usuarioLogin');
     const usuarioLogin = JSON.parse(usuarioLoginJson);
 
-    fetch('/proyectos-service/proyectos?action=getProyectos&idOrganizacion=' + usuarioLogin.id)
+    fetch('/proyectos-service/proyectos?action=getProyectosByOrganizacion&id=' + usuarioLogin.id)
     .then(response => {
         if (!response.ok) {
             throw new Error('Error en la respuesta del servidor');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded',() =>{
         }
 
         lista.innerHTML = data.map(proyecto => `
-            <div class="project-item" onclick="irAProyecto('${proyecto.url}')">
+            <div class="project-item" onclick="irAProyecto('${proyecto.id}')">
                 <a href="${proyecto.url}" class="project-link" onclick="event.preventDefault()">
                     ${proyecto.nombre}
                 </a>
@@ -37,3 +37,11 @@ document.addEventListener('DOMContentLoaded',() =>{
         alert('Error al conectar con el servidor: ' + error.message);
     })
 })
+
+
+
+function irAProyecto(idProyecto) {
+    window.location.href = "../pages/gestionProyectosOrga.html";
+    localStorage.setItem('idProyectoTemp', idProyecto);
+
+}

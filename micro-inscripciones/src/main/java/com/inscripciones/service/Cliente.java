@@ -14,16 +14,16 @@ public class Cliente<T> {
     private final JsonMapper<T> conversor = new JsonMapper<>();
     private final Logger logger = Logger.getLogger(Cliente.class.getName());
 
-    public T getById(Long id, String URL_ROOT, Class<T> toConvert){
-        try{
-            String urlGetById = URL_ROOT + "?action=getById&id="+id;
+    public  T getById(Long id, String URL_ROOT, Class<T> toConvert) {
+        try {
+            String urlGetById = URL_ROOT + "?action=getById&id=" + id;
             HttpClient cliente = HttpClient.newHttpClient();
-            HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create(urlGetById).build());
+            HttpRequest solicitud = HttpRequest.newBuilder().uri(URI.create(urlGetById)).build();
 
             HttpResponse<String> respuestaJson = cliente.send(solicitud, HttpResponse.BodyHandlers.ofString());
+            //logger.info(respuestaJson.body());
             return conversor.fromJson(respuestaJson.body(), toConvert);
-                        
-        }catch (IOException | InterruptedException ex){
+        } catch (IOException | InterruptedException ex) {
             throw new RuntimeException("Error al realizar la solicitud HTTP", ex);
         }
     }

@@ -12,6 +12,7 @@ import java.util.Optional;
 public class ProyectoDao {
 
     private static final String SELECT_BY_ORGANIZACION = "SELECT * FROM proyectos WHERE organizacion_id = ?";
+    private static final String SELECT_ALL = "SELECT * FROM proyectos";
     private static final String INSERT = "INSERT INTO proyectos (nombre, descripcion, ubicacion, requisitos, fecha_inicio, fecha_fin, voluntarios_requeridos, id_categoria, organizacion_id) VALUES (?,?,?,?,?,?,?,?,?)";
     private static final String UPDATE = "UPDATE proyectos SET nombre = ?, descripcion = ?, ubicacion = ?, requisitos = ?, fecha_inicio = ?, fecha_fin = ?, voluntarios_requeridos = ?, id_categoria = ? WHERE id = ?";
     private static final String SELECT_BY_ID = "SELECT * FROM proyectos WHERE id = ?";
@@ -62,6 +63,51 @@ public class ProyectoDao {
             connection = Conexion.getConnection();
             preparedStatement = connection.prepareStatement(SELECT_BY_ORGANIZACION);
             preparedStatement.setLong(1, idOrganizacion);
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String nombre = resultSet.getString("nombre");
+                String descripcion = resultSet.getString("descripcion");
+                String ubicacion = resultSet.getString("ubicacion");
+                String requisitos = resultSet.getString("requisitos");
+                Date fechaInicio = resultSet.getDate("fecha_inicio");
+                Date fechaFin = resultSet.getDate("fecha_fin");
+                int voluntariosRequeridos = resultSet.getInt("voluntarios_requeridos");
+
+
+                Categoria categoria = (new CategoriaDao()).findById(resultSet.getLong("id_categoria")).get();
+
+                Long idOrganizacionBd = resultSet.getLong("organizacion_id");
+
+                proyecto = new Proyecto(id,nombre,descripcion,ubicacion,requisitos,fechaInicio,fechaFin,voluntariosRequeridos,categoria,idOrganizacionBd);
+
+                proyectos.add(proyecto);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proyectos;
+
+    }
+
+    public List<Proyecto> findAllProyectos(){
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        List<Proyecto> proyectos = new ArrayList<>();
+        Proyecto proyecto;
+
+        try {
+            connection = Conexion.getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ALL);
             resultSet = preparedStatement.executeQuery();
 
 

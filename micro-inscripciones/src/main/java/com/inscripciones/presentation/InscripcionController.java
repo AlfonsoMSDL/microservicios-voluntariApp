@@ -2,11 +2,16 @@ package com.inscripciones.presentation;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.management.RuntimeErrorException;
 
+import com.inscripciones.dto.GetEstadoInscripcion;
+import com.inscripciones.dto.GetInscripcion;
 import com.inscripciones.mapper.JsonMapper;
+import com.inscripciones.model.Inscripcion;
 import com.inscripciones.service.Cliente;
 import com.inscripciones.service.EstadoInscripcionService;
 import com.inscripciones.service.InscripcionService;
@@ -40,6 +45,9 @@ public class InscripcionController extends HttpServlet {
             case "update":
                 actualizarInscripcion(req, resp);
                 break;
+            case "updateEstado":
+                actualizarEstadoInscripcion(req, resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -52,50 +60,61 @@ public class InscripcionController extends HttpServlet {
 
         String accion = req.getParameter("action");
 
-        if(accion == null){
-            switch (accion) {
-                case "getInscripcionesByProyecto":
-                    obtenerInscripcionesByProyecto(req, resp);
-                    break;
-                case "getInscripcionesByVoluntario":
-                    obtenerInscripcionesByVoluntario(req, resp);
-                    break;
-                case "getById":
-                    obtenerInscripcionById(req, resp);
-                    break;
-                case "getEstadosInscripcion":
-                    obtenerEstadosInscripcionDeInscripciones(req, resp);
-                    break;
+        if(accion == null) accion = "default";
 
-                default:
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                    break;
+        switch (accion) {
+            case "getInscripcionesByProyecto":
+                obtenerInscripcionesByProyecto(req, resp);
+                break;
+            case "getInscripcionesByVoluntario":
+                obtenerInscripcionesByVoluntario(req, resp);
+               break;
+            case "getById":
+                obtenerInscripcionById(req, resp);
+                break;
+            case "getEstadosInscripcion":
+                obtenerEstadosInscripcionDeInscripciones(req, resp);
+                break;
+
+            default:
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                break;
             }
-        }
     }
 
     private void guardarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        String motivacion = req.getParameter("nombre");
-        Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
-        Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
+        String motivacion = req.getParameter("motivacion");
         Long idProyecto = Long.parseLong(req.getParameter("idProyecto"));
         Long idvoluntario = Long.parseLong(req.getParameter("idVoluntario"));
+        Date fechaInscripcion = Date.valueOf(LocalDate.now());
+        Long idEstadoInscripcion = 1L;
 
-        Inscripcion resultado = inscripcionService.save(motivacion, fechaInscripcion, idEstadoInscripcion, idProyecto, idvoluntario);
+        Inscripcion resultado = inscripcionService.save(motivacion, idProyecto, idvoluntario, fechaInscripcion,idEstadoInscripcion);
         if(resultado != null){
-            resp.getWriter().println("{\"status\": \"succes\"}");
+            resp.getWriter().println("{\"status\": \"success\"}");
         }else{
             resp.getWriter().println("{\"status\": \"error\"}");
         }
     }
 
     private void actualizarInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
-        String motivacion = req.getParameter("nombre");
-        Date fechaInscripcion = Date.valueOf(req.getParameter("fechaInscripcion"));
-        Long idEstadoInscripcion = Long.parseLong(req.getParameter("idEstadoInscripcion"));
+        String motivacion = req.getParameter("motivacion");
         Long idInscripcion = Long.parseLong(req.getParameter("idInscripcion"));
 
-        Inscripcion actualizado = inscripcionService.update(idInscripcion, motivacion, fechaInscripcion, idEstadoInscripcion);
+        Inscripcion actualizado = inscripcionService.update(idInscripcion, motivacion);
+
+        if(actualizado != null){
+            resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");
+        }else {
+            resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");
+        }
+    }
+
+    private void actualizarEstadoInscripcion(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        Long idInscripcion = Long.parseLong(req.getParameter("idInscripcion"));
+        Long idEstadoNuevo = Long.parseLong(req.getParameter("idEstado"));
+
+        Inscripcion actualizado = inscripcionService.updateEstado(idInscripcion, idEstadoNuevo);
 
         if(actualizado != null){
             resp.getWriter().println("{\"mensaje\": \"Actualizado correctamente\"}");
@@ -105,6 +124,7 @@ public class InscripcionController extends HttpServlet {
     }
 
     private void obtenerInscripcionesByVoluntario(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idVoluntario"));
         List<GetInscripcion> inscripciones = inscripcionService.findAllInscripcionesByVoluntario(id);
 
@@ -113,12 +133,13 @@ public class InscripcionController extends HttpServlet {
         try{
             resp.getWriter().println(json);
         }catch(IOException e){
-            throw new RuntimeErrorException(e);
+            throw new RuntimeException(e);
         }
 
     }
 
     private void obtenerInscripcionesByProyecto(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idProyecto"));
         List<GetInscripcion> inscripciones = inscripcionService.findAllInscripcionesByProyecto(id);
 
@@ -138,11 +159,12 @@ public class InscripcionController extends HttpServlet {
         try{
             resp.getWriter().println(json);
         }catch(IOException e){
-            throw new RuntimeException(e)
+            throw new RuntimeException(e);
         }
     }
 
     private void obtenerInscripcionById(HttpServletRequest req, HttpServletResponse resp){
+        req.getParameterMap();
         Long id = Long.parseLong(req.getParameter("idInscripcion"));
         GetInscripcion inscripcion = inscripcionService.findById(id);
         String json = jsonMapperInscripcion.toJson(inscripcion);

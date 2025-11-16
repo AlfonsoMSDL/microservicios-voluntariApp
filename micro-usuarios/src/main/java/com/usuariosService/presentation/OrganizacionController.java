@@ -42,12 +42,17 @@ public class OrganizacionController extends HttpServlet {
             case "update":
                 actualizarOrganizacion(req,resp);
                 break;
+            case "delete":
+                eliminarOrganizacion(req,resp);
+                break;   
 
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
         }
     }
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -63,6 +68,9 @@ public class OrganizacionController extends HttpServlet {
             case "getById":
                 obtenerOrganizacionPorId(req,resp);
                 break;
+            case "getAllOrganizaciones":
+                obtenerOrganizaciones(req,resp);
+                break;
 
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -71,6 +79,8 @@ public class OrganizacionController extends HttpServlet {
     }
 
 
+
+    
 
     private void guardarOrganizacion(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String nombre = req.getParameter("nombreOrganizacion");
@@ -142,5 +152,31 @@ public class OrganizacionController extends HttpServlet {
 
     }
 
+    private void obtenerOrganizaciones(HttpServletRequest req, HttpServletResponse resp) {
+        LOGGER.info("Iniciando obtenerOrganizaciones");
+        String listaJson = jsonMapperGetOrg.toJson(organizacionService.findAllOrganizaciones());
+        try {
+            resp.getWriter().println(listaJson);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void eliminarOrganizacion(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idOrganizacion = Long.parseLong(req.getParameter("id"));
+        boolean eliminado = organizacionService.delete(idOrganizacion);
+
+        try {
+            if(eliminado){
+                resp.getWriter().println("{\"mensaje\":\"Eliminado correctamente\"}");
+                log.info("Eliminado correctamente");
+            }else{
+                resp.getWriter().println("{\"mensaje\":\"Hubo un error eliminando\"}");
+                log.info("Hubo un error eliminando");
+            }
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,5 +1,10 @@
 package com.inscripciones.model;
 
+import java.sql.Date;
+
+import com.inscripciones.dto.GetProyecto;
+import com.inscripciones.dto.GetVoluntario;
+
 public class Inscripcion {
     private Long id;
     private Long idProyecto;
@@ -19,6 +24,7 @@ public class Inscripcion {
         this.estadoInscripcion = estadoInscripcion;
     }
 
+    //Para insertar
     public Inscripcion(Long idProyecto, Long idVoluntario, String motivacion, Date fechaInscripcion, EstadoInscripcion estadoInscripcion){
         this.idProyecto = idProyecto;
         this.idVoluntario = idVoluntario;
@@ -27,10 +33,15 @@ public class Inscripcion {
         this.estadoInscripcion = estadoInscripcion;
     }
 
-    public Inscripcion(Long id, String motivacion, Date fechaInscripcion, EstadoInscripcion estadoInscripcion){
+    //Para actualizar (voluntario)
+    public Inscripcion(Long id, String motivacion){
         this.id = id;
         this.motivacion = motivacion;
-        this.fechaInscripcion = fechaInscripcion;
+    }
+
+    //Para actualizar (organicacion)
+    public Inscripcion(Long id, EstadoInscripcion estadoInscripcion){
+        this.id = id;
         this.estadoInscripcion = estadoInscripcion;
     }
 
