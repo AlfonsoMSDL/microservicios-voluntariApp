@@ -17,12 +17,19 @@
   <main class="contenedor-inscripciones fade-in-element visible">
     <!-- 🔹 Selector de vista -->
     <div class="tabs-container">
-      <button class="tab-btn active" id="btn-inscripciones">Gestión de inscripciones</button>
+      <button class="tab-btn active" id="btn-detalle">Detalle del proyecto</button>
+      <button class="tab-btn" id="btn-inscripciones">Gestión de inscripciones</button>
       <button class="tab-btn" id="btn-participantes">Gestión de participantes</button>
     </div>
 
+    <!-- 🔹 Nueva sección: Detalle del Proyecto -->
+    <section class="vista visible" id="vista-detalle">
+      <h2>Detalle del proyecto</h2>
+      <div id="detalle-proyecto" class="detalle-proyecto-box"></div>
+    </section>
+
     <!-- 🔹 Sección 1: Inscripciones -->
-    <section class="vista visible" id="vista-inscripciones">
+    <section class="vista" id="vista-inscripciones">
       <h2>Gestión de inscripciones</h2>
       <h3>Lista de inscritos</h3>
       <ul id="lista-inscritos"></ul>
