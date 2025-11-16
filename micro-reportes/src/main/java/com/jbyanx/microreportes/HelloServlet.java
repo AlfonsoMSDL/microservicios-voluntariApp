@@ -1,4 +1,4 @@
-package com.jbyanx.microreportes.microreportes;
+package com.jbyanx.microreportes;
 
 import java.io.*;
 import jakarta.servlet.http.*;
