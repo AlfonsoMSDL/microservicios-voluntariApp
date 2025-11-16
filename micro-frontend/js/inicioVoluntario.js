@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('usuarioLogin', JSON.stringify(usuarioLogin));
     const nombreEl = document.getElementById('nombreUsuario');
     if (nombreEl) nombreEl.textContent = `Bienvenid@ ${usuarioLogin.nombreUsuario}`;
+  } else {
+    const nombreEl = document.getElementById('nombreUsuario');
+    if (nombreEl) nombreEl.textContent = `Bienvenid@ ${usuarioLogin.nombreUsuario}`;
   }
 
   const lista = document.getElementById('voluntarioProjects');
@@ -41,21 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => {
       console.error(err);
-      const fallback = [
-        { id: '1', nombre: 'Gatitos uwu 23', categoria: 'Salud Comunitaria' },
-        { id: 'm2', nombre: 'Refuerzo educativo', categoria: 'Educativo' },
-        { id: 'm3', nombre: 'Comedor comunitario', categoria: 'Social' },
-        { id: 'm4', nombre: 'Reforestación urbana', categoria: 'Ambiental' }
-      ];
-      lista.innerHTML = fallback.map(p => `
-        <div class="vol-card">
-          <div class="vol-card-content">
-            <div class="vol-card-title">${p.nombre}</div>
-            <div class="vol-card-category">${p.categoria}</div>
-            <button class="vol-btn" onclick="openModalProyecto('${p.id}')">ver</button>
-          </div>
-        </div>
-      `).join('');
     });
 });
 
@@ -77,19 +65,8 @@ function openModalProyecto(idProyecto) {
     .then(r => { if (!r.ok) throw new Error('err'); return r.json(); })
     .then(p => { renderModalProyecto(p, titleEl, bodyEl); })
     .catch(() => {
-      const mock = {
-        id: '1',
-        nombre: 'Gatitos uwu 23',
-        descripcion: 'Rescata gatitos x545',
-        ubicacion: 'Cartagena',
-        requisitos: 'Tener plata y ser perro',
-        fecha_inicio: '2023-04-07',
-        fecha_fin: '2024-04-09',
-        voluntarios_requeridos: '3',
-        categoria: { id: '3', nombre: 'Salud Comunitaria' },
-        organizacion: { id: '1', nombre: 'Organ', correo: 'organ@gmail.com', telefono: '123232', descripcion: 'Sin descripción' }
-      };
-      renderModalProyecto(mock, titleEl, bodyEl);
+      console.log('Error cargando proyecto');
+      alert('Error cargando proyecto.');
     });
 }
 
@@ -121,45 +98,84 @@ function renderModalProyecto(p, titleEl, bodyEl) {
       <div>Correo: ${orgCorreo}</div>
       <div>Teléfono: ${orgTelefono}</div>
       <div>Descripción: ${orgDescripcion}</div>
-      <div class="modal-actions" style="margin-top:12px;">
-        <button class="vol-btn" onclick="inscribirEnProyecto('${p?.id || ''}')">Inscribirme</button>
+
+      <div id="zonaInscripcion" class="modal-actions" style="margin-top:12px;">
+        <button class="vol-btn" onclick="mostrarTextAreaMotivacion('${p?.id || ''}')">Inscribirme</button>
       </div>
     </div>
   `;
 }
 
-function closeModalProyecto() {
-  const overlay = document.getElementById('modalProyecto');
-  overlay.style.display = 'none';
+function mostrarTextAreaMotivacion(idProyecto) {
+  const zona = document.getElementById('zonaInscripcion');
+
+  zona.innerHTML = `
+    <textarea id="motivacionInput" placeholder="Escribe aquí tu motivación..." 
+      style="
+        width:100%; 
+        height:100px; 
+        padding:8px; 
+        border-radius:8px; 
+        border:1px solid #ccc;
+        resize: vertical;
+        margin-top:10px;
+      ">
+    </textarea>
+
+    <button class="vol-btn" style="margin-top:10px;" 
+      onclick="enviarSolicitudInscripcion('${idProyecto}')">
+      Enviar solicitud
+    </button>
+  `;
 }
 
-function inscribirEnProyecto(idProyecto) {
+function enviarSolicitudInscripcion(idProyecto) {
   const usuarioLoginJson = localStorage.getItem('usuarioLogin');
   let usuarioLogin = {};
   try { usuarioLogin = JSON.parse(usuarioLoginJson || '{}'); } catch {}
+
   const idVoluntario = usuarioLogin?.id;
-  if (!idVoluntario || !idProyecto) {
-    alert('No se encontró información para inscribir.');
-    return;
-  }
+  const motivacion = document.getElementById('motivacionInput')?.value || '';
 
-  const params = new URLSearchParams();
-  params.append('action', 'save');
-  params.append('idVoluntario', String(idVoluntario));
-  params.append('idProyecto', String(idProyecto));
+  // Datos finales registrados
+  const voluntarioIdFinal = idVoluntario;
+  const proyectoIdFinal = idProyecto;
+  const motivacionFinal = motivacion;
 
-  fetch('/inscripciones-service/inscripciones', {
+  const data = new URLSearchParams();
+  data.append('idVoluntario', voluntarioIdFinal);
+  data.append('idProyecto', proyectoIdFinal);
+  data.append('motivacion', motivacionFinal);
+
+  // Enviar los datos al backend
+  fetch('/inscripciones-service/inscripciones?action=save', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params.toString()
+    body: data.toString()
   })
+    .then(r => { if (!r.ok) throw new Error('err'); return r.json(); })
     .then(r => {
-      if (!r.ok) throw new Error('Error creando inscripción');
-      alert('Inscripción enviada.');
-      closeModalProyecto();
-    })
-    .catch(err => {
-      console.error(err);
-      alert('No se pudo inscribir. Verifica el backend.');
+      if(r.status == 'error'){
+        console.log('❌ Error al enviar la solicitud de inscripción');
+        alert('❌ Error al enviar la solicitud de inscripción. Por favor intenta nuevamente.');
+      }
+      else{
+        console.log('✅ Solicitud de inscripción enviada exitosamente');
+        alert('✅ Solicitud de inscripción enviada exitosamente');
+      }
+     })
+    .catch(() => {
+      console.log('❌ Error al enviar la solicitud de inscripción');
+      alert('❌ Error al enviar la solicitud de inscripción. Por favor intenta nuevamente.');
     });
+
+  console.log("Datos obtenidos para enviar solicitud:");
+  console.log({ voluntarioIdFinal, proyectoIdFinal, motivacionFinal });
+
+  // 👉 Aquí tú completarás la lógica para enviar estos datos al backend
+}
+
+function closeModalProyecto() {
+  const overlay = document.getElementById('modalProyecto');
+  overlay.style.display = 'none';
 }
