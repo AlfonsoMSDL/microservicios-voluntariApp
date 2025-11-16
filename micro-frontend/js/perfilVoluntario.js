@@ -2,7 +2,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
     e.preventDefault();
 
     // Obtener los valores del formulario
-    const idVoluntario = document.getElementById('idVoluntario').value;
+    const idVoluntario = document.getElementById('id').value;
     const nombre = document.getElementById('nombre').value;
     const apellido = document.getElementById('apellido').value;
     const nombreUsuario = document.getElementById('nombreUsuario').value;

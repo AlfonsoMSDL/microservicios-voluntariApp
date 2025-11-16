@@ -19,7 +19,7 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
     // Crear los parámetros del formulario
     const params = new URLSearchParams();
-    params.append("idOrganizacion",idOrganizacion);
+    params.append("id",idOrganizacion);
     params.append("action", "update");
     params.append("nombreOrganizacion", nombreOrganizacion);
     params.append("nombreUsuario", nombreUsuario);
