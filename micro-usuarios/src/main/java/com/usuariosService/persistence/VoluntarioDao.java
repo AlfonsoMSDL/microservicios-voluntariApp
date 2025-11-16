@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.usuariosService.model.*;
+import com.usuariosService.persistence.impl.UsuarioPostgresqlDao;
 
 public class VoluntarioDao {
 
@@ -20,7 +21,7 @@ public class VoluntarioDao {
     private final String DELETE = "DELETE FROM voluntarios WHERE id_voluntario=?";
 
     private final RolDao rolDao = new RolDao();
-    private final  UsuarioDao usuarioDao = new UsuarioDao();
+    private final  UsuarioPostgresqlDao usuarioDao = new UsuarioPostgresqlDao();
 
     // CREATE
     public Voluntario save(Voluntario voluntario) {

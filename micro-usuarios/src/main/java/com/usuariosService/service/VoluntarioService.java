@@ -10,6 +10,8 @@ import com.usuariosService.model.Voluntario;
 import com.usuariosService.persistence.RolDao;
 import com.usuariosService.persistence.UsuarioDao;
 import com.usuariosService.persistence.VoluntarioDao;
+import com.usuariosService.persistence.fabrica.UsuarioFabrica;
+import com.usuariosService.persistence.impl.UsuarioPostgresqlDao;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,7 +19,7 @@ import java.util.Optional;
 
 public class VoluntarioService {
     private final VoluntarioDao voluntarioDao = new VoluntarioDao();
-    private final UsuarioDao usuarioDao = new UsuarioDao();
+    private final UsuarioDao usuarioDao = UsuarioFabrica.getImplementacion("postgresql");
     private final GenericMapper<GetVoluntario,Voluntario> genericMapper = new  GenericMapper<>();
 
     public Voluntario save(String nombre, String apellido , String nombreUsuario, String correo, String clave,String telefono) {

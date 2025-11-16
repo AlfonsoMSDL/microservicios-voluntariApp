@@ -12,10 +12,12 @@ import com.inscripciones.model.EstadoInscripcion;
 import com.inscripciones.model.Inscripcion;
 import com.inscripciones.persistence.EstadoInscripcionDao;
 import com.inscripciones.persistence.InscripcionDao;
+import com.inscripciones.persistence.fabrica.InscripcionFabrica;
+import com.inscripciones.persistence.impl.InscripcionPostgresqlDao;
 
 public class InscripcionService {
     private final EstadoInscripcionDao estadoInscripcionDao = new EstadoInscripcionDao();
-    private final InscripcionDao inscripcionDao = new InscripcionDao();
+    private final InscripcionDao inscripcionDao = InscripcionFabrica.getImplementacion("postgresql");
     private final GenericMapper<GetInscripcion, Inscripcion> genericMapper = new GenericMapper();
     private final Cliente<GetProyecto> clienteProyecto = new Cliente<>();
     private final Cliente<GetVoluntario> clienteVoluntario = new Cliente<>();

@@ -11,10 +11,12 @@ import com.participaciones.dto.GetVoluntario;
 import com.participaciones.mapper.GenericMapper;
 import com.participaciones.model.Participacion;
 import com.participaciones.persistence.ParticipacionDao;
+import com.participaciones.persistence.fabrica.ParticipacionFabrica;
+import com.participaciones.persistence.impl.ParticipacionPostgresqlDao;
 
 public class ParticipacionService {
 
-    private  final ParticipacionDao participacionDao = new ParticipacionDao();
+    private  final ParticipacionDao participacionDao = ParticipacionFabrica.getImplementacion("postgresql");
     private final GenericMapper<GetParticipacion, Participacion> mapperParticipacion = new GenericMapper();
     private final Cliente<GetVoluntario> voluntarioClient = new Cliente<>();
     private final Cliente<GetProyecto> proyectoClient = new Cliente<>();

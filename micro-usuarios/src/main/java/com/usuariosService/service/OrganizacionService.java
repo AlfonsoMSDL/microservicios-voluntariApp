@@ -4,6 +4,9 @@ import com.usuariosService.dto.GetOrganizacion;
 import com.usuariosService.mapper.GenericMapper;
 import com.usuariosService.model.*;
 import com.usuariosService.persistence.*;
+import com.usuariosService.persistence.fabrica.UsuarioFabrica;
+import com.usuariosService.persistence.impl.UsuarioPostgresqlDao;
+
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.Optional;
 
 public class OrganizacionService {
     private final OrganizacionDao organizacionDao = new OrganizacionDao();
-    private final UsuarioDao  usuarioDao = new UsuarioDao();
+    private final UsuarioDao  usuarioDao = UsuarioFabrica.getImplementacion("postgresql");
     private final TipoOrganizacionDao tipoOrganizacionDao = new TipoOrganizacionDao();
     private final GenericMapper<GetOrganizacion,Organizacion> genericMapper = new  GenericMapper<>();
     private final RolDao rolDao = new RolDao();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.usuariosService.model.*;
+import com.usuariosService.persistence.impl.UsuarioPostgresqlDao;
 
 public class OrganizacionDao {
     private static final String INSERT = "INSERT INTO organizaciones (id,tipo_organizacion_id) VALUES(?,?)";
@@ -14,7 +15,7 @@ public class OrganizacionDao {
     private static final String FIND_BY_ID = "SELECT u.id, u.nombre, u.correo, u.clave, u.nombre_usuario,u.id_rol,u.telefono, o.tipo_organizacion_id, o.descripcion  FROM usuarios u JOIN organizaciones o on u.id = o.id WHERE u.id = ?";
     private static final String UPDATE = "UPDATE organizaciones SET tipo_organizacion_id = ?, descripcion = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM organizaciones WHERE id_organizacion = ?";
-    private final UsuarioDao usuarioDao = new UsuarioDao();
+    private final UsuarioPostgresqlDao usuarioDao = new UsuarioPostgresqlDao();
 
     RolDao  rolDao = new RolDao();
     TipoOrganizacionDao  tipoOrganizacionDao = new TipoOrganizacionDao();

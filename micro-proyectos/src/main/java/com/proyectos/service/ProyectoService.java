@@ -8,13 +8,15 @@ import com.proyectos.model.Categoria;
 import com.proyectos.model.Proyecto;
 import com.proyectos.persistence.CategoriaDao;
 import com.proyectos.persistence.ProyectoDao;
+import com.proyectos.persistence.fabrica.ProyectoFabrica;
+import com.proyectos.persistence.impl.ProyectoPostgresqlDao;
 
 import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class ProyectoService {
-    private final ProyectoDao proyectoDao= new ProyectoDao();
+    private final ProyectoDao proyectoDao= ProyectoFabrica.getImplementacion("postgresql");
     private final CategoriaDao categoriaDao = new CategoriaDao();
     private final GenericMapper<GetProyecto,Proyecto> genericMapper = new GenericMapper<>();
     private final Cliente<GetOrganizacion> cliente = new Cliente<>();
