@@ -203,18 +203,18 @@
 </head>
 <body>
 <div class="container">
-  <h1>🔍 Servicio de Reportes - Endpoints Disponibles</h1>
+  <h1>Servicio de Reportes - Endpoints Disponibles</h1>
 
   <div class="info-box">
-    <h2>ℹ️ Información Importante</h2>
-    <p><strong>🔗 Arquitectura:</strong> Este microservicio consume datos de otros microservicios via HTTP:</p>
+    <h2>ℹInformación Importante</h2>
+    <p><strong>Arquitectura:</strong> Este microservicio consume datos de otros microservicios via HTTP:</p>
     <ul>
       <li><code>usuarios-service</code> (puerto 8081): Voluntarios y Organizaciones</li>
       <li><code>proyectos-service</code> (puerto 8082): Proyectos y Categorías</li>
       <li><code>inscripciones-service</code> (puerto 8083): Inscripciones</li>
     </ul>
-    <p style="margin-top: 15px;"><strong>⚠️ Prerequisito:</strong> Asegúrate que los 3 microservicios estén corriendo antes de probar estos endpoints.</p>
-    <p style="margin-top: 10px;"><strong>🚀 Puerto del servicio:</strong> <code>http://localhost:8084</code> (desarrollo) o <code>http://localhost:8084</code> (Docker)</p>
+    <p style="margin-top: 15px;"><strong>Prerequisito:</strong> Que los 3 microservicios estén corriendo antes de probar estos endpoints.</p>
+    <p style="margin-top: 10px;"><strong>Puerto del servicio:</strong> <code>http://localhost:8084</code> (desarrollo) o <code>http://localhost:8084</code> (Docker)</p>
   </div>
 
   <div class="endpoints-grid">
@@ -234,7 +234,7 @@
 
     <!-- Todos los Voluntarios -->
     <div class="endpoint-card">
-      <h3>👥 Todos los Voluntarios</h3>
+      <h3>Todos los Voluntarios</h3>
       <p>Lista completa de voluntarios con estadísticas de inscripciones por estado</p>
       <div class="url">
         <span class="method">GET</span>
@@ -262,7 +262,7 @@
 
     <!-- Voluntario Específico -->
     <div class="endpoint-card">
-      <h3>👤 Voluntario Específico</h3>
+      <h3>Voluntario Específico</h3>
       <p>Reporte detallado de un voluntario por su ID (ejemplo: ID=1)</p>
       <div class="url">
         <span class="method">GET</span>
@@ -276,7 +276,7 @@
 
     <!-- Todos los Proyectos -->
     <div class="endpoint-card">
-      <h3>📋 Todos los Proyectos</h3>
+      <h3>Todos los Proyectos</h3>
       <p>Lista de proyectos con ocupación, voluntarios inscritos y porcentajes</p>
       <div class="url">
         <span class="method">GET</span>
@@ -304,7 +304,7 @@
 
     <!-- Proyecto Específico -->
     <div class="endpoint-card">
-      <h3>📄 Proyecto Específico</h3>
+      <h3>Proyecto Específico</h3>
       <p>Reporte detallado de un proyecto por su ID (ejemplo: ID=1)</p>
       <div class="url">
         <span class="method">GET</span>
@@ -332,7 +332,7 @@
 
     <!-- Proyectos por Categoría -->
     <div class="endpoint-card">
-      <h3>📁 Proyectos por Categoría</h3>
+      <h3>Proyectos por Categoría</h3>
       <p>Proyectos agrupados por sus categorías (Educación, Salud, etc.)</p>
       <div class="url">
         <span class="method">GET</span>
@@ -342,6 +342,117 @@
         Probar Endpoint
       </button>
       <pre id="response8" class="response"></pre>
+    </div>
+    <!-- Reporte General de Inscripciones -->
+    <div class="endpoint-card">
+      <h3>Reporte General de Inscripciones</h3>
+      <p>Estadísticas generales de inscripciones, tasas de aprobación y proyectos más solicitados</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/inscripciones
+      </div>
+      <button onclick="testEndpoint('/api/reportes/inscripciones', 'response10')">
+        Probar Endpoint
+      </button>
+      <pre id="response10" class="response"></pre>
+    </div>
+
+    <!-- Inscripciones por Estado -->
+    <div class="endpoint-card">
+      <h3>Inscripciones por Estado</h3>
+      <p>Inscripciones agrupadas por estado (Aprobada, En revisión, Rechazada)</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/inscripciones?porEstado=true
+      </div>
+      <button onclick="testEndpoint('/api/reportes/inscripciones?porEstado=true', 'response11')">
+        Probar Endpoint
+      </button>
+      <pre id="response11" class="response"></pre>
+    </div>
+
+    <!-- Inscripciones Filtradas por Estado -->
+    <div class="endpoint-card">
+      <h3>Inscripciones de un Estado Específico</h3>
+      <p>Todas las inscripciones de un estado específico (ejemplo: Aprobada)</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/inscripciones?estado=Aprobada
+      </div>
+      <button onclick="testEndpoint('/api/reportes/inscripciones?estado=Aprobada', 'response12')">
+        Probar Endpoint
+      </button>
+      <pre id="response12" class="response"></pre>
+    </div>
+
+    <!-- Tendencia de Inscripciones -->
+    <div class="endpoint-card">
+      <h3>Tendencia de Inscripciones</h3>
+      <p>Evolución de inscripciones agrupadas por fecha</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/inscripciones?tendencia=true
+      </div>
+      <button onclick="testEndpoint('/api/reportes/inscripciones?tendencia=true', 'response13')">
+        Probar Endpoint
+      </button>
+      <pre id="response13" class="response"></pre>
+    </div>
+
+    <!-- Todas las Organizaciones -->
+    <div class="endpoint-card">
+      <h3>Todas las Organizaciones</h3>
+      <p>Lista completa de organizaciones con proyectos y voluntarios</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/organizaciones
+      </div>
+      <button onclick="testEndpoint('/api/reportes/organizaciones', 'response14')">
+        Probar Endpoint
+      </button>
+      <pre id="response14" class="response"></pre>
+    </div>
+
+    <!-- Top Organizaciones -->
+    <div class="endpoint-card">
+      <h3>Top Organizaciones Activas</h3>
+      <p>Las 5 organizaciones con más proyectos y voluntarios</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/organizaciones?top=5
+      </div>
+      <button onclick="testEndpoint('/api/reportes/organizaciones?top=5', 'response15')">
+        Probar Endpoint
+      </button>
+      <pre id="response15" class="response"></pre>
+    </div>
+
+    <!-- Organización Específica -->
+    <div class="endpoint-card">
+      <h3>Organización Específica</h3>
+      <p>Reporte detallado de una organización por ID (ejemplo: ID=1)</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/organizaciones?id=1
+      </div>
+      <button onclick="testEndpoint('/api/reportes/organizaciones?id=1', 'response16')">
+        Probar Endpoint
+      </button>
+      <pre id="response16" class="response"></pre>
+    </div>
+
+    <!-- Organizaciones por Tipo -->
+    <div class="endpoint-card">
+      <h3>Organizaciones por Tipo</h3>
+      <p>Organizaciones agrupadas por tipo (Ambiental, Educativa, etc.)</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/organizaciones?porTipo=true
+      </div>
+      <button onclick="testEndpoint('/api/reportes/organizaciones?porTipo=true', 'response17')">
+        Probar Endpoint
+      </button>
+      <pre id="response17" class="response"></pre>
     </div>
   </div>
 </div>
