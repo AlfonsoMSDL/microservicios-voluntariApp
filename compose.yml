@@ -80,12 +80,15 @@ services:
     build:
       context: ./micro-reportes
       dockerfile: Dockerfile
+    environment:
+      # URLs de los otros microservicios
+      USUARIOS_SERVICE_URL: http://usuarios:8080
+      PROYECTOS_SERVICE_URL: http://proyectos:8080
+      INSCRIPCIONES_SERVICE_URL: http://inscripciones:8080
     depends_on:
       - usuarios
       - proyectos
       - inscripciones
-    expose:
-      - "8080"
     ports:
       - "8084:8080"
 
