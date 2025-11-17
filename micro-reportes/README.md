@@ -19,14 +19,6 @@ GET /api/reportes/categorias
 ##  Inscripciones
 GET /api/reportes/inscripciones
 GET /api/reportes/inscripciones?porEstado=true
-GET /api/reportes/inscripciones?estado=Aprobada
-GET /api/reportes/inscripciones?tendencia=true
-
-##  Organizaciones
-GET /api/reportes/organizaciones
-GET /api/reportes/organizaciones?top=5
-GET /api/reportes/organizaciones?id=1
-GET /api/reportes/organizaciones?porTipo=true
 
 # Endpoints Requeridos en Otros Microservicios
 ##  Checklist de Endpoints en micro-usuarios (puerto 8081):
