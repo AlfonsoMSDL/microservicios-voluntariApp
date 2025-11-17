@@ -78,6 +78,8 @@ Para ejecutarlo, es necesario tener instalados:
 - **Docker**
 - **Docker Compose**
 
+Estas herramientas vienen instaladas con ```Docker Desktop```, así que es recomendable instalarlo.
+
 ### Pasos para ejecutar el proyecto
 
 1. Clonar el repositorio:
@@ -86,6 +88,7 @@ Para ejecutarlo, es necesario tener instalados:
    cd voluntary-app
     ```
 2. Asegurarse de que el archivo ```compose.yml``` se encuentra en la raíz del proyecto.
+3. Abre ```Docker Desktop``` dejalo corriendo en segundo plano.
 3. Construir y levantar todos los microservicios con: ```docker compose up --build```
 4. Esperar a que todos los contenedores inicialicen sus servicios.
 5. Acceder al sistema a través del navegador en la URL correspondiente:
