@@ -10,16 +10,14 @@ function getVoluntarioId() {
 //   CLASES PARA EL ESTADO
 // =====================================================
 function getEstadoClass(estado) {
-    switch (estado.toLowerCase()) {
-        case "en revisión":
-        case "en tramite":
+    switch (estado) {
+        case "En revisión":
             return "estado-tramite";
 
-        case "rechazado":
+        case "Rechazada":
             return "estado-rechazado";
 
-        case "aceptada":
-        case "aceptado":
+        case "Aprobada":
             return "estado-aceptada";
 
         default:
