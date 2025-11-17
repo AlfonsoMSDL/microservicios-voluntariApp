@@ -10,7 +10,7 @@ document.getElementById('fechaInicio').addEventListener('change', function() {
 
 function volver() {
     if (confirm('¿Estás seguro de que deseas salir? Los cambios no guardados se perderán.')) {
-        window.href = '../pages/listarProyectos.html';
+        window.history.back();
     }
 }
 
