@@ -4,217 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Servicio de Reportes - API</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      color: white;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.5em;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .info-box {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .info-box h2 {
-      color: #667eea;
-      margin-bottom: 15px;
-    }
-
-    .info-box p {
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 10px;
-    }
-
-    .info-box ul {
-      margin-left: 20px;
-      color: #666;
-    }
-
-    .info-box code {
-      background: #f5f5f5;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: 'Courier New', monospace;
-      color: #667eea;
-    }
-
-    .endpoints-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .endpoint-card {
-      background: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .endpoint-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    }
-
-    .endpoint-card h3 {
-      color: #667eea;
-      margin-bottom: 10px;
-      font-size: 1.4em;
-    }
-
-    .endpoint-card p {
-      color: #666;
-      margin-bottom: 15px;
-      line-height: 1.6;
-    }
-
-    .url {
-      background: #f5f5f5;
-      padding: 12px;
-      border-radius: 8px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85em;
-      word-break: break-all;
-      margin-bottom: 15px;
-      border-left: 4px solid #667eea;
-    }
-
-    .method {
-      display: inline-block;
-      background: #4CAF50;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.8em;
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1em;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .response {
-      background: #1e1e1e;
-      color: #4CAF50;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85em;
-      max-height: 400px;
-      overflow: auto;
-      display: none;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    .response::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .response::-webkit-scrollbar-track {
-      background: #2d2d2d;
-    }
-
-    .response::-webkit-scrollbar-thumb {
-      background: #667eea;
-      border-radius: 4px;
-    }
-
-    .loading {
-      color: #ff9800;
-    }
-
-    .error {
-      color: #f44336;
-    }
-
-    .status-info {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.8em;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .status-200 {
-      background: #4CAF50;
-      color: white;
-    }
-
-    .status-error {
-      background: #f44336;
-      color: white;
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div class="container">
   <h1>Servicio de Reportes - Endpoints Disponibles</h1>
 
   <div class="info-box">
-    <h2>ℹInformación Importante</h2>
+    <h2>Información Importante</h2>
     <p><strong>Arquitectura:</strong> Este microservicio consume datos de otros microservicios via HTTP:</p>
     <ul>
       <li><code>usuarios-service</code> (puerto 8081): Voluntarios y Organizaciones</li>
       <li><code>proyectos-service</code> (puerto 8082): Proyectos y Categorías</li>
       <li><code>inscripciones-service</code> (puerto 8083): Inscripciones</li>
     </ul>
-    <p style="margin-top: 15px;"><strong>Prerequisito:</strong> Que los 3 microservicios estén corriendo antes de probar estos endpoints.</p>
-    <p style="margin-top: 10px;"><strong>Puerto del servicio:</strong> <code>http://localhost:8084</code> (desarrollo) o <code>http://localhost:8084</code> (Docker)</p>
+
+    <p style="margin-top: 10px;"><strong>Puerto del servicio:</strong> <code>http://localhost:8085</code></p>
   </div>
 
   <div class="endpoints-grid">
@@ -248,7 +53,7 @@
 
     <!-- Top Voluntarios -->
     <div class="endpoint-card">
-      <h3>🏆 Top Voluntarios</h3>
+      <h3>Top Voluntarios</h3>
       <p>Los 5 voluntarios más activos del sistema (puedes cambiar el número con ?top=N)</p>
       <div class="url">
         <span class="method">GET</span>
@@ -290,7 +95,7 @@
 
     <!-- Top Proyectos -->
     <div class="endpoint-card">
-      <h3>⭐ Top Proyectos Populares</h3>
+      <h3>Top Proyectos Populares</h3>
       <p>Los 5 proyectos con mayor porcentaje de ocupación</p>
       <div class="url">
         <span class="method">GET</span>
@@ -316,20 +121,6 @@
       <pre id="response7" class="response"></pre>
     </div>
 
-    <!-- Reporte de Categorías -->
-    <div class="endpoint-card">
-      <h3>📊 Reporte de Categorías</h3>
-      <p>Todas las categorías con conteo de proyectos ordenadas por popularidad</p>
-      <div class="url">
-        <span class="method">GET</span>
-        /api/reportes/categorias
-      </div>
-      <button onclick="testEndpoint('/api/reportes/categorias', 'response9')">
-        Probar Endpoint
-      </button>
-      <pre id="response9" class="response"></pre>
-    </div>
-
     <!-- Proyectos por Categoría -->
     <div class="endpoint-card">
       <h3>Proyectos por Categoría</h3>
@@ -343,6 +134,21 @@
       </button>
       <pre id="response8" class="response"></pre>
     </div>
+
+    <!-- Reporte de Categorías -->
+    <div class="endpoint-card">
+      <h3>Reporte de Categorías</h3>
+      <p>Todas las categorías con conteo de proyectos ordenadas por popularidad</p>
+      <div class="url">
+        <span class="method">GET</span>
+        /api/reportes/categorias
+      </div>
+      <button onclick="testEndpoint('/api/reportes/categorias', 'response9')">
+        Probar Endpoint
+      </button>
+      <pre id="response9" class="response"></pre>
+    </div>
+
     <!-- Reporte General de Inscripciones -->
     <div class="endpoint-card">
       <h3>Reporte General de Inscripciones</h3>
@@ -371,34 +177,6 @@
       <pre id="response11" class="response"></pre>
     </div>
 
-    <!-- Inscripciones Filtradas por Estado -->
-    <div class="endpoint-card">
-      <h3>Inscripciones de un Estado Específico</h3>
-      <p>Todas las inscripciones de un estado específico (ejemplo: Aprobada)</p>
-      <div class="url">
-        <span class="method">GET</span>
-        /api/reportes/inscripciones?estado=Aprobada
-      </div>
-      <button onclick="testEndpoint('/api/reportes/inscripciones?estado=Aprobada', 'response12')">
-        Probar Endpoint
-      </button>
-      <pre id="response12" class="response"></pre>
-    </div>
-
-    <!-- Tendencia de Inscripciones -->
-    <div class="endpoint-card">
-      <h3>Tendencia de Inscripciones</h3>
-      <p>Evolución de inscripciones agrupadas por fecha</p>
-      <div class="url">
-        <span class="method">GET</span>
-        /api/reportes/inscripciones?tendencia=true
-      </div>
-      <button onclick="testEndpoint('/api/reportes/inscripciones?tendencia=true', 'response13')">
-        Probar Endpoint
-      </button>
-      <pre id="response13" class="response"></pre>
-    </div>
-
     <!-- Todas las Organizaciones -->
     <div class="endpoint-card">
       <h3>Todas las Organizaciones</h3>
@@ -407,10 +185,10 @@
         <span class="method">GET</span>
         /api/reportes/organizaciones
       </div>
-      <button onclick="testEndpoint('/api/reportes/organizaciones', 'response14')">
+      <button onclick="testEndpoint('/api/reportes/organizaciones', 'response12')">
         Probar Endpoint
       </button>
-      <pre id="response14" class="response"></pre>
+      <pre id="response12" class="response"></pre>
     </div>
 
     <!-- Top Organizaciones -->
@@ -421,10 +199,10 @@
         <span class="method">GET</span>
         /api/reportes/organizaciones?top=5
       </div>
-      <button onclick="testEndpoint('/api/reportes/organizaciones?top=5', 'response15')">
+      <button onclick="testEndpoint('/api/reportes/organizaciones?top=5', 'response13')">
         Probar Endpoint
       </button>
-      <pre id="response15" class="response"></pre>
+      <pre id="response13" class="response"></pre>
     </div>
 
     <!-- Organización Específica -->
@@ -435,10 +213,10 @@
         <span class="method">GET</span>
         /api/reportes/organizaciones?id=1
       </div>
-      <button onclick="testEndpoint('/api/reportes/organizaciones?id=1', 'response16')">
+      <button onclick="testEndpoint('/api/reportes/organizaciones?id=1', 'response14')">
         Probar Endpoint
       </button>
-      <pre id="response16" class="response"></pre>
+      <pre id="response14" class="response"></pre>
     </div>
 
     <!-- Organizaciones por Tipo -->
@@ -449,73 +227,14 @@
         <span class="method">GET</span>
         /api/reportes/organizaciones?porTipo=true
       </div>
-      <button onclick="testEndpoint('/api/reportes/organizaciones?porTipo=true', 'response17')">
+      <button onclick="testEndpoint('/api/reportes/organizaciones?porTipo=true', 'response15')">
         Probar Endpoint
       </button>
-      <pre id="response17" class="response"></pre>
+      <pre id="response15" class="response"></pre>
     </div>
   </div>
 </div>
-
-<script>
-  async function testEndpoint(url, responseId) {
-      const responseElement = document.getElementById(responseId);
-      const button = event.target;
-
-      // Deshabilitar botón durante la petición
-      button.disabled = true;
-      button.textContent = '⏳ Cargando...';
-
-      responseElement.style.display = 'block';
-      responseElement.className = 'response loading';
-      responseElement.textContent = '⏳ Realizando petición...';
-
-      try {
-          const startTime = Date.now();
-          const response = await fetch(url);
-          const endTime = Date.now();
-          const duration = endTime - startTime;
-
-          const contentType = response.headers.get("content-type");
-          let data;
-
-          if (contentType && contentType.includes("application/json")) {
-              data = await response.json();
-          } else {
-              data = await response.text();
-          }
-
-          if (response.ok) {
-              responseElement.className = 'response';
-              responseElement.textContent =
-                  `✅ Status: ${response.status} OK (${duration}ms)\n\n` +
-                  JSON.stringify(data, null, 2);
-          } else {
-              responseElement.className = 'response error';
-              responseElement.textContent =
-                  `❌ Status: ${response.status} ${response.statusText} (${duration}ms)\n\n` +
-                  JSON.stringify(data, null, 2);
-          }
-      } catch (error) {
-          responseElement.className = 'response error';
-          responseElement.textContent =
-              `❌ Error de Red o Conexión\n\n` +
-              `Mensaje: ${error.message}\n\n` +
-              `Posibles causas:\n` +
-              `- El microservicio de reportes no está corriendo\n` +
-              `- Uno o más microservicios dependientes están caídos\n` +
-              `- Problema de CORS o red\n\n` +
-              `Verifica que todos los servicios estén activos:\n` +
-              `- http://localhost:8081 (usuarios)\n` +
-              `- http://localhost:8082 (proyectos)\n` +
-              `- http://localhost:8083 (inscripciones)\n` +
-              `- http://localhost:8084 (reportes)`;
-      } finally {
-          // Rehabilitar botón
-          button.disabled = false;
-          button.textContent = 'Probar Endpoint';
-      }
-  }
-</script>
+<a href="http://localhost:8080">volver</a>
+<script src="index.js"></script>
 </body>
 </html>
