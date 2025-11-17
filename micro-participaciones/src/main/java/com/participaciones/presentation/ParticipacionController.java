@@ -33,6 +33,9 @@ public class ParticipacionController extends HttpServlet {
             case "getParticipacionesByProyecto":
                 obtenerParticipacionesByProyecto(req,resp);
                 break;
+            case "getParticipacionesByVoluntario":
+                obtenerParticipacionesByVoluntario(req,resp);
+                break;    
             case "getById":
                 obtenerParticipacionById(req,resp);
                 break;
@@ -42,6 +45,10 @@ public class ParticipacionController extends HttpServlet {
                 break;
         }
     }
+
+
+
+
 
 
 
@@ -82,6 +89,22 @@ public class ParticipacionController extends HttpServlet {
         }
 
 
+    }
+
+    private void obtenerParticipacionesByVoluntario(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+
+        Long idVoluntario =Long.valueOf( req.getParameter("idVoluntario"));
+
+        List<GetParticipacion> participaciones = participacionService.findAllParticipacionesByIdVoluntario(idVoluntario);
+
+        String json = mapperGetParticipacion.toJson(participaciones);
+
+        try {
+            resp.getWriter().println(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void guardarParticipacion(HttpServletRequest req, HttpServletResponse resp) {

@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+}
+
+.header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    position: relative;
+}
+
+.btn-volver {
+    position: absolute;
+    left: 20px;
+    top: 25px;
+    background: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.titulo {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.subtexto {
+    margin: 20px auto;
+    max-width: 900px;
+    font-size: 16px;
+    text-align: center;
+    color: #444;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+.card-desc {
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.info-label {
+    font-weight: bold;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    margin-top: 30px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.empty-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+    color: #2e7d32;
+}
