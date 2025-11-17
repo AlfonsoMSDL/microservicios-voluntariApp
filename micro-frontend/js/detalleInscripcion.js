@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderDetalle(container, ins, vol) {
   const nombreCompleto = `${ins?.voluntario?.nombre || ''} ${ins?.voluntario?.apellido || ''}`.trim();
-  const fecha = ins?.fecha_inscripcion || '';
+  const fecha = ins?.fechaInscripcion || '';
   const motivacion = ins?.motivacion || '';
   const habilidades = vol?.habilidades || 'No registradas';
   const experiencia = vol?.experiencia || 'No registrada';
