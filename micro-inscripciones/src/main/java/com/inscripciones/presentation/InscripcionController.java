@@ -48,11 +48,16 @@ public class InscripcionController extends HttpServlet {
             case "updateEstado":
                 actualizarEstadoInscripcion(req, resp);
                 break;
+            case "delete":
+                eliminarInscripcion(req, resp);
+                break;    
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
         }
     }
+
+    
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
@@ -174,5 +179,22 @@ public class InscripcionController extends HttpServlet {
         }catch(IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    private void eliminarInscripcion(HttpServletRequest req, HttpServletResponse resp) {
+        
+        Long idInscripcion = Long.parseLong(req.getParameter("id"));
+        boolean eliminada = inscripcionService.delete(idInscripcion);
+
+        try {
+            if(eliminada){
+                resp.getWriter().println("{\"status\": \"success\"}");
+            }else{
+                resp.getWriter().println("{\"status\": \"error\"}");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
     }
 }

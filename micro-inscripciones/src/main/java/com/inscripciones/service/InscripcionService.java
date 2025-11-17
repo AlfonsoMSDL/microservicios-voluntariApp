@@ -95,4 +95,8 @@ public class InscripcionService {
         }
         return null;
     }
+
+    public boolean delete(Long id){
+        return inscripcionDao.delete(id);
+    }
 }
