@@ -1,6 +1,8 @@
 package com.jbyanx.microreportes.client;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -95,5 +97,30 @@ public class MicroserviceClient {
      */
     public <T> List<T> getList(String url, Class<T[]> arrayClass) {
         return getAll(url, arrayClass);
+    }
+
+    /**
+     * Obtiene el conteo de elementos en un array JSON
+     * Útil cuando solo necesitas saber cuántos elementos hay sin procesarlos todos
+     */
+    public int getCount(String url) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Error HTTP " + response.statusCode() + ": " + response.body());
+            }
+
+            JsonArray jsonArray = gson.fromJson(response.body(), JsonArray.class);
+            return jsonArray.size();
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Error al obtener conteo: " + url, e);
+        }
     }
 }
