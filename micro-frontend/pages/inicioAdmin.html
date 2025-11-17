@@ -11,8 +11,11 @@
   
   <header class="navbar-custom">
     <div class="navbar-brand">
-      <img src="../assets/logo.png" alt="Logo">
+      <img src="../assets/images/Logo.png" alt="Logo">
       <span>Panel de Administración</span>
+    </div>
+    <div class="cerrarSesion">
+        <a style="cursor: pointer;" onclick="cerrarSesion()"><b>Cerrar Sesión</b></a>
     </div>
   </header>
 
@@ -40,5 +43,11 @@
   </div>
 
   <script src="../js/inicioAdmin.js"></script>
+  <script>
+    function cerrarSesion() {
+        localStorage.removeItem('usuarioLogin');
+        window.location.href = 'login.html';
+    }
+  </script>
 </body>
 </html>

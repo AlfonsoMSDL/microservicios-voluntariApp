@@ -161,6 +161,9 @@ body {
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     min-height: 70px;
+      display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar-custom .navbar-brand {
