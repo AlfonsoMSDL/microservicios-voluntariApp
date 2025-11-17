@@ -9,6 +9,8 @@ Thumbs.db
 #        MAVEN
 # =======================
 /target/
+/*/target/
+*/target/
 /out/
 /build/
 
