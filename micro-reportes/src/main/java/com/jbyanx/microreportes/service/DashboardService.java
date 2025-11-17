@@ -1,6 +1,7 @@
 package com.jbyanx.microreportes.service;
 
 import com.jbyanx.microreportes.client.MicroserviceClient;
+import com.jbyanx.microreportes.config.ServiceConfig;
 import com.jbyanx.microreportes.dto.*;
 
 import java.util.*;
@@ -27,30 +28,39 @@ public class DashboardService {
         DashboardDTO dashboard = new DashboardDTO();
 
         try {
-            // 1. Obtener totales de voluntarios
-            String urlVoluntarios = usuariosServiceUrl + "/api/voluntarios";
+            // 1. Obtener totales de voluntarios ✅
+            String urlVoluntarios = usuariosServiceUrl + "/voluntarios?action=getAllVoluntarios";
             List<VoluntarioDTO> voluntarios = client.getList(urlVoluntarios, VoluntarioDTO[].class);
             dashboard.setTotalVoluntarios(voluntarios.size());
 
-            // 2. Obtener totales de organizaciones
-            String urlOrganizaciones = usuariosServiceUrl + "/api/organizaciones";
-            List<OrganizacionDTO> organizaciones = client.getList(urlOrganizaciones, OrganizacionDTO[].class);
-            dashboard.setTotalOrganizaciones(organizaciones.size());
+            // 2. Obtener totales de organizaciones ✅
+            String urlOrganizaciones = usuariosServiceUrl + "/organizaciones?action=getAllOrganizaciones";
+            int totalOrganizaciones = client.getCount(urlOrganizaciones);
+            dashboard.setTotalOrganizaciones(totalOrganizaciones);
 
-            // 3. Obtener totales de proyectos
-            String urlProyectos = proyectosServiceUrl + "/api/proyectos";
+            // 3. Obtener totales de proyectos ✅
+            String urlProyectos = proyectosServiceUrl + "/proyectos?action=getProyectos";
             List<ProyectoDTO> proyectos = client.getList(urlProyectos, ProyectoDTO[].class);
             dashboard.setTotalProyectos(proyectos.size());
 
-            // 4. Obtener inscripciones
-            String urlInscripciones = inscripcionesServiceUrl + "/api/inscripciones";
-            List<InscripcionDTO> inscripciones = client.getList(urlInscripciones, InscripcionDTO[].class);
-            dashboard.setTotalInscripciones(inscripciones.size());
+            // 4. Obtener inscripciones (agregando de cada proyecto) ✅
+            List<InscripcionDTO> todasLasInscripciones = new ArrayList<>();
+            for (ProyectoDTO proyecto : proyectos) {
+                String urlInscripciones = inscripcionesServiceUrl +
+                        "/inscripciones?action=getInscripcionesByProyecto&idProyecto=" + proyecto.getId();
+                try {
+                    List<InscripcionDTO> inscripcionesProyecto = client.getList(urlInscripciones, InscripcionDTO[].class);
+                    todasLasInscripciones.addAll(inscripcionesProyecto);
+                } catch (Exception e) {
+                    // Si un proyecto no tiene inscripciones, continuar
+                }
+            }
+            dashboard.setTotalInscripciones(todasLasInscripciones.size());
 
             // 5. Contar inscripciones por estado
-            Map<String, Long> inscripcionesPorEstado = inscripciones.stream()
+            Map<String, Long> inscripcionesPorEstado = todasLasInscripciones.stream()
                     .collect(Collectors.groupingBy(
-                            InscripcionDTO::getNombreEstado,
+                            i -> i.getNombreEstado() != null ? i.getNombreEstado() : "Sin estado",
                             Collectors.counting()
                     ));
             dashboard.setInscripcionesPorEstado(inscripcionesPorEstado);
@@ -63,8 +73,8 @@ public class DashboardService {
                     ));
             dashboard.setProyectosPorCategoria(proyectosPorCategoria);
 
-            // 7. Top 5 proyectos más populares
-            Map<Long, Long> inscripcionesPorProyecto = inscripciones.stream()
+            // 7. Top 5 proyectos más populares (por inscripciones aprobadas)
+            Map<Long, Long> inscripcionesPorProyecto = todasLasInscripciones.stream()
                     .filter(i -> "Aprobada".equalsIgnoreCase(i.getNombreEstado()))
                     .collect(Collectors.groupingBy(
                             InscripcionDTO::getIdProyecto,
@@ -88,7 +98,7 @@ public class DashboardService {
             dashboard.setTopProyectos(topProyectos);
 
             // 8. Top 5 voluntarios más activos
-            Map<Long, Long> inscripcionesPorVoluntario = inscripciones.stream()
+            Map<Long, Long> inscripcionesPorVoluntario = todasLasInscripciones.stream()
                     .filter(i -> "Aprobada".equalsIgnoreCase(i.getNombreEstado()))
                     .collect(Collectors.groupingBy(
                             InscripcionDTO::getIdVoluntario,
