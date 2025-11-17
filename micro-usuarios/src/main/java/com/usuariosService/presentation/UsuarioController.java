@@ -16,7 +16,6 @@ public class UsuarioController extends HttpServlet {
 
         switch (action) {
             case "getById": break;
-
         }
     }
 }

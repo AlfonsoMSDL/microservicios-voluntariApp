@@ -21,7 +21,6 @@ services:
       - datos_usuarios
     expose:
       - "8080"
-
     ports:
       - "8081:8080"
 
@@ -35,7 +34,7 @@ services:
       - ./micro-proyectos/micro-proyectos-bd.sql:/docker-entrypoint-initdb.d/micro-proyectos-bd.sql
       - volumen_proyectos:/var/lib/postgresql/18/docker
   proyectos:
-    build: 
+    build:
       context: ./micro-proyectos
       dockerfile: Dockerfile
     environment:
@@ -89,6 +88,11 @@ services:
       - usuarios
       - proyectos
       - inscripciones
+    expose:
+      - "8080"
+    ports:
+      - "8085:8080"
+
   datos_participaciones:
     image: postgres:latest
     environment:
@@ -98,7 +102,7 @@ services:
     volumes:
       - ./micro-participaciones/micro-participaciones-bd.sql:/docker-entrypoint-initdb.d/micro-participaciones-bd.sql
       - volumen_participaciones:/var/lib/postgresql/18/docker
-      
+
   participaciones:
     build: ./micro-participaciones
     environment:
@@ -117,7 +121,6 @@ services:
     build: ./micro-frontend
     ports:
       - "8080:8080"
-
 
 volumes:
   volumen_usuarios:

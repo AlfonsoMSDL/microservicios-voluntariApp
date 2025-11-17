@@ -1,6 +1,7 @@
 package com.jbyanx.microreportes.service;
 
 import com.jbyanx.microreportes.client.MicroserviceClient;
+import com.jbyanx.microreportes.config.ServiceConfig;
 import com.jbyanx.microreportes.dto.*;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.jbyanx.microreportes.service;
+package com.jbyanx.microreportes.config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,12 @@ public class ServiceConfig {
     private static final Properties properties = new Properties();
 
     static {
-        loadProperties();
+        try {
+            loadProperties();
+        } catch (Exception e) {
+            System.err.println("⚠️ WARNING: No se pudo cargar services.properties");
+            e.printStackTrace();
+        }
     }
 
     private static void loadProperties() {
@@ -17,22 +22,23 @@ public class ServiceConfig {
                 .getClassLoader()
                 .getResourceAsStream("services.properties")) {
             if (input == null) {
-                throw new RuntimeException("No se encontró services.properties");
+                System.out.println("⚠️ services.properties no encontrado, usando solo variables de entorno");
+                return;
             }
             properties.load(input);
+            System.out.println("✅ services.properties cargado correctamente");
         } catch (IOException e) {
-            throw new RuntimeException("Error cargando configuración de servicios", e);
+            System.err.println("❌ Error cargando services.properties: " + e.getMessage());
         }
     }
 
+    // URLs base (sin /api)
     public static String getUsuariosServiceUrl() {
-        // Primero intenta obtener de variable de entorno (Docker)
         String envUrl = System.getenv("USUARIOS_SERVICE_URL");
         if (envUrl != null && !envUrl.isEmpty()) {
             return envUrl;
         }
-        // Si no existe, usa el del properties (desarrollo local)
-        return properties.getProperty("usuarios.service.url");
+        return properties.getProperty("usuarios.service.url", "http://localhost:8081");
     }
 
     public static String getProyectosServiceUrl() {
@@ -40,7 +46,7 @@ public class ServiceConfig {
         if (envUrl != null && !envUrl.isEmpty()) {
             return envUrl;
         }
-        return properties.getProperty("proyectos.service.url");
+        return properties.getProperty("proyectos.service.url", "http://localhost:8082");
     }
 
     public static String getInscripcionesServiceUrl() {
@@ -48,6 +54,6 @@ public class ServiceConfig {
         if (envUrl != null && !envUrl.isEmpty()) {
             return envUrl;
         }
-        return properties.getProperty("inscripciones.service.url");
+        return properties.getProperty("inscripciones.service.url", "http://localhost:8083");
     }
 }

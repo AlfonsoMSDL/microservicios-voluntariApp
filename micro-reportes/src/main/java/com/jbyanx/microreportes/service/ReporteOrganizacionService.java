@@ -1,7 +1,11 @@
 package com.jbyanx.microreportes.service;
 
 import com.jbyanx.microreportes.client.MicroserviceClient;
-import com.jbyanx.microreportes.dto.*;
+import com.jbyanx.microreportes.config.ServiceConfig;
+import com.jbyanx.microreportes.dto.InscripcionDTO;
+import com.jbyanx.microreportes.dto.OrganizacionDTO;
+import com.jbyanx.microreportes.dto.ProyectoDTO;
+import com.jbyanx.microreportes.dto.ReporteOrganizacionDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,27 +31,19 @@ public class ReporteOrganizacionService {
         List<ReporteOrganizacionDTO> reporte = new ArrayList<>();
 
         try {
-            // 1. Obtener todas las organizaciones
-            String urlOrganizaciones = usuariosServiceUrl + "/api/organizaciones";
+            // 1. Obtener todas las organizaciones ✅
+            String urlOrganizaciones = usuariosServiceUrl + "/organizaciones?action=getAllOrganizaciones";
             List<OrganizacionDTO> organizaciones = client.getList(urlOrganizaciones, OrganizacionDTO[].class);
 
-            // 2. Obtener todos los proyectos
-            String urlProyectos = proyectosServiceUrl + "/api/proyectos";
+            // 2. Obtener todos los proyectos ✅
+            String urlProyectos = proyectosServiceUrl + "/proyectos?action=getProyectos";
             List<ProyectoDTO> proyectos = client.getList(urlProyectos, ProyectoDTO[].class);
 
-            // 3. Obtener todas las inscripciones
-            String urlInscripciones = inscripcionesServiceUrl + "/api/inscripciones";
-            List<InscripcionDTO> inscripciones = client.getList(urlInscripciones, InscripcionDTO[].class);
-
-            // 4. Agrupar proyectos por organización
+            // 3. Agrupar proyectos por organización
             Map<Long, List<ProyectoDTO>> proyectosPorOrg = proyectos.stream()
                     .collect(Collectors.groupingBy(ProyectoDTO::getOrganizacionId));
 
-            // 5. Crear mapa de inscripciones por proyecto
-            Map<Long, List<InscripcionDTO>> inscripcionesPorProyecto = inscripciones.stream()
-                    .collect(Collectors.groupingBy(InscripcionDTO::getIdProyecto));
-
-            // 6. Generar reporte para cada organización
+            // 4. Generar reporte para cada organización
             for (OrganizacionDTO org : organizaciones) {
                 ReporteOrganizacionDTO reporteDto = new ReporteOrganizacionDTO();
                 reporteDto.setIdOrganizacion(org.getId());
@@ -60,26 +56,27 @@ public class ReporteOrganizacionService {
                 // Proyectos de la organización
                 List<ProyectoDTO> proyectosOrg = proyectosPorOrg.getOrDefault(org.getId(), new ArrayList<>());
                 reporteDto.setTotalProyectos(proyectosOrg.size());
-
-                // Contar proyectos activos (simulado - todos los que tienen fechas)
-                int proyectosActivos = (int) proyectosOrg.stream()
-                        .filter(p -> p.getFechaInicio() != null)
-                        .count();
-                reporteDto.setProyectosActivos(proyectosActivos);
+                reporteDto.setProyectosActivos(proyectosOrg.size());
 
                 // Contar voluntarios inscritos en proyectos de esta organización
                 Set<Long> voluntariosUnicos = new HashSet<>();
                 Set<Long> voluntariosActivos = new HashSet<>();
 
                 for (ProyectoDTO proyecto : proyectosOrg) {
-                    List<InscripcionDTO> inscripcionesProyecto =
-                            inscripcionesPorProyecto.getOrDefault(proyecto.getId(), new ArrayList<>());
+                    String urlInscripciones = inscripcionesServiceUrl +
+                            "/inscripciones?action=getInscripcionesByProyecto&idProyecto=" + proyecto.getId();
 
-                    for (InscripcionDTO inscripcion : inscripcionesProyecto) {
-                        voluntariosUnicos.add(inscripcion.getIdVoluntario());
-                        if ("Aprobada".equalsIgnoreCase(inscripcion.getNombreEstado())) {
-                            voluntariosActivos.add(inscripcion.getIdVoluntario());
+                    try {
+                        List<InscripcionDTO> inscripciones = client.getList(urlInscripciones, InscripcionDTO[].class);
+
+                        for (InscripcionDTO inscripcion : inscripciones) {
+                            voluntariosUnicos.add(inscripcion.getIdVoluntario());
+                            if ("Aprobada".equalsIgnoreCase(inscripcion.getNombreEstado())) {
+                                voluntariosActivos.add(inscripcion.getIdVoluntario());
+                            }
                         }
+                    } catch (Exception e) {
+                        // Si no hay inscripciones, continuar
                     }
                 }
 
@@ -104,7 +101,6 @@ public class ReporteOrganizacionService {
 
         return reporte.stream()
                 .sorted((a, b) -> {
-                    // Ordenar por total de proyectos, luego por voluntarios activos
                     int compareProyectos = b.getTotalProyectos().compareTo(a.getTotalProyectos());
                     if (compareProyectos != 0) return compareProyectos;
                     return b.getVoluntariosActivos().compareTo(a.getVoluntariosActivos());
