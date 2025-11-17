@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Iniciando aplicación...");
 
   const idProyecto = localStorage.getItem("idProyectoTemp");
-  localStorage.removeItem("idProyectoTemp");
 
   if (!idProyecto) {
     console.error("No se encontró idProyectoTemp en localStorage");
@@ -50,6 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Aplicación iniciada correctamente");
 });
 
+// Datos locales de ejemplo (inscritos)
+const inscritos = [];
+
+// Participantes ahora serán llenados desde la API
+const participantes = [];
 
 // ================================================
 // 🔵 FUNCIÓN PARA TRAER PARTICIPANTES DEL BACKEND
@@ -90,10 +94,6 @@ function cargarParticipantes(idProyecto) {
     });
 }
 
-function cargarInscritos(idProyecto){
-  const url = `/inscripciones-service/inscripciones?action=getInscripcionesByProyecto&idProyecto=${idProyecto}`;
-  
-}
 
 // ================================================
 // 🔵 FUNCIÓN PARA TRAER INSCRITOS DEL BACKEND
@@ -112,7 +112,7 @@ function cargarInscritos(idProyecto) {
       inscritos.length = 0;
   data.forEach(item => {
     inscritos.push({
-      id: item.id,
+      id: item.id, //id de la inscripcion
       idVoluntario: item.voluntario?.id,
       idProyecto: item.proyecto?.id,
       nombre: `${item.voluntario?.nombre || ''} ${item.voluntario?.apellido || ''}`.trim() || 'Voluntario',
@@ -170,11 +170,7 @@ async function cargarDetalleProyecto(idProyecto) {
 //  RESTO DE TU CÓDIGO
 // ====================
 
-// Datos locales de ejemplo (inscritos)
-const inscritos = [];
 
-// Participantes ahora serán llenados desde la API
-const participantes = [];
 
 // ----- Renderizado -----
 function renderLista(lista, contenedorId, tipo) {
@@ -200,9 +196,7 @@ function renderLista(lista, contenedorId, tipo) {
     const li = document.createElement("li");
     li.classList.add("item-voluntario");
 
-    let botones = `
-      <button class="btn btn-ver" onclick="verVoluntario(${v.id}, '${tipo}')">👁️ Ver</button>
-    `;
+    let botones = ``;
 
     if (tipo === "inscrito") {
       botones += `
@@ -221,43 +215,11 @@ function renderLista(lista, contenedorId, tipo) {
   });
 }
 
-
-// Modal
-function verVoluntario(id, tipo) {
-  const lista = tipo === "inscrito" ? inscritos : participantes;
-  const v = lista.find(p => p.id === id);
-  
-  if (!v) {
-    alert("Voluntario no encontrado");
-    return;
-  }
-
-  const modal = document.getElementById("modal-detalles");
-  const detalle = document.getElementById("detalle-voluntario");
-
-  detalle.innerHTML = `
-    <p><strong>👤 Nombre:</strong> ${v.nombre}</p>
-    <p><strong>📧 Correo:</strong> ${v.email}</p>
-    <p><strong>📱 Teléfono:</strong> ${v.telefono}</p>
-    <p><strong>📍 Ubicación:</strong> ${v.ciudad}</p>
-  `;
-
-  modal.style.display = "flex";
-}
-
-function cerrarModal() {
-  document.getElementById("modal-detalles").style.display = "none";
-}
-
-
 // Acciones inscripciones
 function cancelarInscripcion(id) {
   if (!confirm(`¿Estás seguro de rechazar la inscripción ${id}?`)) return;
 
-  const inscripcion = inscritos.find(v => v.id === id);
   const idProyecto = localStorage.getItem('idProyectoTemp');
-  if (!inscripcion) return;
-
   fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
     .then(r => r.json())
     .then(estados => {
@@ -265,11 +227,9 @@ function cancelarInscripcion(id) {
       if (!rechazada) throw new Error('Estado Rechazada no encontrado');
 
       const params = new URLSearchParams();
-      params.append('action', 'update');
+      params.append('action', 'updateEstado');
       params.append('idInscripcion', String(id));
-      params.append('motivacion', '');
-      params.append('fechaInscripcion', new Date().toISOString().slice(0,10));
-      params.append('idEstadoInscripcion', String(rechazada.id));
+      params.append('idEstado', String(rechazada.id));
 
       return fetch('/inscripciones-service/inscripciones', {
         method: 'POST',
@@ -289,10 +249,13 @@ function cancelarInscripcion(id) {
 }
 
 function aceptarVoluntario(id) {
-  if (!confirm(`¿Aceptar al voluntario ${id} en el proyecto?`)) return;
+  if (!confirm(`¿Aceptar al voluntario en el proyecto?`)) return;
 
   const idProyecto = localStorage.getItem("idProyectoTemp");
-  const inscripcion = inscritos.find(v => v.id === id);
+  const inscripcion = inscritos.find(v => v.id == id);
+  console.log("Incripciones:", inscritos);
+  console.log("Inscripción a aceptar:", inscripcion);
+  console.log("ID Proyecto:", idProyecto);
   if (!idProyecto || !inscripcion) return;
 
   fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
@@ -302,11 +265,9 @@ function aceptarVoluntario(id) {
       if (!aprobada) throw new Error('Estado Aprobada no encontrado');
 
       const params = new URLSearchParams();
-      params.append('action', 'update');
+      params.append('action', 'updateEstado');
       params.append('idInscripcion', String(id));
-      params.append('motivacion', '');
-      params.append('fechaInscripcion', new Date().toISOString().slice(0,10));
-      params.append('idEstadoInscripcion', String(aprobada.id));
+      params.append('idEstado', String(aprobada.id));
 
       return fetch('/inscripciones-service/inscripciones', {
         method: 'POST',
@@ -316,6 +277,7 @@ function aceptarVoluntario(id) {
     })
     .then(resp => {
       if (!resp.ok) throw new Error('Error actualizando inscripción');
+      //Cuando la inscripcion se acepta se crea la participacion
       const params = new URLSearchParams();
       params.append('action', 'save');
       params.append('idVoluntario', String(inscripcion.idVoluntario || ''));

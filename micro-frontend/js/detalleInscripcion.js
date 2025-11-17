@@ -64,11 +64,9 @@ function actualizarEstado(ins, vol, estadoNombre) {
       if (!estado) throw new Error('Estado no encontrado');
 
       const params = new URLSearchParams();
-      params.append('action', 'update');
+      params.append('action', 'updateEstado');
       params.append('idInscripcion', String(ins.id));
-      params.append('motivacion', ins.motivacion || '');
-      params.append('fechaInscripcion', (ins.fecha_inscripcion || new Date().toISOString().slice(0,10)));
-      params.append('idEstadoInscripcion', String(estado.id));
+      params.append('idEstado', String(estado.id));
 
       return fetch('/inscripciones-service/inscripciones', {
         method: 'POST',
