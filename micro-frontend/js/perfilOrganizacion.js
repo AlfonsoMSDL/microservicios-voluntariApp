@@ -13,8 +13,12 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
     // Validaciones básicas
     if (!nombreOrganizacion || !nombreUsuario || !correo || !telefono || !tipo) {
-        alert("Por favor completa todos los campos obligatorios.");
-        return;
+        
+        Swal.fire("Error", "Por favor completa todos los campos obligatorios.", "error")
+        .then(() => {
+            return;
+        });
+        
     }
 
     // Crear los parámetros del formulario
@@ -48,20 +52,32 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
         const data = await response.text();
         console.log("Respuesta del servidor:", data);
-        alert("Perfil actualizado exitosamente.");
+        Swal.fire("Perfil actualizado exitosamente.", "Los cambios se han guardado exitosamente.", "success");
+        
 
         // Puedes redirigir o recargar
         // window.location.href = "dashboardOrganizacion.jsp";
     } catch (error) {
         console.error("Error al actualizar la organización:", error);
-        alert("Error al actualizar la organización. Por favor intenta nuevamente.");
+        Swal.fire("Error", "Error al actualizar la organización. Por favor intenta nuevamente.", "error");
+        
     }
 });
 
 function cancelar() {
-    if (confirm('¿Estás seguro de que deseas cancelar los cambios?')) {
-        window.history.back();
-    }
+    Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "Los cambios no guardados se perderán.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, salir"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.history.back();
+        }
+    });
 }
 
 
@@ -87,7 +103,8 @@ document.addEventListener("DOMContentLoaded",() => {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al conectar con el servidor: ' + error.message);
+        Swal.fire("Error", "Error al conectar con el servidor: " + error.message, "error");
+        
     })
 
     //Mostrar los datos actuales del perfil
@@ -124,7 +141,7 @@ document.addEventListener("DOMContentLoaded",() => {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al conectar con el servidor: ' + error.message);
+        Swal.fire("Error", "Error al conectar con el servidor: " + error.message, "error");
     })
 
 })

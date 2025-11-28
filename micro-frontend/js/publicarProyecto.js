@@ -9,9 +9,20 @@ document.getElementById('fechaInicio').addEventListener('change', function() {
 });
 
 function volver() {
-    if (confirm('¿Estás seguro de que deseas salir? Los cambios no guardados se perderán.')) {
-        window.history.back();
-    }
+
+    Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "Los cambios no guardados se perderán.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, salir"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.history.back();
+        }
+    });
 }
 
 function publicarProyecto(event) {
@@ -23,8 +34,10 @@ function publicarProyecto(event) {
     // Validación de descripción mínima
     const descripcion = formData.get('descripcion');
     if (descripcion.length < 50) {
-        alert('La descripción debe tener al menos 50 caracteres');
+        Swal.fire("Error", "La descripción debe tener al menos 50 caracteres", "error");
         return;
+        
+        
     }
 
     // Validación de fechas
@@ -32,8 +45,10 @@ function publicarProyecto(event) {
     const fechaFin = new Date(formData.get('fechaFin'));
 
     if (fechaFin <= fechaInicio) {
-        alert('La fecha de fin debe ser posterior a la fecha de inicio');
+        Swal.fire("Error", "La fecha de fin debe ser posterior a la fecha de inicio", "error");
+
         return;
+
     }
 
 
@@ -88,12 +103,14 @@ function publicarProyecto(event) {
                 }, 3000);
             } else {
                 // Error reportado por el servidor
-                alert(data.error || 'Error al publicar el proyecto');
+                Swal.fire("Error", data.mensaje || "Error al publicar el proyecto", "error");
+                
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al conectar con el servidor: ' + error.message);
+            Swal.fire("Error", "Error al publicar el proyecto. Por favor intenta nuevamente.", "error");
+            
         })
         .finally(() => {
             // Rehabilitar el botón
@@ -144,7 +161,8 @@ document.addEventListener("DOMContentLoaded",() => {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al conectar con el servidor: ' + error.message);
+        Swal.fire("Error", "Error al conectar con el servidor. Por favor intenta nuevamente.", "error");
+        
     })
 
 

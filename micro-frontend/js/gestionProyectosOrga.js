@@ -110,17 +110,17 @@ function cargarInscritos(idProyecto) {
     })
     .then(data => {
       inscritos.length = 0;
-  data.forEach(item => {
-    inscritos.push({
-      id: item.id, //id de la inscripcion
-      idVoluntario: item.voluntario?.id,
-      idProyecto: item.proyecto?.id,
-      nombre: `${item.voluntario?.nombre || ''} ${item.voluntario?.apellido || ''}`.trim() || 'Voluntario',
-      email: item.voluntario?.correo || '',
-      telefono: item.voluntario?.telefono || '',
-      ciudad: item.proyecto?.ubicacion || ''
-    });
-  });
+      data.forEach(item => {
+        inscritos.push({
+          id: item.id, //id de la inscripcion
+          idVoluntario: item.voluntario?.id,
+          idProyecto: item.proyecto?.id,
+          nombre: `${item.voluntario?.nombre || ''} ${item.voluntario?.apellido || ''}`.trim() || 'Voluntario',
+          email: item.voluntario?.correo || '',
+          telefono: item.voluntario?.telefono || '',
+          ciudad: item.proyecto?.ubicacion || ''
+        });
+      });
 
       renderLista(inscritos, "lista-inscritos", "inscrito");
     })
@@ -175,7 +175,7 @@ async function cargarDetalleProyecto(idProyecto) {
 // ----- Renderizado -----
 function renderLista(lista, contenedorId, tipo) {
   const contenedor = document.getElementById(contenedorId);
-  
+
   if (!contenedor) {
     console.error(`Contenedor ${contenedorId} no encontrado`);
     return;
@@ -217,86 +217,116 @@ function renderLista(lista, contenedorId, tipo) {
 
 // Acciones inscripciones
 function cancelarInscripcion(id) {
-  if (!confirm(`¿Estás seguro de rechazar la inscripción ${id}?`)) return;
 
-  const idProyecto = localStorage.getItem('idProyectoTemp');
-  fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
-    .then(r => r.json())
-    .then(estados => {
-      const rechazada = estados.find(e => e.nombre === 'Rechazada');
-      if (!rechazada) throw new Error('Estado Rechazada no encontrado');
+  Swal.fire({
+    title: "¿Estás seguro/a?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, rechazar inscripción"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const idProyecto = localStorage.getItem('idProyectoTemp');
+      fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
+        .then(r => r.json())
+        .then(estados => {
+          const rechazada = estados.find(e => e.nombre === 'Rechazada');
+          if (!rechazada) throw new Error('Estado Rechazada no encontrado');
 
-      const params = new URLSearchParams();
-      params.append('action', 'updateEstado');
-      params.append('idInscripcion', String(id));
-      params.append('idEstado', String(rechazada.id));
+          const params = new URLSearchParams();
+          params.append('action', 'updateEstado');
+          params.append('idInscripcion', String(id));
+          params.append('idEstado', String(rechazada.id));
 
-      return fetch('/inscripciones-service/inscripciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-      });
-    })
-    .then(resp => {
-      if (!resp.ok) throw new Error('Error actualizando inscripción');
-      cargarInscritos(idProyecto);
-      alert('Inscripción rechazada');
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error al rechazar la inscripción');
-    });
+          return fetch('/inscripciones-service/inscripciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+        })
+        .then(resp => {
+          if (!resp.ok) throw new Error('Error actualizando inscripción');
+          cargarInscritos(idProyecto);
+          Swal.fire('Inscripción rechazada', 'La inscripción ha sido rechazada', 'success');
+          
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire('Error', 'Error al rechazar la inscripción', 'error');
+
+        });
+    }
+  })
+
+
 }
 
 function aceptarVoluntario(id) {
-  if (!confirm(`¿Aceptar al voluntario en el proyecto?`)) return;
 
-  const idProyecto = localStorage.getItem("idProyectoTemp");
-  const inscripcion = inscritos.find(v => v.id == id);
-  console.log("Incripciones:", inscritos);
-  console.log("Inscripción a aceptar:", inscripcion);
-  console.log("ID Proyecto:", idProyecto);
-  if (!idProyecto || !inscripcion) return;
+  Swal.fire({
+    title: "¿Aceptar al voluntario en el proyecto?",
+    text: "",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, salir"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const idProyecto = localStorage.getItem("idProyectoTemp");
+      const inscripcion = inscritos.find(v => v.id == id);
+      console.log("Incripciones:", inscritos);
+      console.log("Inscripción a aceptar:", inscripcion);
+      console.log("ID Proyecto:", idProyecto);
+      if (!idProyecto || !inscripcion) return;
 
-  fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
-    .then(r => r.json())
-    .then(estados => {
-      const aprobada = estados.find(e => e.nombre === 'Aprobada');
-      if (!aprobada) throw new Error('Estado Aprobada no encontrado');
+      fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
+        .then(r => r.json())
+        .then(estados => {
+          const aprobada = estados.find(e => e.nombre === 'Aprobada');
+          if (!aprobada) throw new Error('Estado Aprobada no encontrado');
 
-      const params = new URLSearchParams();
-      params.append('action', 'updateEstado');
-      params.append('idInscripcion', String(id));
-      params.append('idEstado', String(aprobada.id));
+          const params = new URLSearchParams();
+          params.append('action', 'updateEstado');
+          params.append('idInscripcion', String(id));
+          params.append('idEstado', String(aprobada.id));
 
-      return fetch('/inscripciones-service/inscripciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-      });
-    })
-    .then(resp => {
-      if (!resp.ok) throw new Error('Error actualizando inscripción');
-      //Cuando la inscripcion se acepta se crea la participacion
-      const params = new URLSearchParams();
-      params.append('action', 'save');
-      params.append('idVoluntario', String(inscripcion.idVoluntario || ''));
-      params.append('idProyecto', String(inscripcion.idProyecto || idProyecto));
-      return fetch('/participaciones-service/participaciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-      });
-    })
-    .then(() => {
-      cargarParticipantes(idProyecto);
-      cargarInscritos(idProyecto);
-      alert('¡Inscripción aceptada y participación creada!');
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error al aceptar la inscripción');
-    });
+          return fetch('/inscripciones-service/inscripciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+        })
+        .then(resp => {
+          if (!resp.ok) throw new Error('Error actualizando inscripción');
+          //Cuando la inscripcion se acepta se crea la participacion
+          const params = new URLSearchParams();
+          params.append('action', 'save');
+          params.append('idVoluntario', String(inscripcion.idVoluntario || ''));
+          params.append('idProyecto', String(inscripcion.idProyecto || idProyecto));
+          return fetch('/participaciones-service/participaciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+        })
+        .then(() => {
+          cargarParticipantes(idProyecto);
+          cargarInscritos(idProyecto);
+          Swal.fire('¡Inscripción aceptada!', 'La inscripción se ha aceptado correctamente.', 'success');
+
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire('Error al aceptar la inscripción', 'Ha ocurrido un error al aceptar la inscripción.', 'error');
+
+        });
+    }
+  });
+
+
 }
 
 function verDetalle(idInscripcion) {

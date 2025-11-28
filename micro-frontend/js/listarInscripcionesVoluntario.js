@@ -37,33 +37,55 @@ function formatearFecha(fecha) {
 //   CANCELAR INSCRIPCIÓN (PETICIÓN AL BACK)
 // =====================================================
 async function cancelarInscripcion(idInscripcion) {
-    const confirmar = confirm("¿Estás seguro de cancelar esta inscripción?");
-    if (!confirmar) return;
 
-    try {
-        const data = new URLSearchParams();
-        data.append("id", idInscripcion);
+    Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, cancelar inscripción"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try {
+                const data = new URLSearchParams();
+                data.append("id", idInscripcion);
 
-        fetch("/inscripciones-service/inscripciones?action=delete", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: data
-        }).then(respuesta => {
-            if (!respuesta.ok) throw new Error("Error en la cancelación");
-            return respuesta.json();
-        }).then(data => {
-            if(data.status == "success"){
-                alert("Inscripción cancelada exitosamente");
-                obtenerInscripciones(); // refrescar lista
-            }else{
+                fetch("/inscripciones-service/inscripciones?action=delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: data
+                }).then(respuesta => {
+                    if (!respuesta.ok) throw new Error("Error en la cancelación");
+                    return respuesta.json();
+                }).then(data => {
+
+                    const tipo = data.status;
+                    const message = data.status == 'success' ? 'Inscripción cancelada exitosamente' : 'Error cancelando inscripción';
+
+                    Swal.fire({
+                        position: "center",
+                        icon: tipo,
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        obtenerInscripciones(); // refrescar lista
+                    });
+
+                })
+
+            } catch (e) {
+                console.error("❌ Error cancelando:", e);
                 alert("Error cancelando inscripción");
             }
-        })
 
-    } catch (e) {
-        console.error("❌ Error cancelando:", e);
-        alert("Error cancelando inscripción");
-    }
+
+
+        }
+    });
+
 }
 
 // =====================================================
@@ -108,9 +130,9 @@ function renderInscripciones(lista) {
             </div>
 
             ${ins.estadoInscripcion.nombre.toLowerCase() === "en revisión" ?
-                `<button class="btn-cancelar" onclick="cancelarInscripcion(${ins.id})">Cancelar</button>` 
-                : ""
-            }
+            `<button class="btn-cancelar" onclick="cancelarInscripcion(${ins.id})">Cancelar</button>`
+            : ""
+        }
         </div>
     `).join("");
 }
@@ -122,8 +144,11 @@ async function obtenerInscripciones() {
     const voluntarioId = getVoluntarioId();
 
     if (!voluntarioId) {
-        alert("No se encontró el voluntario. Inicia sesión nuevamente.");
-        return;
+        Swal.fire("Error", "No se encontró el voluntario. Inicia sesión nuevamente.", "error")
+        .then(() => {
+            return;
+        });
+
     }
 
     try {
@@ -137,7 +162,8 @@ async function obtenerInscripciones() {
 
     } catch (e) {
         console.error("❌ Error cargando inscripciones:", e);
-        alert("Error cargando las inscripciones");
+        Swal.fire("Error", "Error cargando inscripciones", "error");
+        
     }
 }
 

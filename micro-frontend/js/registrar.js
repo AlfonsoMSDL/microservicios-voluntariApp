@@ -41,6 +41,8 @@ function validarClave() {
 claveInput.addEventListener('change', validarClave);
 confirmarClaveInput.addEventListener('keyup', validarClave);
 
+var type;
+var message;
 // Evento de registro
 btnLogin.addEventListener("click", async (event) => {
     event.preventDefault();
@@ -67,6 +69,8 @@ btnLogin.addEventListener("click", async (event) => {
         params.append("telefono", telefono);
         params.append("clave", claveValue);
 
+
+
         try {
             const response = await fetch("/usuarios-service/voluntarios", {
                 method: "POST",
@@ -74,17 +78,29 @@ btnLogin.addEventListener("click", async (event) => {
                 body: params.toString()
             });
 
-            if (!response.ok) throw new Error("Error en la petición: " + response.status);
+            if (!response.ok){
+                throw new Error();
+            } 
 
             const data = await response.text();
             console.log("Respuesta del servidor:", data);
-            alert("Voluntario agregado exitosamente");
+            type = "success";
+            message = "Voluntario agregado exitosamente";
+            
 
-            // Opcional: Redirigir al login
-            // window.location.href = "login.jsp";
         } catch (error) {
             console.error("Hubo un error al guardar el voluntario:", error);
-            alert("Error al registrar voluntario. Por favor intenta nuevamente.");
+            type = "error";
+            message = "Error al registrar voluntario. Por favor intenta nuevamente.";
+            
+        } finally{
+            Swal.fire({
+                position: "center-center",
+                icon: type,
+                title: message,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
 
     } else if (rol === "organizacion") {
@@ -117,23 +133,33 @@ btnLogin.addEventListener("click", async (event) => {
                 body: params.toString()
             });
 
-            if (!response.ok) throw new Error("Error en la petición: " + response.status);
+            if (!response.ok) throw new Error();
 
             const data = await response.text();
             console.log("Respuesta del servidor:", data);
-            alert("Organización agregada exitosamente");
+            type = "success";
+            message = "Organización agregada exitosamente";
 
             // Opcional: Redirigir al login
             // window.location.href = "login.jsp";
         } catch (error) {
             console.error("Hubo un error al registrar la organización:", error);
-            alert("Error al registrar organización. Por favor intenta nuevamente.");
+            type = "error";
+            message = "Error al registrar organización. Por favor intenta nuevamente.";
+        } finally{
+            Swal.fire({
+                position: "center-center",
+                icon: type,
+                title: message,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     }
 });
 
 //Mostrar los tipos de organizacion al iniciar la pagina
-document.addEventListener("DOMContentLoaded",() => {
+document.addEventListener("DOMContentLoaded", () => {
     fetch('/usuarios-service/organizaciones?action=getTipos')
         .then(response => {
             if (!response.ok) {

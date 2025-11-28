@@ -39,23 +39,43 @@ function procesarLogin(event) {
                 // Limpiar formulario
                 form.reset();
 
-                alert("Bienvenido");
-
-                if(data.rol.nombre == "Voluntario"){
-                    window.location.href = '../pages/inicioVoluntario.html';
-                }else if(data.rol.nombre == "Organizacion"){
-                    window.location.href = '../pages/inicioOrganizacion.html';
-                }else{
-                    window.location.href = '../pages/inicioAdmin.html';
-                }
+                Swal.fire({
+                    position: "center-center",
+                    icon: "success",
+                    title: "¡Bienvenido!",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Redirección luego del Swal
+                    if (data.rol.nombre === "Voluntario") {
+                        window.location.href = '../pages/inicioVoluntario.html';
+                    } else if (data.rol.nombre === "Organizacion") {
+                        window.location.href = '../pages/inicioOrganizacion.html';
+                    } else {
+                        window.location.href = '../pages/inicioAdmin.html';
+                    }
+                });
             } else {
                 // Error reportado por el servidor
-                alert(data.error );
+                Swal.fire({
+                    position: "center-center",
+                    icon: "error",
+                    title: "Revisa tu correo y contraseña",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al conectar con el servidor: ' + error.message);
+
+            Swal.fire({
+                position: "center-center",
+                icon: "error",
+                title: "Revisa tu correo y contraseña",
+                showConfirmButton: false,
+                timer: 1500
+            });
         })
         .finally(() => {
             // Rehabilitar el botón

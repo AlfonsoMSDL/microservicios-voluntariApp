@@ -55,47 +55,75 @@ function wireActions(ins, vol) {
 }
 
 function actualizarEstado(ins, vol, estadoNombre) {
-  if (!confirm(`¿Confirmar ${estadoNombre.toLowerCase()} de esta inscripción?`)) return;
 
-  fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
-    .then(r => r.json())
-    .then(estados => {
-      const estado = estados.find(e => e.nombre === estadoNombre);
-      if (!estado) throw new Error('Estado no encontrado');
+  Swal.fire({
+    title: "Actualizar estado de inscripción",
+    text: `¿Confirmar ${estadoNombre.toLowerCase()} de esta inscripción?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, salir"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('/inscripciones-service/inscripciones?action=getEstadosInscripcion')
+        .then(r => r.json())
+        .then(estados => {
+          const estado = estados.find(e => e.nombre === estadoNombre);
+          if (!estado) throw new Error('Estado no encontrado');
 
-      const params = new URLSearchParams();
-      params.append('action', 'updateEstado');
-      params.append('idInscripcion', String(ins.id));
-      params.append('idEstado', String(estado.id));
+          const params = new URLSearchParams();
+          params.append('action', 'updateEstado');
+          params.append('idInscripcion', String(ins.id));
+          params.append('idEstado', String(estado.id));
 
-      return fetch('/inscripciones-service/inscripciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-      });
-    })
-    .then(resp => {
-      if (!resp.ok) throw new Error('Error actualizando inscripción');
+          return fetch('/inscripciones-service/inscripciones', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+        })
+        .then(resp => {
+          if (!resp.ok) throw new Error('Error actualizando inscripción');
 
-      if (estadoNombre === 'Aprobada') {
-        const params = new URLSearchParams();
-        params.append('action', 'save');
-        params.append('idVoluntario', String(vol?.id || ins.voluntario?.id || ''));
-        params.append('idProyecto', String(ins?.proyecto?.id || ''));
+          if (estadoNombre === 'Aprobada') {
+            const params = new URLSearchParams();
+            params.append('action', 'save');
+            params.append('idVoluntario', String(vol?.id || ins.voluntario?.id || ''));
+            params.append('idProyecto', String(ins?.proyecto?.id || ''));
 
-        return fetch('/participaciones-service/participaciones', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params.toString()
+            return fetch('/participaciones-service/participaciones', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: params.toString()
+            });
+          }
+        })
+        .then(() => {
+          swal.fire({
+            position: "center-center",
+            icon: "success",
+            title: `Inscripción ${estadoNombre.toLowerCase()} correctamente`,
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.history.back();
+          })
+
+        })
+        .catch(err => {
+          console.error(err);
+          swal.fire({
+            position: "center-center",
+            icon: "error",
+            title: "Error al actualizar la inscripción",
+            showConfirmButton: false,
+            timer: 1500
+          })
+          
         });
-      }
-    })
-    .then(() => {
-      alert(`Inscripción ${estadoNombre.toLowerCase()} correctamente`);
-      window.history.back();
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Ocurrió un error al procesar la solicitud');
-    });
+    }
+  });
+
+
 }

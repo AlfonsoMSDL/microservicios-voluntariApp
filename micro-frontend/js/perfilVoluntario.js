@@ -2,7 +2,11 @@ document.getElementById('profileForm').addEventListener('submit', async function
     e.preventDefault();
 
     // Obtener los valores del formulario
-    const idVoluntario = document.getElementById('id').value;
+
+    const usuarioLoginJson = localStorage.getItem('usuarioLogin');
+    const usuarioLogin = JSON.parse(usuarioLoginJson);
+
+    const idVoluntario = usuarioLogin.id;
     const nombre = document.getElementById('nombre').value;
     const apellido = document.getElementById('apellido').value;
     const nombreUsuario = document.getElementById('nombreUsuario').value;
@@ -16,14 +20,20 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
     // Validación básica
     if (!nombre || !apellido || !nombreUsuario || !correo || !telefono) {
-        alert("⚠️ Por favor completa todos los campos obligatorios.");
+        swal.fire({
+            position: "center-center",
+            icon: "warning",
+            title: "Por favor completa todos los campos obligatorios.",
+            showConfirmButton: false,
+            timer: 1500
+        })
         return;
     }
 
     // Crear los parámetros a enviar
     const params = new URLSearchParams();
     params.append("action", "update");
-    params.append("idVoluntario", idVoluntario);
+    params.append("id", idVoluntario);
     params.append("nombre", nombre);
     params.append("apellido", apellido);
     params.append("nombreUsuario", nombreUsuario);
@@ -54,20 +64,44 @@ document.getElementById('profileForm').addEventListener('submit', async function
 
         const data = await response.text();
         console.log("✅ Respuesta del servidor:", data);
-        alert("✅ Perfil actualizado exitosamente.");
+        Swal.fire({
+                    position: "center-center",
+                    icon: "success",
+                    title: "Perfil actualizado exitosamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
         // Opcional: redirigir o recargar
         // window.location.href = "dashboardVoluntario.jsp";
     } catch (error) {
         console.error("❌ Error al actualizar el perfil:", error);
-        alert("Error al actualizar el perfil. Por favor intenta nuevamente.");
+        Swal.fire({
+                    position: "center-center",
+                    icon: "error",
+                    title: "Error al actualizar el perfil. Por favor intenta nuevamente.",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
     }
 });
 
 function cancelar() {
-    if (confirm('¿Estás seguro de que deseas cancelar los cambios?')) {
-        window.history.back();
-    }
+
+    Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "Los cambios no guardados se perderán.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, salir"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.history.back();
+        }
+    });
+
 }
 
 document.addEventListener("DOMContentLoaded",() => {
@@ -113,7 +147,13 @@ document.addEventListener("DOMContentLoaded",() => {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al conectar con el servidor: ' + error.message);
+        Swal.fire({
+                    position: "center-center",
+                    icon: "error",
+                    title: "Error al mostrar el perfil.",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
     })
 
 })

@@ -147,6 +147,8 @@ function enviarSolicitudInscripcion(idProyecto) {
   data.append('idProyecto', proyectoIdFinal);
   data.append('motivacion', motivacionFinal);
 
+  console.log("data: ", data);
+
   // Enviar los datos al backend
   fetch('/inscripciones-service/inscripciones?action=save', {
     method: 'POST',
@@ -155,14 +157,17 @@ function enviarSolicitudInscripcion(idProyecto) {
   })
     .then(r => { if (!r.ok) throw new Error('err'); return r.json(); })
     .then(r => {
-      if(r.status == 'error'){
-        console.log('❌ Error al enviar la solicitud de inscripción');
-        alert('❌ Error al enviar la solicitud de inscripción. Por favor intenta nuevamente.');
-      }
-      else{
-        console.log('✅ Solicitud de inscripción enviada exitosamente');
-        alert('✅ Solicitud de inscripción enviada exitosamente');
-      }
+      const tipo = r.status;
+      const message = r.status == 'success' ? 'Solicitud de inscripción enviada exitosamente' : 'Error al enviar la solicitud de inscripción';
+
+      Swal.fire({
+      position: "center",
+      icon: tipo,
+      title: message,
+      showConfirmButton: false,
+      timer: 1500
+      });
+
      })
     .catch(() => {
       console.log('❌ Error al enviar la solicitud de inscripción');
