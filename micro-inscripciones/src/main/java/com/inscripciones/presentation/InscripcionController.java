@@ -55,15 +55,15 @@ public class InscripcionController extends HttpServlet {
             case "deleteByIdVoluntario":
                 eliminarInscripcionesPorVoluntario(req, resp);
                 break;
+            case "deleteByIdProyecto":
+                eliminarInscripcionesPorProyecto(req, resp);
+                break;    
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
         }
     }
 
-    
-
-    
 
 
 
@@ -225,5 +225,28 @@ public class InscripcionController extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void eliminarInscripcionesPorProyecto(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idProyecto = Long.valueOf(req.getParameter("id"));
+        String status;
+
+        try {
+            //la primera excepcion es la de la base de datos, en donde si hubo un error eliminando
+            // le mando un status de error al cliente
+            inscripcionService.deleteByIdProyecto(idProyecto);
+            status = "{\"status\":\"success\"}";
+        }catch (SQLException e) {
+            status = "{\"status\":\"error\"}";
+        }
+
+        //la segunda excepcion es para mandar el status al cliente
+        try {
+            resp.getWriter().println(status);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

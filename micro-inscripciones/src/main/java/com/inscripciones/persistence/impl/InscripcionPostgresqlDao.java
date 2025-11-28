@@ -17,6 +17,7 @@ public class InscripcionPostgresqlDao implements InscripcionDao {
     private final String UPDATE_ESTADO = "UPDATE inscripciones SET id_estado = ? WHERE id = ?";
     private final String DELETE = "DELETE FROM inscripciones WHERE id = ?";
     private final String DELETE_BY_VOLUNTARIO = "DELETE FROM inscripciones WHERE voluntario_id = ?";
+    private final String DELETE_BY_PROYECTO = "DELETE FROM inscripciones WHERE proyecto_id = ?";
     private final String SELECT_BY_PROYECTO = "SELECT * FROM inscripciones WHERE proyecto_id = ? AND id_estado = 1";
     private final String SELECT_BY_VOLUNTARIO = "SELECT * FROM inscripciones WHERE voluntario_id = ?";
     private final String SELECT_BY_ID = "SELECT * FROM inscripciones WHERE id = ?";
@@ -232,17 +233,36 @@ public class InscripcionPostgresqlDao implements InscripcionDao {
     public boolean deleteByIdVoluntario(Long id) throws SQLException{
         Connection conn = null;
         PreparedStatement stmt = null;
-            conn = Conexion.getConnection();
+        conn = Conexion.getConnection();
 
-            stmt = conn.prepareStatement(DELETE_BY_VOLUNTARIO);
-            
-            stmt.setLong(1, id);
-            int registrosAfectados = stmt.executeUpdate();
+        stmt = conn.prepareStatement(DELETE_BY_VOLUNTARIO);
+        
+        stmt.setLong(1, id);
+        int registrosAfectados = stmt.executeUpdate();
 
-            Conexion.close(stmt);
-            Conexion.close(conn);
-            return registrosAfectados > 0;
+        Conexion.close(stmt);
+        Conexion.close(conn);
+        return registrosAfectados > 0;
 
         
     }
+
+    @Override
+    public boolean deleteByIdProyecto(Long id) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        conn = Conexion.getConnection();
+
+        stmt = conn.prepareStatement(DELETE_BY_PROYECTO);
+        
+        stmt.setLong(1, id);
+        int registrosAfectados = stmt.executeUpdate();
+
+        Conexion.close(stmt);
+        Conexion.close(conn);
+        return registrosAfectados > 0;
+
+    }
+
+    
 }

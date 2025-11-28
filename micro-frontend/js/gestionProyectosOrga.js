@@ -272,7 +272,7 @@ function aceptarVoluntario(id) {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Si, salir"
+    confirmButtonText: "Si, aceptar voluntario"
   }).then((result) => {
     if (result.isConfirmed) {
       const idProyecto = localStorage.getItem("idProyectoTemp");
@@ -343,4 +343,52 @@ function mostrarVista(tipo) {
   document.getElementById(`vista-${tipo}`).classList.add('visible');
   document.getElementById(`btn-${tipo}`).classList.add('active');
 }
+
+//Accion para eliminar
+
+document.getElementById("btn-eliminar").addEventListener("click", () => {
+  const idProyecto = localStorage.getItem("idProyectoTemp");
+  
+  Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar proyecto"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try {
+                const data = new URLSearchParams();
+                data.append("id", idProyecto);
+
+                fetch("/proyectos-service/proyectos?action=delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: data
+                }).then(respuesta => {
+                    if (!respuesta.ok) throw new Error("Error en la cancelación");
+                    return respuesta.json();
+                }).then(data => {
+
+                    const tipo = data.status;
+                    const message = data.status == 'success' ? 'Proyecto eliminado exitosamente' : 'Error eliminando proyecto';
+
+                    Swal.fire({
+                        icon: tipo,
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.history.back();
+                    });
+                });
+            } catch (error) {
+                console.error("Error al cancelar el proyecto:", error);
+                Swal.fire("Error", "Error al cancelar el proyecto. Por favor intenta nuevamente.", "error");
+            }
+        }
+    });
+})
 

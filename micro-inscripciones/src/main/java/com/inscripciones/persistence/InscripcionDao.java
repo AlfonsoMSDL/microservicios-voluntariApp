@@ -31,4 +31,5 @@ public interface InscripcionDao {
     boolean delete(Long id);
 
     boolean deleteByIdVoluntario(Long id) throws SQLException;
+    boolean deleteByIdProyecto(Long id) throws SQLException;
 }

@@ -21,4 +21,6 @@ public interface ProyectoDao {
 
     // READ BY ID
     Optional<Proyecto> findById(Long idProyecto);
+
+    boolean delete(Long id);
 }

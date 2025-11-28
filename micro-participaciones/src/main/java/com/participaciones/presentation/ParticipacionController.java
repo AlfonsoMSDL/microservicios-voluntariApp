@@ -71,6 +71,9 @@ public class ParticipacionController extends HttpServlet {
             case "deleteByIdVoluntario":
                 eliminarParticipacionesPorVoluntario(req,resp);
                 break;
+            case "deleteByIdProyecto":
+                eliminarParticipacionesPorProyecto(req,resp);
+                break;    
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -153,6 +156,30 @@ public class ParticipacionController extends HttpServlet {
             //la primera excepcion es la de la base de datos, en donde si hubo un error eliminando
             // le mando un status de error al cliente
             participacionService.eliminarParticipacionesPorVoluntario(idVoluntario);
+            status = "{\"status\":\"success\"}";
+
+        }catch (SQLException e) {
+            status = "{\"status\":\"error\"}";
+        }
+
+        //la segunda excepcion es para mandar el status al cliente
+        try {
+            resp.getWriter().println(status);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void eliminarParticipacionesPorProyecto(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idProyecto = Long.valueOf(req.getParameter("id"));
+        
+        String status;
+
+        try {
+            //la primera excepcion es la de la base de datos, en donde si hubo un error eliminando
+            // le mando un status de error al cliente
+            participacionService.eliminarParticipacionesPorProyecto(idProyecto);
             status = "{\"status\":\"success\"}";
 
         }catch (SQLException e) {

@@ -104,4 +104,7 @@ public class ParticipacionService {
     public boolean eliminarParticipacionesPorVoluntario(Long idVoluntario) throws SQLException {
         return participacionDao.deleteByIdVoluntario(idVoluntario);
     }
+    public boolean eliminarParticipacionesPorProyecto(Long idProyecto) throws SQLException {
+        return participacionDao.deleteByIdProyecto(idProyecto);
+    }
 }

@@ -78,5 +78,21 @@ public class ProyectoService {
         proyecto.setOrganizacion(organizacion);
         return genericMapper.toDto(proyecto, GetProyecto.class);
     }
+
+    public boolean delete(Long id) {
+        //Primero elimino las participaciones del proyecto en el micro-participaciones
+        boolean participacionesEliminadas =  cliente.deleteDataByIdProyecto("http://participaciones:8080/participaciones",id);
+        //Luego, elimino las inscripciones del proyecto en el micro-inscripciones
+        boolean inscripcionesEliminadas =  cliente.deleteDataByIdProyecto("http://inscripciones:8080/inscripciones",id);
+
+        if(participacionesEliminadas && inscripcionesEliminadas){
+            //Luego de que si se hayan eliminado sus inscripciones y participaciones, elimino el proyecto
+            return proyectoDao.delete(id);
+            
+        }
+
+        
+        return false;
+    }
 }
 

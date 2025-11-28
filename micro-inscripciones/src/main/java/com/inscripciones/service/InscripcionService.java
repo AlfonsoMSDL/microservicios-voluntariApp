@@ -104,4 +104,8 @@ public class InscripcionService {
     public boolean deleteByIdVoluntario(Long id) throws SQLException{
         return inscripcionDao.deleteByIdVoluntario(id);
     }
+
+    public boolean deleteByIdProyecto(Long id) throws SQLException{
+        return inscripcionDao.deleteByIdProyecto(id);
+    }
 }

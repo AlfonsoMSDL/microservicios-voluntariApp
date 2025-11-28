@@ -95,6 +95,39 @@
   background: var(--primary-dark);
 }
 
+.btn-eliminar {
+  font-size: 15px;
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 15px;
+  background: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.btn-eliminar:hover {
+  cursor: pointer;
+  background: #c0392b;
+}
+
+.btn-editar {
+  font-size: 15px;
+  width: 150px;
+  height: 40px;
+  border: none;
+  background: #0997e3;
+  color: white;
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+.btn-editar:hover {
+  cursor: pointer;
+  background: #077bb5;
+}
+
 /* Scroll estilizado */
 .lista-inscritos::-webkit-scrollbar {
   width: 10px;
