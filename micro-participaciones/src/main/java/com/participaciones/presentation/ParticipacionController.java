@@ -2,6 +2,7 @@ package com.participaciones.presentation;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -67,11 +68,16 @@ public class ParticipacionController extends HttpServlet {
             case "update":
                 actualizarParticipacion(req,resp);
                 break;
+            case "deleteByIdVoluntario":
+                eliminarParticipacionesPorVoluntario(req,resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
         }
     }
+
+
 
     private void obtenerParticipacionesByProyecto(HttpServletRequest req, HttpServletResponse resp) {
         req.getParameterMap();
@@ -134,6 +140,31 @@ public class ParticipacionController extends HttpServlet {
 
     private void obtenerParticipacionById(HttpServletRequest req, HttpServletResponse resp) {
 
+    }
+
+
+    private void eliminarParticipacionesPorVoluntario(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idVoluntario = Long.valueOf(req.getParameter("id"));
+        
+        String status;
+
+        try {
+            //la primera excepcion es la de la base de datos, en donde si hubo un error eliminando
+            // le mando un status de error al cliente
+            participacionService.eliminarParticipacionesPorVoluntario(idVoluntario);
+            status = "{\"status\":\"success\"}";
+
+        }catch (SQLException e) {
+            status = "{\"status\":\"error\"}";
+        }
+
+        //la segunda excepcion es para mandar el status al cliente
+        try {
+            resp.getWriter().println(status);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     

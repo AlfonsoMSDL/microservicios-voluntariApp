@@ -1,6 +1,7 @@
 package com.inscripciones.service;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,5 +99,9 @@ public class InscripcionService {
 
     public boolean delete(Long id){
         return inscripcionDao.delete(id);
+    }
+
+    public boolean deleteByIdVoluntario(Long id) throws SQLException{
+        return inscripcionDao.deleteByIdVoluntario(id);
     }
 }

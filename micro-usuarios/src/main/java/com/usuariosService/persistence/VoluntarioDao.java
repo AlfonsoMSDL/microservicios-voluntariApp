@@ -18,7 +18,7 @@ public class VoluntarioDao {
     private final String FIND_BY_CORREO = "SELECT v.id, u.nombre, v.apellido, u.correo, u.clave, u.nombre_usuario,u.id_rol,u.telefono, v.habilidades, v.experiencia, v.disponibilidad, v.areas_interes FROM usuarios u JOIN voluntarios v on u.id = v.id  WHERE u.correo = ?";
     private final String UPDATE = "UPDATE voluntarios SET apellido=?, habilidades = ?, experiencia = ?, disponibilidad = ?, areas_interes = ? WHERE id=?";
 
-    private final String DELETE = "DELETE FROM voluntarios WHERE id_voluntario=?";
+    private final String DELETE = "DELETE FROM voluntarios WHERE id=?";
 
     private final RolDao rolDao = new RolDao();
     private final  UsuarioPostgresqlDao usuarioDao = new UsuarioPostgresqlDao();

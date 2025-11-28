@@ -2,6 +2,7 @@ package com.inscripciones.presentation;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
@@ -50,7 +51,10 @@ public class InscripcionController extends HttpServlet {
                 break;
             case "delete":
                 eliminarInscripcion(req, resp);
-                break;    
+                break;  
+            case "deleteByIdVoluntario":
+                eliminarInscripcionesPorVoluntario(req, resp);
+                break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 break;
@@ -58,6 +62,10 @@ public class InscripcionController extends HttpServlet {
     }
 
     
+
+    
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
@@ -196,5 +204,26 @@ public class InscripcionController extends HttpServlet {
             throw new RuntimeException(e);
         }
         
+    }
+    private void eliminarInscripcionesPorVoluntario(HttpServletRequest req, HttpServletResponse resp) {
+        req.getParameterMap();
+        Long idVoluntario = Long.valueOf(req.getParameter("id"));
+        String status;
+
+        try {
+            //la primera excepcion es la de la base de datos, en donde si hubo un error eliminando
+            // le mando un status de error al cliente
+            inscripcionService.deleteByIdVoluntario(idVoluntario);
+            status = "{\"status\":\"success\"}";
+        }catch (SQLException e) {
+            status = "{\"status\":\"error\"}";
+        }
+
+        //la segunda excepcion es para mandar el status al cliente
+        try {
+            resp.getWriter().println(status);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

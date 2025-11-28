@@ -1,6 +1,7 @@
 package com.participaciones.service;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,4 +101,7 @@ public class ParticipacionService {
         return null;
     }
 
+    public boolean eliminarParticipacionesPorVoluntario(Long idVoluntario) throws SQLException {
+        return participacionDao.deleteByIdVoluntario(idVoluntario);
+    }
 }

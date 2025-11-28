@@ -171,10 +171,10 @@ public class VoluntarioController extends HttpServlet {
 
         try {
             if(eliminado){
-                resp.getWriter().println("{\"mensaje\":\"Eliminado correctamente\"}");
+                resp.getWriter().println("{\"status\":\"success\"}");
                 log.info("Eliminado correctamente");
             }else{
-                resp.getWriter().println("{\"mensaje\":\"Hubo un error eliminando\"}");
+                resp.getWriter().println("{\"status\":\"error\"}");
                 log.info("Hubo un error eliminando");
             }
         }catch (IOException e) {

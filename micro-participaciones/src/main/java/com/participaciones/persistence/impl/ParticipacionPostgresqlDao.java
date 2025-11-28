@@ -29,6 +29,8 @@ public class ParticipacionPostgresqlDao implements ParticipacionDao {
 
     private static final String DELETE =
         "DELETE FROM participaciones WHERE id = ?";
+    private static final String DELETE_BY_VOLUNTARIO =
+        "DELETE FROM participaciones WHERE voluntario_id = ?";
 
 
     // ============================================================
@@ -237,5 +239,27 @@ public class ParticipacionPostgresqlDao implements ParticipacionDao {
         } catch (SQLException e) {
             throw new RuntimeException("Error eliminando participación: " + e.getMessage(), e);
         }
+    }
+
+    // ============================================================
+    //                      ELIMINAR participaciones por Voluntario
+    // ============================================================
+    @Override
+    public boolean deleteByIdVoluntario(Long id) throws SQLException {
+        Connection conn;
+        PreparedStatement ps;
+
+
+        conn = Conexion.getConnection();
+        ps = conn.prepareStatement(DELETE_BY_VOLUNTARIO);
+        ps.setLong(1, id);
+
+        int rows = ps.executeUpdate();
+
+        Conexion.close(ps);
+        Conexion.close(conn);
+
+        return rows > 0;
+
     }
 }

@@ -3,6 +3,7 @@ package com.inscripciones.persistence;
 
 import com.inscripciones.model.Inscripcion;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,6 @@ public interface InscripcionDao {
 
     // DELETE
     boolean delete(Long id);
+
+    boolean deleteByIdVoluntario(Long id) throws SQLException;
 }

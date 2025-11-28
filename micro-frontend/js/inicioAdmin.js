@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnVoluntarios.addEventListener('click', () => {
-        cargarDatos("voluntarios","/usuarios-service/voluntarios?action=getAllVoluntarios");
+        cargarDatos("voluntarios", "/usuarios-service/voluntarios?action=getAllVoluntarios");
     });
 
     // ========================================================
@@ -153,41 +153,69 @@ function eliminarOrganizacion(id) {
         },
         body: `action=delete&id=${id}`
     })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.mensaje);
+        .then(res => res.json())
+        .then(data => {
+            alert(data.mensaje);
 
-        // Recargar tabla
-        document.getElementById('btn-organizaciones').click();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error eliminando la organización.");
-    });
+            // Recargar tabla
+            document.getElementById('btn-organizaciones').click();
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error eliminando la organización.");
+        });
 }
 
 function eliminarVoluntario(id) {
-    if (!confirm("¿Seguro que deseas eliminar este voluntario?")) {
-        return;
-    }
+    Swal.fire({
+        title: "¿Estás seguro/a?",
+        text: "¡Ojo, se eliminarán las inscripciones y participationes asociadas!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminalo"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma, proceder con la eliminación
+            fetch(`/usuarios-service/voluntarios`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `action=delete&id=${id}`
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const tipo = data.status;
+                    const mensaje = data.status == 'success' ? 'Voluntario eliminado exitosamente' : 'Error eliminando voluntario';
 
-    fetch(`/usuarios-service/voluntarios`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `action=delete&id=${id}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.mensaje);
+                    Swal.fire({
+                        position: "center-center",
+                        icon: tipo,
+                        title: mensaje,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Recargar tabla
+                        document.getElementById('btn-voluntarios').click();
+                    });
 
-        // Recargar tabla
-        document.getElementById('btn-voluntarios').click();
+
+                })
+                .catch(err => {
+                    console.error(err);
+                    Swal.fire({
+                        position: "center-center",
+                        icon: "error",
+                        title: "Error eliminando el voluntario.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                });
+        }
     })
-    .catch(err => {
-        console.error(err);
-        alert("Error eliminando el voluntario.");
-    });
+
+
 }
 

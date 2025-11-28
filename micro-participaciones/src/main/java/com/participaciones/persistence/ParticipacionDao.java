@@ -3,6 +3,7 @@ package com.participaciones.persistence;
 
 import com.participaciones.model.Participacion;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,6 @@ public interface ParticipacionDao {
 
     // DELETE
     boolean delete(Long id);
+
+    boolean deleteByIdVoluntario(Long id) throws SQLException;
 }

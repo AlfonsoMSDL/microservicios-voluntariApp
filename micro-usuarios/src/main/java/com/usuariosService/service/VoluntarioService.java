@@ -1,5 +1,6 @@
 package com.usuariosService.service;
 
+import com.usuariosService.client.Cliente;
 import com.usuariosService.dto.GetOrganizacion;
 import com.usuariosService.dto.GetVoluntario;
 import com.usuariosService.mapper.GenericMapper;
@@ -21,6 +22,7 @@ public class VoluntarioService {
     private final VoluntarioDao voluntarioDao = new VoluntarioDao();
     private final UsuarioDao usuarioDao = UsuarioFabrica.getImplementacion("postgresql");
     private final GenericMapper<GetVoluntario,Voluntario> genericMapper = new  GenericMapper<>();
+    private final Cliente cliente = new Cliente();
 
     public Voluntario save(String nombre, String apellido , String nombreUsuario, String correo, String clave,String telefono) {
 
@@ -66,11 +68,21 @@ public class VoluntarioService {
     }
 
     public boolean delete(Long id){
-        boolean eliminando = voluntarioDao.delete(id);
-        if(eliminando){ // Si se elimino el voluntario, borro su usuario
-            boolean usuarioEliminado =  usuarioDao.delete(id);
-            return usuarioEliminado;
+        //Primero elimino las participaciones del voluntario en el micro-participaciones
+        boolean participacionesEliminadas =  cliente.deleteDataByIdVoluntario("http://participaciones:8080/participaciones",id);
+        //Luego, elimino las inscripciones del voluntario en el micro-inscripciones
+        boolean inscripcionesEliminadas =  cliente.deleteDataByIdVoluntario("http://inscripciones:8080/inscripciones",id);
+
+        if(participacionesEliminadas && inscripcionesEliminadas){
+            //Luego de que si se hayan eliminado, elimino el voluntario
+            boolean eliminando = voluntarioDao.delete(id);
+            if(eliminando){ // Si se elimino el voluntario, borro su usuario
+                boolean usuarioEliminado =  usuarioDao.delete(id);
+                return usuarioEliminado;
+            }
         }
+
+        
         return false;
     }
 

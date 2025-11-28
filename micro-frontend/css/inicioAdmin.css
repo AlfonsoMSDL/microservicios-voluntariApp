@@ -104,7 +104,7 @@
 
 /* === Botones === */
 .boton-accion {
-  background: var(--accent-color);
+  background: #d33;
   border: none;
   color: white;
   padding: 8px 12px;
